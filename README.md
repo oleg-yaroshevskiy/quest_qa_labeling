@@ -1,5 +1,5 @@
-# quest_qa_labeling
-Google QUEST Q&amp;A Labeling. Improving automated understanding of complex question answer content
+### Google QUEST Q&A Labeling
+Improving automated understanding of complex question answer content
 
 In order to run the code install ['A lightweight python library that helps to keep track of numerical experiments'](https://github.com/ex4sperans/mag).<br>
 You can find competition data [here](https://www.kaggle.com/c/google-quest-challenge/data).
