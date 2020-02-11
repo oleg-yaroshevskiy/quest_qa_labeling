@@ -12,10 +12,19 @@ def train_loop(model, train_loader, optimizer, criterion, scheduler, args, itera
 
     optimizer.zero_grad()
     for idx, batch in enumerate(tqdm(train_loader, desc="Train", ncols=80)):
-        input_ids, labels, _ = batch
-        input_ids, labels = (input_ids.cuda(), labels.cuda())
+        input_ids, input_masks, input_segments, labels, _ = batch
+        input_ids, input_masks, input_segments, labels = (
+            input_ids.cuda(),
+            input_masks.cuda(),
+            input_segments.cuda(),
+            labels.cuda(),
+        )
 
-        logits = model(input_ids=input_ids.long())
+        logits = model(
+            input_ids=input_ids.long(),
+            attention_mask=input_masks,
+            token_type_ids=input_segments,
+        )
         loss = criterion(logits, labels)
 
         loss.backward()
@@ -29,7 +38,10 @@ def train_loop(model, train_loader, optimizer, criterion, scheduler, args, itera
 
     torch.cuda.empty_cache()
     gc.collect()
-    return (avg_loss, iteration)
+    return (
+        avg_loss,
+        iteration
+    )
 
 
 def evaluate(args, model, val_loader, criterion, val_shape):
@@ -41,13 +53,19 @@ def evaluate(args, model, val_loader, criterion, val_shape):
 
     with torch.no_grad():
         for idx, batch in enumerate(tqdm(val_loader, desc="Valid", ncols=80)):
-            input_ids, labels, _ = batch
-            input_ids, labels = (
+            input_ids, input_masks, input_segments, labels, _ = batch
+            input_ids, input_masks, input_segments, labels = (
                 input_ids.cuda(),
+                input_masks.cuda(),
+                input_segments.cuda(),
                 labels.cuda(),
             )
 
-            logits = model(input_ids=input_ids.long())
+            logits = model(
+                input_ids=input_ids.long(),
+                attention_mask=input_masks,
+                token_type_ids=input_segments,
+            )
 
             avg_val_loss += criterion(logits, labels).item() / len(val_loader)
             valid_preds[idx * args.batch_size : (idx + 1) * args.batch_size] = (
@@ -72,7 +90,11 @@ def infer(args, model, test_loader, test_shape):
 
     for idx, x_batch in enumerate(tqdm(test_loader, desc="Test", ncols=80)):
         with torch.no_grad():
-            predictions = model(input_ids=x_batch[0].cuda())
+            predictions = model(
+                input_ids=x_batch[0].cuda(),
+                attention_mask=x_batch[1].cuda(),
+                token_type_ids=x_batch[2].cuda(),
+            )
             test_preds[idx * args.batch_size : (idx + 1) * args.batch_size] = (
                 predictions.detach().cpu().squeeze().numpy()
             )

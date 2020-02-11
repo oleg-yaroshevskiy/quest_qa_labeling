@@ -1,45 +1,67 @@
 from math import floor, ceil
 
 import torch
-from iterstrat.ml_stratifiers import (
-    MultilabelStratifiedShuffleSplit,
-    MultilabelStratifiedKFold,
-)
-from sklearn.model_selection import GroupKFold, KFold
 import numpy as np
 import pandas as pd
-from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
-import html
+from torch.utils.data import DataLoader, Dataset
+from sklearn.model_selection import GroupKFold, KFold
 
-BOS = 0
-PAD = 1
-EOS = 2
+
+def _get_masks(tokens, tokenizer, max_seq_length):
+    """Mask for padding"""
+    # if len(tokens) > max_seq_length:
+    #     raise IndexError("Token length more than max seq length!")
+    tokens = tokens[:max_seq_length]
+    return [1] * len(tokens) + [0] * (max_seq_length - len(tokens))
+
+
+def _get_segments(tokens, tokenizer, max_seq_length):
+    """Segments: 0 for the first sequence, 1 for the second"""
+
+    # if len(tokens) > max_seq_length:
+    #     raise IndexError("Token length more than max seq length!")
+    tokens = tokens[:max_seq_length]
+
+    segments = []
+    first_sep = True
+    current_segment_id = 0
+
+    for token in tokens:
+        segments.append(current_segment_id)
+        if token == tokenizer.sep_token:
+            if first_sep:
+                first_sep = False
+            else:
+                current_segment_id = 1
+    return segments + [0] * (max_seq_length - len(tokens))
 
 
 def _get_ids(tokens, tokenizer, max_seq_length):
     """Token ids from Tokenizer vocab"""
 
-    input_ids = tokens + [PAD] * (max_seq_length - len(tokens))
+    token_ids = tokenizer.convert_tokens_to_ids(tokens)
+    token_ids = token_ids[:max_seq_length]
+    input_ids = token_ids + [0] * (max_seq_length - len(token_ids))
     return input_ids
 
 
 def _trim_input(
-    args,
-    tokenizer,
-    title,
-    question,
-    answer,
-    max_sequence_length=290,
-    t_max_len=30,
-    q_max_len=128,
-    a_max_len=128,
+        args,
+        tokenizer,
+        title,
+        question,
+        answer,
+        max_sequence_length=290,
+        t_max_len=30,
+        q_max_len=128,
+        a_max_len=128,
 ):
     # SICK THIS IS ALL SEEMS TO BE SICK
 
-    t = tokenizer.encode(title)[1:-1].tolist()
-    q = tokenizer.encode(question)[1:-1].tolist()
-    a = tokenizer.encode(answer)[1:-1].tolist()
+    t = tokenizer.tokenize(title)
+    q = tokenizer.tokenize(question)
+    a = tokenizer.tokenize(answer)
 
     t_len = len(t)
     q_len = len(q)
@@ -84,34 +106,60 @@ def _trim_input(
     return t, q, a
 
 
-def _convert_to_bert_inputs(title, question, answer, tokenizer, max_sequence_length):
+def _convert_to_bert_inputs(
+        title, question, answer, tokenizer, max_sequence_length, model_type,
+):
     """Converts tokenized input to ids, masks and segments for BERT"""
+    if model_type == 'roberta':
+        stoken = (
+                [tokenizer.cls_token]
+                + title
+                + [tokenizer.sep_token] * 2
+                + question
+                + [tokenizer.sep_token] * 2
+                + answer
+                + [tokenizer.sep_token] * 2
+        )
 
-    stoken = [BOS] + title + [EOS] + question + [EOS] + answer + [EOS]
+    else:
+        stoken = (
+                [tokenizer.cls_token]
+                + title
+                + [tokenizer.sep_token]
+                + question
+                + [tokenizer.sep_token]
+                + answer
+                + [tokenizer.sep_token]
+        )
 
     input_ids = _get_ids(stoken, tokenizer, max_sequence_length)
+    input_masks = _get_masks(stoken, tokenizer, max_sequence_length)
+    input_segments = _get_segments(stoken, tokenizer, max_sequence_length)
 
-    return input_ids
+    return [input_ids, input_masks, input_segments]
 
 
-def compute_input_arays(
-    args,
-    df,
-    columns,
-    tokenizer,
-    max_sequence_length,
-    t_max_len=30,
-    q_max_len=128,
-    a_max_len=128,
-):
+def compute_input_arrays(args,
+                         df,
+                         columns,
+                         tokenizer,
+                         max_sequence_length,
+                         t_max_len=30,
+                         q_max_len=128,
+                         a_max_len=128,
+                         verbose=True):
     input_ids, input_masks, input_segments = [], [], []
 
-    for col in ["question_title", "question_body", "answer"]:
-        df[col] = df[col].apply(html.unescape)
+    iterator = df[columns].iterrows()
+    if verbose:
+        iterator = tqdm(
+            iterator,
+            desc="Preparing dataset",
+            total=len(df),
+            ncols=80,
+        )
 
-    for _, instance in tqdm(
-        df[columns].iterrows(), desc="Preparing dataset", total=len(df), ncols=80,
-    ):
+    for _, instance in iterator:
         t, q, a = (
             instance.question_title,
             instance.question_body,
@@ -128,11 +176,19 @@ def compute_input_arays(
             q_max_len,
             a_max_len,
         )
-        ids = _convert_to_bert_inputs(t, q, a, tokenizer, max_sequence_length)
+        ids, masks, segments = _convert_to_bert_inputs(
+            t, q, a, tokenizer, max_sequence_length, args.model_type,
+        )
 
         input_ids.append(ids)
+        input_masks.append(masks)
+        input_segments.append(segments)
 
-    return torch.from_numpy(np.asarray(input_ids, dtype=np.int32)).long()
+    return (
+        torch.from_numpy(np.asarray(input_ids, dtype=np.int32)).long(),
+        torch.from_numpy(np.asarray(input_masks, dtype=np.int32)).long(),
+        torch.from_numpy(np.asarray(input_segments, dtype=np.int32)).long(),
+    )
 
 
 def compute_output_arrays(df, columns):
@@ -140,98 +196,100 @@ def compute_output_arrays(df, columns):
 
 
 class QuestDataset(torch.utils.data.Dataset):
-    def __init__(self, inputs, lengths, labels=None):
-        self.inputs = inputs
-        self.labels = labels
-        self.lengths = lengths
+    def __init__(self, args, df, tokenizer, test=False,
+                 title_transform=None, body_transform=None, answer_transform=None):
+        self.data = df
+        self.tokenizer = tokenizer
+        self.is_test = test
+        self.params = args
+
+        self.title_transform = title_transform
+        self.body_transform = body_transform
+        self.answer_transform = answer_transform
 
     @classmethod
-    def from_frame(cls, args, df, tokenizer, test=False):
-        """ here I put major preprocessing. why not lol
-        """
-        inputs = compute_input_arays(
-            args,
-            df,
-            args.input_columns,
-            tokenizer,
-            max_sequence_length=args.max_sequence_length,
-            t_max_len=args.max_title_length,
-            q_max_len=args.max_question_length,
-            a_max_len=args.max_answer_length,
-        )
-
-        outputs = None
-        if not test:
-            outputs = compute_output_arrays(df, args.target_columns)
-            outputs = torch.tensor(outputs, dtype=torch.float32)
-
-        lengths = np.argmax(inputs == 0, axis=1)
-        lengths[lengths == 0] = inputs.shape[1]
-
-        return cls(inputs=inputs, lengths=lengths, labels=outputs)
-
-    def __len__(self):
-        return len(self.inputs)
+    def from_frame(cls, args, df, tokenizer, test=False,
+                   title_transform=None, body_transform=None, answer_transform=None):
+        return cls(args,
+                   df,
+                   tokenizer,
+                   test=test,
+                   title_transform=title_transform,
+                   body_transform=body_transform,
+                   answer_transform=answer_transform)
 
     def __getitem__(self, idx):
-        input_ids = self.inputs[idx]
-        lengths = self.lengths[idx]
+        instance = self.data[idx:idx + 1].copy()
 
-        if self.labels is not None:
-            labels = self.labels[idx]
-            return input_ids, labels, lengths
+        for col, transform in zip(['question_title', 'question_body', 'answer'],
+                                  [self.title_transform, self.body_transform, self.answer_transform]):
+            if transform is not None:
+                instance[col] = transform[col]
 
-        return input_ids, lengths
+        input_ids, input_masks, input_segments = compute_input_arrays(
+            self.params,
+            instance,
+            self.params.input_columns,
+            self.tokenizer,
+            max_sequence_length=self.params.max_sequence_length,
+            t_max_len=self.params.max_title_length,
+            q_max_len=self.params.max_question_length,
+            a_max_len=self.params.max_answer_length,
+            verbose=False,
+        )
+        length = torch.sum(input_masks != 0)
+        input_ids, input_masks, input_segments = torch.squeeze(input_ids, dim=0), torch.squeeze(input_masks, dim=0), \
+                                                 torch.squeeze(input_segments, dim=0)
+
+        if not self.is_test:
+            labels = compute_output_arrays(instance, self.params.target_columns)
+            labels = torch.tensor(labels, dtype=torch.float32)
+            labels = torch.squeeze(labels, dim=0)
+            return input_ids, input_masks, input_segments, labels, length
+        else:
+            return input_ids, input_masks, input_segments, length
+
+    def __len__(self):
+        return len(self.data)
 
 
 def cross_validation_split(
-    args, train_df, tokenizer, ignore_train=False, pseudo_df=None, split_pseudo=False,
+        args,
+        train_df,
+        tokenizer,
+        ignore_train=False
 ):
     kf = GroupKFold(n_splits=args.folds)
     y_train = train_df[args.target_columns].values
 
-    leak_free_pseudo = isinstance(pseudo_df, list)
+    for fold, (train_index, val_index) in enumerate(kf.split(
+            train_df.values, groups=train_df.question_title
+    )):
 
-    if pseudo_df is not None:
+        if args.use_folds is not None and fold not in args.use_folds:
+            continue
 
-        if leak_free_pseudo:
-            n_pseudo = len(pseudo_df[0])
-        else:
-            n_pseudo = len(pseudo_df)
-
-        if split_pseudo:
-            pseudo_kfold = KFold(args.folds)
-            pseudo_ids = iter(pseudo_kfold.split(np.arange(n_pseudo)))
-        else:
-            pseudo_ids = iter(
-                [(np.arange(len(np.pseudo)), np.arange(len(n_pseudo)))] * args.folds
-            )
-
-    for fold, (train_index, val_index) in enumerate(
-        kf.split(train_df.values, groups=train_df.question_title)
-    ):
         if not ignore_train:
             train_subdf = train_df.iloc[train_index]
-
-            if pseudo_df is not None:
-                pseudo_train, pseudo_valid = next(pseudo_ids)
-
-                pseudo_subdf = pseudo_df if not leak_free_pseudo else pseudo_df[fold]
-
-                pseudo_subdf = pseudo_subdf.iloc[pseudo_valid]
-                train_subdf = pd.concat([train_subdf, pseudo_subdf], sort=True)
-
             train_set = QuestDataset.from_frame(args, train_subdf, tokenizer)
         else:
             train_set = None
-        valid_set = QuestDataset.from_frame(args, train_df.iloc[val_index], tokenizer)
+
+        valid_set = QuestDataset.from_frame(
+            args, train_df.iloc[val_index], tokenizer
+        )
 
         yield (
+            fold,
             train_set,
             valid_set,
             train_df.iloc[train_index],
             train_df.iloc[val_index],
         )
+
+
+def get_pseudo_set(args, pseudo_df, tokenizer):
+    return QuestDataset.from_frame(args, pseudo_df, tokenizer)
 
 
 def get_test_set(args, test_df, tokenizer):
