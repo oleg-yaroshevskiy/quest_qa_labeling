@@ -1,29 +1,26 @@
-import warnings, logging
-
-warnings.filterwarnings("ignore")
-
-import gc
+import csv
+import logging
+import os
 import random
-import os, multiprocessing, glob
+import warnings
+
+import mag
 import numpy as np
 import pandas as pd
 import torch
-from torch import nn
-import torch.nn.functional as F
-from torch.utils.data import ConcatDataset
-
-from transformers import get_linear_schedule_with_warmup
-from model import get_model_optimizer
-from loops import train_loop, evaluate, infer
-from dataset import cross_validation_split, get_test_set, get_pseudo_set, make_collate_fn, BucketingSampler
 from args import args
-from transformers import BertTokenizer, AlbertTokenizer
-from torch.utils.data import DataLoader, Dataset
-
+from dataset import cross_validation_split, get_test_set, get_pseudo_set
+from loops import train_loop, evaluate, infer
 from mag.experiment import Experiment
-import mag
+from model import get_model_optimizer
+from torch import nn
+from torch.utils.data import ConcatDataset
+from torch.utils.data import DataLoader
+from transformers import BertTokenizer
+from transformers import get_linear_schedule_with_warmup, RobertaTokenizer
 
 mag.use_custom_separator("-")
+warnings.filterwarnings("ignore")
 
 config = {
     "_seed": args.seed,
@@ -40,6 +37,7 @@ config = {
     "head_tail": args.head_tail,
     "label": args.label,
     "_pseudo_file": args.pseudo_file,
+    "model_type": args.model_type,
 }
 experiment = Experiment(config, implicit_resuming=args.use_folds is not None)
 experiment.register_directory("checkpoints")
@@ -57,34 +55,26 @@ def seed_everything(seed: int):
 
 logging.getLogger("transformers").setLevel(logging.ERROR)
 seed_everything(args.seed)
-
-## load the data
+# load the data
 train_df = pd.read_csv(os.path.join(args.data_path, "train.csv"))
 test_df = pd.read_csv(os.path.join(args.data_path, "test.csv"))
 submission = pd.read_csv(os.path.join(args.data_path, "sample_submission.csv"))
 
-tokenizer = BertTokenizer.from_pretrained(
-    args.bert_model, do_lower_case=("uncased" in args.bert_model)
-)
+if args.model_type == 'bert':
+    tokenizer = BertTokenizer.from_pretrained(args.bert_model,
+                                              do_lower_case=("uncased" in args.bert_model))
+elif args.model_type == 'roberta':
+    tokenizer = RobertaTokenizer.from_pretrained(args.bert_model)
 
 test_set = get_test_set(args, test_df, tokenizer)
-test_loader = DataLoader(
-    test_set,
-    batch_sampler=BucketingSampler(
-        test_set.lengths,
-        batch_size=args.batch_size,
-        maxlen=args.max_sequence_length
-    ),
-    collate_fn=make_collate_fn(),
-)
-
+test_loader = DataLoader(test_set, batch_size=args.batch_size, shuffle=False)
 
 for fold, train_set, valid_set, train_fold_df, val_fold_df in (
-    cross_validation_split(
-        args,
-        train_df,
-        tokenizer
-    )
+        cross_validation_split(
+            args,
+            train_df,
+            tokenizer
+        )
 ):
 
     print()
@@ -92,13 +82,7 @@ for fold, train_set, valid_set, train_fold_df, val_fold_df in (
     print()
 
     valid_loader = DataLoader(
-        valid_set,
-        batch_sampler=BucketingSampler(
-            valid_set.lengths,
-            batch_size=args.batch_size,
-            maxlen=args.max_sequence_length
-        ),
-        collate_fn=make_collate_fn(),
+        valid_set, batch_size=args.batch_size, shuffle=False, drop_last=False
     )
 
     fold_checkpoints = os.path.join(
@@ -111,6 +95,12 @@ for fold, train_set, valid_set, train_fold_df, val_fold_df in (
     os.makedirs(fold_checkpoints, exist_ok=True)
     os.makedirs(fold_predictions, exist_ok=True)
 
+    log_file = os.path.join(fold_checkpoints, "training_log.csv")
+
+    with open(log_file, 'w') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(['epoch', 'loss', 'val_loss', 'score'])
+
     iteration = 0
     best_score = -1.0
 
@@ -122,7 +112,6 @@ for fold, train_set, valid_set, train_fold_df, val_fold_df in (
         epoch_train_set = train_set
 
         if args.pseudo_file is not None:
-
             pseudo_df = pd.read_csv(args.pseudo_file.format(fold))
 
             pseudo_set = get_pseudo_set(
@@ -137,7 +126,6 @@ for fold, train_set, valid_set, train_fold_df, val_fold_df in (
             epoch_train_set,
             batch_size=args.batch_size,
             num_workers=args.workers,
-            collate_fn=make_collate_fn(),
             drop_last=True,
             shuffle=True,
         )
@@ -146,7 +134,7 @@ for fold, train_set, valid_set, train_fold_df, val_fold_df in (
             optimizer,
             num_warmup_steps=args.warmup,
             num_training_steps=(
-                args.epochs * len(train_loader) / args.batch_accumulation
+                    args.epochs * len(train_loader) / args.batch_accumulation
             ),
         )
 
@@ -169,6 +157,9 @@ for fold, train_set, valid_set, train_fold_df, val_fold_df in (
                 epoch + 1, args.epochs, avg_loss, avg_val_loss, score
             )
         )
+        with open(log_file, 'a') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow([epoch + 1, avg_loss, avg_val_loss, score])
 
         torch.save(
             model.state_dict(),
@@ -205,10 +196,8 @@ for fold, train_set, valid_set, train_fold_df, val_fold_df in (
             test_preds_df.to_csv(
                 os.path.join(fold_predictions, "best_test.csv"), index=False
             )
-    del model, optimizer, criterion, scheduler
-    del valid_loader, train_loader, valid_set, train_set
+
     torch.cuda.empty_cache()
-    gc.collect()
 
     print()
 

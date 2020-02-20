@@ -1,22 +1,17 @@
-import os
 import argparse
 import logging
-
-from mag.experiment import Experiment
+import os
 import mag
-import pandas as pd
 import numpy as np
+import pandas as pd
 import torch
-from torch import nn
-import torch.nn.functional as F
-
-from model import get_model_optimizer
-from loops import train_loop, evaluate, infer
-from dataset import cross_validation_split, get_test_set, BucketingSampler, make_collate_fn
-from transformers import BertTokenizer, AlbertTokenizer
-from torch.utils.data import DataLoader, Dataset
-from evaluation import target_metric
+from dataset import get_test_set
+from loops import infer
+from mag.experiment import Experiment
 from misc import target_columns, input_columns
+from model import get_model_optimizer
+from torch.utils.data import DataLoader
+from transformers import BertTokenizer, RobertaTokenizer
 
 mag.use_custom_separator("-")
 
@@ -24,6 +19,7 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("--experiment", type=str, required=True)
 parser.add_argument("--checkpoint", type=str, required=True)
+parser.add_argument("--bert_model", type=str, required=True)
 parser.add_argument("--dataframe", type=str, required=True)
 parser.add_argument("--output_dir", type=str, required=True)
 
@@ -41,7 +37,7 @@ original_args = argparse.Namespace(
     lr=config.lr,
     batch_size=config.batch_size,
     seed=config._seed,
-    bert_model=config.bert_model.replace("_", "-"),
+    bert_model=args.bert_model,
     num_classes=30,
     target_columns=target_columns,
     input_columns=input_columns,
@@ -51,22 +47,20 @@ original_args = argparse.Namespace(
     max_question_length=getattr(config, "max_question_length", 260),
     max_answer_length=getattr(config, "max_answer_length", 210),
     head_tail=getattr(config, "head_tail", True),
-    use_folds=None
+    use_folds=None,
+    model_type=config.model_type
+
 )
 
-tokenizer = BertTokenizer.from_pretrained(
-    original_args.bert_model, do_lower_case=("uncased" in original_args.bert_model)
-)
+if original_args.model_type == 'bert':
+    tokenizer = BertTokenizer.from_pretrained(original_args.bert_model,
+                                              do_lower_case=("uncased" in args.bert_model))
+elif original_args.model_type == 'roberta':
+    tokenizer = RobertaTokenizer.from_pretrained(original_args.bert_model)
 
 test_set = get_test_set(original_args, test_df, tokenizer)
 test_loader = DataLoader(
-    test_set,
-    batch_sampler=BucketingSampler(
-        test_set.lengths,
-        batch_size=original_args.batch_size,
-        maxlen=original_args.max_sequence_length
-    ),
-    collate_fn=make_collate_fn(),
+    test_set, batch_size=original_args.batch_size, shuffle=False
 )
 
 os.makedirs(args.output_dir)
@@ -94,9 +88,6 @@ for fold in range(config.folds):
         original_args, model, test_loader, test_shape=len(test_set)
     )
 
-    del model, optimizer
-    torch.cuda.empty_cache()
-
     test_preds_df = test_df[["qa_id"]].copy()
     for k, col in enumerate(target_columns):
         test_preds_df[col] = test_preds[:, k].astype(np.float32)
@@ -105,3 +96,4 @@ for fold in range(config.folds):
         index=False,
     )
 
+    torch.cuda.empty_cache()

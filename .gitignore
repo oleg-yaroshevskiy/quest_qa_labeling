@@ -5,3 +5,5 @@ env
 .vscode
 *.csv
 experiments/
+.DS_Store
+.idea/

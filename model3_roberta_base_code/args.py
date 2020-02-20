@@ -9,6 +9,7 @@ parser.add_argument("--seed", type=int, default=42)
 parser.add_argument("--folds", type=int, default=5)
 parser.add_argument("--use_folds", type=int, nargs="+")
 
+parser.add_argument("--model_type", type=str, default="bert")
 parser.add_argument("--label", type=str, default="qa")
 parser.add_argument("--bert_model", type=str, default="bert-large-uncased")
 parser.add_argument("--batch_size", type=int, default=8)

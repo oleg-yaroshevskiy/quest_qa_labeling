@@ -1,6 +1,6 @@
+import gc
 import numpy as np
 import torch
-import gc
 from scipy.stats import spearmanr
 from tqdm import tqdm
 
@@ -12,12 +12,7 @@ def train_loop(model, train_loader, optimizer, criterion, scheduler, args, itera
 
     optimizer.zero_grad()
     for idx, batch in enumerate(tqdm(train_loader, desc="Train", ncols=80)):
-        input_ids, input_masks, input_segments, labels = (
-            batch["input_ids"],
-            batch["input_masks"],
-            batch["input_segments"],
-            batch["labels"]
-        )
+        input_ids, input_masks, input_segments, labels, _ = batch
         input_ids, input_masks, input_segments, labels = (
             input_ids.cuda(),
             input_masks.cuda(),
@@ -53,20 +48,12 @@ def evaluate(args, model, val_loader, criterion, val_shape):
     avg_val_loss = 0.0
     model.eval()
 
-    valid_preds = []
-    original = []
-    ids = []
+    valid_preds = np.zeros((val_shape, args.num_classes))
+    original = np.zeros((val_shape, args.num_classes))
 
     with torch.no_grad():
         for idx, batch in enumerate(tqdm(val_loader, desc="Valid", ncols=80)):
-            id, input_ids, input_masks, input_segments, labels = (
-                batch["idx"],
-                batch["input_ids"],
-                batch["input_masks"],
-                batch["input_segments"],
-                batch["labels"]
-            )
-            ids.extend(id.cpu().numpy())
+            input_ids, input_masks, input_segments, labels, _ = batch
             input_ids, input_masks, input_segments, labels = (
                 input_ids.cuda(),
                 input_masks.cuda(),
@@ -81,11 +68,12 @@ def evaluate(args, model, val_loader, criterion, val_shape):
             )
 
             avg_val_loss += criterion(logits, labels).item() / len(val_loader)
-            valid_preds.extend(logits.detach().cpu().numpy())
-            original.extend(labels.detach().cpu().numpy())
-
-        valid_preds = np.array(valid_preds)
-        original = np.array(original)
+            valid_preds[idx * args.batch_size: (idx + 1) * args.batch_size] = (
+                logits.detach().cpu().squeeze().numpy()
+            )
+            original[idx * args.batch_size: (idx + 1) * args.batch_size] = (
+                labels.detach().cpu().squeeze().numpy()
+            )
 
         score = 0
         preds = torch.sigmoid(torch.tensor(valid_preds)).numpy()
@@ -93,29 +81,23 @@ def evaluate(args, model, val_loader, criterion, val_shape):
         for i in range(len(args.target_columns)):
             score += np.nan_to_num(spearmanr(original[:, i], preds[:, i]).correlation)
 
-    return avg_val_loss, score / len(args.target_columns), preds[np.argsort(ids)]
+    return avg_val_loss, score / len(args.target_columns), preds
 
 
 def infer(args, model, test_loader, test_shape):
     test_preds = np.zeros((test_shape, args.num_classes))
     model.eval()
 
-    ids = []
-    test_preds = []
-
-    for idx, batch in enumerate(tqdm(test_loader, desc="Test", ncols=80)):
+    for idx, x_batch in enumerate(tqdm(test_loader, desc="Test", ncols=80)):
         with torch.no_grad():
-
-            ids.extend(batch["idx"].cpu().numpy())
-
             predictions = model(
-                input_ids=batch["input_ids"].cuda(),
-                attention_mask=batch["input_masks"].cuda(),
-                token_type_ids=batch["input_segments"].cuda(),
+                input_ids=x_batch[0].cuda(),
+                attention_mask=x_batch[1].cuda(),
+                token_type_ids=x_batch[2].cuda(),
             )
-            test_preds.extend(predictions.detach().cpu().numpy())
-
-    test_preds = np.array(test_preds)
+            test_preds[idx * args.batch_size: (idx + 1) * args.batch_size] = (
+                predictions.detach().cpu().squeeze().numpy()
+            )
 
     output = torch.sigmoid(torch.tensor(test_preds)).numpy()
-    return output[np.argsort(ids)]
+    return output
