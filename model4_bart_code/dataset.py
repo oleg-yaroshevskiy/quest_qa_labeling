@@ -1,10 +1,6 @@
 from math import floor, ceil
 
 import torch
-from iterstrat.ml_stratifiers import (
-    MultilabelStratifiedShuffleSplit,
-    MultilabelStratifiedKFold,
-)
 from sklearn.model_selection import GroupKFold, KFold
 import numpy as np
 import pandas as pd

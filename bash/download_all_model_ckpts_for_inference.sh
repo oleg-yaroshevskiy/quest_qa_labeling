@@ -26,4 +26,9 @@ unzip roberta-base-model.zip -d input/model3_ckpt/roberta-base-model && \
 rm roberta-base-model.zip  &)
 
 (kaggle datasets download -d yaroshevskiy/quest-bart > /dev/null 2>&1 && \
-unzip quest-bart.zip -d input/model4_ckpt && rm quest-bart.zip &)
+unzip quest-bart.zip -d input/model4_ckpt && rm quest-bart.zip        && \
+kaggle datasets download -d yaroshevskiy/bart-large > /dev/null 2>&1  && \
+unzip bart-large.zip -d input/model4_ckpt && rm bart-large.zip        &)
+
+
+
