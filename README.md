@@ -64,6 +64,12 @@ Training 5 BART-large models (cross-validation): `sh bash/train5_bart_with_pseud
 ### Inference
 These are the steps to reproduce our final solution (same as our Kaggle Notebook [1st place solution](https://www.kaggle.com/ddanevskyi/1st-place-solution)):
 
+1. Make sure you've got a fresh [Kaggle API token](https://www.kaggle.com/docs/api) and run `sh bash/download_all_model_ckpt_for_inference.sh`. This will download all models needed for inference (might take an hour or so):
+ - BERT checkpoints from [this Dataset](https://www.kaggle.com/kashnitsky/google-qa-quest-labeling-bibimorph-model-1-5-folds) (the result of running steps 1, 3 above)
+ - BERT checkpoints from [this Dataset](https://www.kaggle.com/yaroshevskiy/bert-base-pretrained) (the result of running steps 2, 4 above)
+ - RoBERTa checkpoints from [this Dataset](https://www.kaggle.com/kashnitsky/google-qa-quest-labeling-bibimorph-model-3-roberta) (the result of running steps 1, 2, 5 above)
+ - BART checkpoints from [this Dataset](https://www.kaggle.com/yaroshevskiy/quest-bart) (the result of running steps 2, 6 above)
+
 1. Inference with 5 checkpoints of BERT-base-uncased finetuned with StackExchange data: `sh bash/infer1_bert_base_uncased_stackx.sh`
 2. Same for the cased BERT model:  `sh bash/infer2_bert_base_cased_stackx.sh`  
 3. Inference with with 5 checkpoints of RoBERTa: `sh bash/infer3_roberta.sh`
