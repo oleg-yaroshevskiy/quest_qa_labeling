@@ -1,0 +1,1 @@
+{"_seed": 42, "batch_accumulation": 2, "batch_size": 4, "bert_model": "roberta-base-saved", "folds": 5, "head_tail": true, "label": "roberta-stackx-base-v2-pl1kksample20k", "lr": 1e-05, "max_answer_length": 210, "max_question_length": 260, "max_sequence_length": 500, "max_title_length": 26, "model_type": "roberta", "warmup": 200}

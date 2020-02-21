@@ -5,7 +5,7 @@ input/model*
 env
 .vscode
 *.csv
-experiments/
+experiments/*/checkpoints
 .DS_Store
 .idea/
 
