@@ -1,9 +1,11 @@
 *.pt
 __pycache__/
 data/
+input/model*
 env
 .vscode
 *.csv
 experiments/
 .DS_Store
 .idea/
+

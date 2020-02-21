@@ -3,6 +3,7 @@ import argparse
 parser = argparse.ArgumentParser()
 
 parser.add_argument("--data_path", type=str, default="../input/")
+parser.add_argument("--checkpoints", type=str, default="../input/")
 parser.add_argument("--pseudo_file", type=str)
 parser.add_argument("--split_pseudo", action="store_true", default=False)
 parser.add_argument("--leak_free_pseudo", action="store_true", default=False)
@@ -73,3 +74,4 @@ args.__dict__["target_columns"] = [
     "answer_type_reason_explanation",
     "answer_well_written",
 ]
+
