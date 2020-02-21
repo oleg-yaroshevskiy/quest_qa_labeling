@@ -77,7 +77,7 @@ for fold in range(5):
     final_df.to_csv(
         os.path.join(
             "pseudo-predictions",
-            "pseudo-100k-3x-blend-no-leak-post",
+            "pseudo-100k-3x-blend-no-leak",
             "fold-{}.csv.gz".format(fold)
         ),
         index=False
