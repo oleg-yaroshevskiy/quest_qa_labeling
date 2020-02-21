@@ -23,7 +23,7 @@ model = get_model_optimizer(args)
 for fold in range(args.folds):
     print("Fold", fold)
     model.load_state_dict(
-        torch.load('/kaggle/input/bert-base-pseudo-noleak-random/fold{}/best_model.pth'.format(fold))
+        torch.load('{}/fold{}/best_model.pth'.format(args.checkpoints, fold))
     )
     test_preds = infer(args, model, test_loader, test_shape=len(test_set))
     submission[args.target_columns] += test_preds

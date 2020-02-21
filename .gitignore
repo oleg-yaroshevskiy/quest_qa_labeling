@@ -1,6 +1,7 @@
 *.pt
 __pycache__/
 data/
+input/model*
 env
 .vscode
 *.csv
