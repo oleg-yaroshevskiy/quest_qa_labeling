@@ -1,11 +1,16 @@
-import html
 from math import floor, ceil
+
+import torch
+from iterstrat.ml_stratifiers import (
+    MultilabelStratifiedShuffleSplit,
+    MultilabelStratifiedKFold,
+)
+from sklearn.model_selection import GroupKFold, KFold
 import numpy as np
 import pandas as pd
-import torch
-from sklearn.model_selection import GroupKFold, KFold
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
+import html
 
 BOS = 0
 PAD = 1
@@ -20,15 +25,15 @@ def _get_ids(tokens, tokenizer, max_seq_length):
 
 
 def _trim_input(
-        args,
-        tokenizer,
-        title,
-        question,
-        answer,
-        max_sequence_length=290,
-        t_max_len=30,
-        q_max_len=128,
-        a_max_len=128,
+    args,
+    tokenizer,
+    title,
+    question,
+    answer,
+    max_sequence_length=290,
+    t_max_len=30,
+    q_max_len=128,
+    a_max_len=128,
 ):
     # SICK THIS IS ALL SEEMS TO BE SICK
 
@@ -90,14 +95,14 @@ def _convert_to_bert_inputs(title, question, answer, tokenizer, max_sequence_len
 
 
 def compute_input_arays(
-        args,
-        df,
-        columns,
-        tokenizer,
-        max_sequence_length,
-        t_max_len=30,
-        q_max_len=128,
-        a_max_len=128,
+    args,
+    df,
+    columns,
+    tokenizer,
+    max_sequence_length,
+    t_max_len=30,
+    q_max_len=128,
+    a_max_len=128,
 ):
     input_ids, input_masks, input_segments = [], [], []
 
@@ -105,7 +110,7 @@ def compute_input_arays(
         df[col] = df[col].apply(html.unescape)
 
     for _, instance in tqdm(
-            df[columns].iterrows(), desc="Preparing dataset", total=len(df), ncols=80,
+        df[columns].iterrows(), desc="Preparing dataset", total=len(df), ncols=80,
     ):
         t, q, a = (
             instance.question_title,
@@ -180,7 +185,7 @@ class QuestDataset(torch.utils.data.Dataset):
 
 
 def cross_validation_split(
-        args, train_df, tokenizer, ignore_train=False, pseudo_df=None, split_pseudo=False,
+    args, train_df, tokenizer, ignore_train=False, pseudo_df=None, split_pseudo=False,
 ):
     kf = GroupKFold(n_splits=args.folds)
     y_train = train_df[args.target_columns].values
@@ -203,7 +208,7 @@ def cross_validation_split(
             )
 
     for fold, (train_index, val_index) in enumerate(
-            kf.split(train_df.values, groups=train_df.question_title)
+        kf.split(train_df.values, groups=train_df.question_title)
     ):
         if not ignore_train:
             train_subdf = train_df.iloc[train_index]
