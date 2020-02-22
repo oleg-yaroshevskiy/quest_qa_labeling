@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # some mag setup to go on with the Experiment
-
 ROBERTA_EXPERIMENT_DIR=2-4-roberta-base-saved-5-head_tail-roberta-stackx-base-v2-pl1kksample20k-1e-05-210-260-500-26-roberta-200
 OUTPUT_DIR=submissions/model3_roberta-base-output
  

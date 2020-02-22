@@ -3,7 +3,8 @@ import os
 import pandas as pd
 import numpy as np
 
-original_df = pd.read_csv("data/sampled_sx_so.csv.gz")
+original_df = pd.read_csv("input/sampled_sx_so.csv.gz")
+
 bert_base_dfs = [
     pd.read_csv("pseudo-predictions/base/fold-{}.csv".format(fold))
     for fold in range(5)
