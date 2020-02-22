@@ -70,7 +70,7 @@ Training 5 BART-large models (cross-validation): `sh bash/training/train5_bart_w
 
 
 ### Inference
-These are the steps to reproduce our final solution (same as our Kaggle Notebook [1st place solution](https://www.kaggle.com/ddanevskyi/1st-place-solution)). You can just run `sh bash/inference/run_inference.sh` to run the whole pipeline (from data loading to forming a submission file) but here is a breakdown:
+These are the steps to reproduce our final solution (same as our Kaggle Notebook [1st place solution](https://www.kaggle.com/ddanevskyi/1st-place-solution)). You can just run `sh bash/inference/run_inference.sh` (execution log is found in `logs/all_inference.log`, takes ~10 minutes) to run the whole pipeline (from data loading to forming a submission file). Here is a breakdown of all steps:
 
 1. Make sure you've got a fresh [Kaggle API token](https://www.kaggle.com/docs/api) and run `sh bash/download_all_model_ckpts_for_inference.sh`. This will download all models needed for inference (about 18 Gb, might take from several minutes to more that an hour depending on Internet speed):
  - BERT checkpoints from [this Dataset](https://www.kaggle.com/kashnitsky/google-qa-quest-labeling-bibimorph-model-1-5-folds) (the result of running steps 1, 3 above)
@@ -80,7 +80,9 @@ These are the steps to reproduce our final solution (same as our Kaggle Notebook
 
 2. Inference with 5 checkpoints of BERT-base-cased finetuned with StackExchange data: `sh bash/inference/model1_inference.sh`
 3. Same for the BERT model with pseudo-labels:  `sh bash/inference/model2_inference.sh`
-4. Inference with with 5 checkpoints of RoBERTa: `sh bash/inference/model3_inference.sh`
-5. Inference with with 5 checkpoints of BART: `sh bash/inference/model4_inference.sh`
+4. Inference with with 5 checkpoints of RoBERTa finetuned with StackExchange data, with pseudo-labels: `sh bash/inference/model3_inference.sh`
+5. Inference with with 5 checkpoints of BART with pseudo-labels: `sh bash/inference/model4_inference.sh`
 6. Once inference is done, final steps include blending, and postprocessing model predictions: `sh bash/blending_n_postprocessing.sh` 
+
+Final submission `submissions/submission.csv` scores 0.46893 on the public competition [leaderboard](https://www.kaggle.com/c/google-quest-challenge/leaderboard).
 
