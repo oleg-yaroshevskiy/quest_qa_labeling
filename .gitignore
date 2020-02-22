@@ -3,8 +3,8 @@ __pycache__/
 data/
 input/model*
 env
+input/google-quest-challenge/*.csv
 .vscode
-*.csv
 experiments/*/checkpoints
 .DS_Store
 .idea/
