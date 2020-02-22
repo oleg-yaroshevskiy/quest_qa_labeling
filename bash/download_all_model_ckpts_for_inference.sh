@@ -2,7 +2,7 @@
 
 # competition data
 (kaggle competitions download -c google-quest-challenge && \
-unzip google-quest-challenge.zip -d input/google-quest-challenge &)
+unzip train.csv.zip; rm train.csv.zip; mv *.csv input/google-quest-challenge &)
 
 # model 1
 (kaggle datasets download -d kashnitsky/google-qa-quest-labeling-bibimorph-model-1-5-folds > /dev/null 2>&1 && \
@@ -31,3 +31,4 @@ rm roberta-base-model.zip  &)
 unzip quest-bart.zip -d input/model4_ckpt && rm quest-bart.zip        && \
 kaggle datasets download -d yaroshevskiy/bart-large > /dev/null 2>&1  && \
 unzip bart-large.zip -d input/model4_ckpt && rm bart-large.zip        &)
+

@@ -8,4 +8,4 @@ input/google-quest-challenge/*.csv
 experiments/*/checkpoints
 .DS_Store
 .idea/
-
+mag/

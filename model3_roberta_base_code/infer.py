@@ -63,7 +63,8 @@ test_loader = DataLoader(
     test_set, batch_size=original_args.batch_size, shuffle=False
 )
 
-os.makedirs(args.output_dir)
+if not os.path.exists(args.output_dir):
+    os.makedirs(args.output_dir)
 
 for fold in range(config.folds):
 
