@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python pseudo_label_models/bert-base-pretrained/run.py   \
+python step2_pseudo_labeling/bert-base-pretrained/run.py \
   --epochs=3                                              \
   --max_sequence_length=500                                \
   --max_title_length=26                                     \
