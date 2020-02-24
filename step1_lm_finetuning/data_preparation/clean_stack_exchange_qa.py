@@ -120,9 +120,6 @@ def process(all_questions, all_answers, path_to_save, detect_lang=False,
     qa_features.to_csv(path_to_save / 'qa_stackexchange_cleaned.tsv',
                        index=False)
 
-    qa_features[targets].to_hdf(path_to_save / 'qa_stackexchange_cleaned_targets.h5',
-                                'targets')
-
 
 def select_answers(all_answers, max_answers_per_question=2):
     answer_ids = all_answers[['Id', 'ParentId', 'is_answer_accepted']]

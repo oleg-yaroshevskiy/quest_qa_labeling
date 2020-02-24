@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 import torch
 from callbacks import CSVParamLogger
-from data import QuestDataset
 from poutyne.framework import Model, ModelCheckpoint
 from poutyne.framework.callbacks import Callback
 from poutyne.framework.metrics import EpochMetric
@@ -21,6 +20,8 @@ from transformers import AdamW
 from transformers import BertTokenizer
 from utils import torch_to_numpy
 
+from data import QuestDataset
+
 TARGETS = ['question_score', 'question_views', 'question_favs',
            'answer_score', 'is_answer_accepted']
 
@@ -28,20 +29,20 @@ TARGETS = ['question_score', 'question_views', 'question_favs',
 PATH_TO_DATA = Path('input')
 PATH_TO_STACKX_CONFIG = PATH_TO_DATA / 'stackx'
 
-LEN_TO_SAMPLE = 50 # for a toy example, change to 600000 for real LM training
+# for a toy example, change to 600000 for real LM training
+LEN_TO_SAMPLE = 50
 SEED = 17
 BATCH_SIZE = 1
 NUM_WORKERS = 8
-N_EPOCHS = 3 # change to some 20, need to track loss as well
+# change to some 20, need to track loss as well
+N_EPOCHS = 3
 LRATE = 1e-5
 BATCHES_PER_STEP = 32
 
+# the trained LM will be saved here
 checkpoint_dir = PATH_TO_DATA / 'stackx-large-cased'
-stackx_data = pd.read_csv(PATH_TO_DATA / 'qa_stackexchange_cleaned.tsv', nrows=LEN_TO_SAMPLE)
-
-# subsampling
-# stackx_data = stackx_data.sample(n=LEN_TO_SAMPLE,
-#                                  random_state=SEED)
+stackx_data = pd.read_csv(PATH_TO_DATA / 'qa_stackexchange_cleaned.tsv',
+                          nrows=LEN_TO_SAMPLE)
 
 stackx_data['title'] = stackx_data['title'].astype(str)
 stackx_data['body'] = stackx_data['body'].astype(str)
@@ -52,7 +53,8 @@ class QuestMLMDataset(QuestDataset):
     def __init__(self, data_df, tokenizer, max_seg_length=512, answer_ratio=0.5,
                  use_title=True, use_body=True, use_answer=True,
                  title_col='title', body_col='body', answer_col='answer',
-                 mlm_probability=0.15, non_masked_idx=-1, padding_idx=0, sop_prob=0.5, target_cols=TARGETS):
+                 mlm_probability=0.15, non_masked_idx=-1, padding_idx=0,
+                 sop_prob=0.5, target_cols=TARGETS):
         super(QuestMLMDataset, self).__init__(data_df=data_df, tokenizer=tokenizer, max_seg_length=max_seg_length,
                                               target_cols=target_cols, answer_ratio=answer_ratio, use_title=use_title,
                                               use_body=use_body, use_answer=use_answer, title_col=title_col,
@@ -117,12 +119,15 @@ for host in trange:
 encoded = pd.concat(encoded, sort=False).reindex(stackx_data.index)
 stackx_data[encoded.columns] = encoded
 
-train_df, test_df = train_test_split(stackx_data, test_size=0.1,
-                                     random_state=SEED)
+train_df, test_df = train_test_split(
+    stackx_data,
+    test_size=0.1,
+    random_state=SEED)
 
-tokenizer = BertTokenizer(PATH_TO_STACKX_CONFIG / 'stackx-large-cased-vocab.txt',
-                          do_basic_tokenize=True,
-                          do_lower_case=False)
+tokenizer = BertTokenizer(
+    PATH_TO_STACKX_CONFIG / 'stackx-large-cased-vocab.txt',
+    do_basic_tokenize=True,
+    do_lower_case=False)
 
 train_dataset = QuestMLMDataset(train_df, tokenizer, target_cols=TARGETS)
 val_dataset = QuestMLMDataset(test_df, tokenizer, target_cols=TARGETS)

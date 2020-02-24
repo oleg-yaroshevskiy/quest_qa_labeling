@@ -8,7 +8,6 @@ The solution is also described in [this post](https://www.kaggle.com/c/google-qu
 
 [The archive]() contains the following files:
 
-- sampled\_sx_so.csv.gz
 - ...
 
 ## Hardware
@@ -56,16 +55,15 @@ For this purpose, we download and process StackExchange dumps, to reproduce this
 
 See comments in these files. Also, you can find 2 corresponding Jupyter notebooks in the same folder, just for demonstration. 
 
-Output is written to the `input` folder:
+Output is written to the `input/qa_stackexchange_cleaned.tsv` file.
 
- - `qa_stackexchange_cleaned.tsv`
- - `qa_stackexchange_cleaned_targets.h5`
-
-These files are needed for the next step.
+This files is needed for the next step.
 
 #### 1b. Fine-tuning BERT language model with StackExchange data:
 
-TODO `sh bash/training/train1b_train_bert_stackx_lang_model.sh`
+`sh bash/training/train1b_train_bert_stackx_lang_model.sh` - this runs fine-tuning BERT language model with StackExchange data from the previous step (`input/qa_stackexchange_cleaned.tsv`). 
+
+This script writes model checkpoints and training logs to `input/stackx-large-cased`, the following two BERT models use this checkpoint. 
 
 ### 2. Generating pseudo-labels
 TODO
