@@ -117,10 +117,8 @@ def process(all_questions, all_answers, path_to_save, detect_lang=False,
     qa_features[targets] = qa_features[targets] / qa_features[targets].std()
 
     # save results
-    qa_features[['id', 'host', 'question_username', 'answer_username',
-                 'title', 'body', 'answer']] \
-        .to_csv(path_to_save / 'qa_stackexchange_cleaned.tsv',
-                index=False)
+    qa_features.to_csv(path_to_save / 'qa_stackexchange_cleaned.tsv',
+                       index=False)
 
     qa_features[targets].to_hdf(path_to_save / 'qa_stackexchange_cleaned_targets.h5',
                                 'targets')
@@ -149,7 +147,6 @@ def select_answers(all_answers, max_answers_per_question=2):
 
 
 if __name__ == '__main__':
-
     PATH_TO_SX_PARSED = Path('input/sx_dump/stackexchange_parsed')
     PATH_TO_SAVE_RESULT = Path('input')
 

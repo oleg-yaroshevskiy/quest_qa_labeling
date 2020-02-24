@@ -136,11 +136,11 @@ dmypy.json
 
 # Custom
 *.pt
-data/
 input/model*
 input/google-quest-challenge/*.csv
 !input/google-quest-challenge/*toy.csv
 input/lid.176.bin
+input/leak-free-pseudo-labels-100k-stackx/
 input/sx_dump/
 experiments/*/checkpoints
 .DS_Store
