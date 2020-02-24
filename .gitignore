@@ -142,6 +142,9 @@ input/google-quest-challenge/*.csv
 input/lid.176.bin
 input/leak-free-pseudo-labels-100k-stackx/
 input/sx_dump/
+input/stackx-large-cased/
+packages/fairseq-hacked/examples/speech_recognition/data/
+packages/fairseq-hacked/fairseq/data/
 experiments/*/checkpoints
 .DS_Store
 .idea/

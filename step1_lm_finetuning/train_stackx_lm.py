@@ -2,7 +2,6 @@ import os
 from copy import deepcopy
 from multiprocessing import cpu_count
 from pathlib import Path
-
 import numpy as np
 import pandas as pd
 import torch
@@ -17,7 +16,7 @@ from sklearn.model_selection import train_test_split
 from torch import nn
 from torch.utils.data import DataLoader
 from torch.utils.data.sampler import RandomSampler
-from tqdm.notebook import tqdm
+from tqdm import tqdm
 from transformers import AdamW
 from transformers import BertTokenizer
 from utils import torch_to_numpy
@@ -29,11 +28,11 @@ TARGETS = ['question_score', 'question_views', 'question_favs',
 PATH_TO_DATA = Path('input')
 PATH_TO_STACKX_CONFIG = PATH_TO_DATA / 'stackx'
 
-LEN_TO_SAMPLE = 60#000
+LEN_TO_SAMPLE = 50 # for a toy example, change to 600000 for real LM training
 SEED = 17
 BATCH_SIZE = 1
 NUM_WORKERS = 8
-N_EPOCHS = 20
+N_EPOCHS = 3 # change to some 20, need to track loss as well
 LRATE = 1e-5
 BATCHES_PER_STEP = 32
 
@@ -44,15 +43,15 @@ stackx_data = pd.read_csv(PATH_TO_DATA / 'qa_stackexchange_cleaned.tsv', nrows=L
 # stackx_data = stackx_data.sample(n=LEN_TO_SAMPLE,
 #                                  random_state=SEED)
 
-stackx_data['question_title'] = stackx_data['question_title'].astype(str)
-stackx_data['question_body'] = stackx_data['question_body'].astype(str)
+stackx_data['title'] = stackx_data['title'].astype(str)
+stackx_data['body'] = stackx_data['body'].astype(str)
 stackx_data['answer'] = stackx_data['answer'].astype(str)
 
 
 class QuestMLMDataset(QuestDataset):
     def __init__(self, data_df, tokenizer, max_seg_length=512, answer_ratio=0.5,
                  use_title=True, use_body=True, use_answer=True,
-                 title_col='question_title', body_col='question_body', answer_col='answer',
+                 title_col='title', body_col='body', answer_col='answer',
                  mlm_probability=0.15, non_masked_idx=-1, padding_idx=0, sop_prob=0.5, target_cols=TARGETS):
         super(QuestMLMDataset, self).__init__(data_df=data_df, tokenizer=tokenizer, max_seg_length=max_seg_length,
                                               target_cols=target_cols, answer_ratio=answer_ratio, use_title=use_title,
@@ -111,8 +110,7 @@ for host in trange:
     host_mask = stackx_data['host'] == host
     trange.set_description(str(host))
     host_labels = deepcopy(stackx_data[host_mask][TARGETS])
-    for col in ['question_score', 'question_view_count', 'question_favorite_count',
-                'answer_score', 'answers_count']:
+    for col in ['question_score', 'question_views', 'question_favs', 'answer_score']:
         host_labels[col] = rankdata(stackx_data[host_mask][col]) / host_mask.sum()
     encoded.append(host_labels)
 
@@ -121,13 +119,8 @@ stackx_data[encoded.columns] = encoded
 
 train_df, test_df = train_test_split(stackx_data, test_size=0.1,
                                      random_state=SEED)
-#
-# aug_tokenizer = BertRandomTokenizer(stackx_large_path / 'stackx-large-cased-vocab.txt',
-#                                     lower_case_prob=1.,
-#                                     basic_tokenize_prob=1.,
-#                                     piece_split_prob=0.005)
 
-tokenizer = BertTokenizer(stackx_large_path / 'stackx-large-cased-vocab.txt',
+tokenizer = BertTokenizer(PATH_TO_STACKX_CONFIG / 'stackx-large-cased-vocab.txt',
                           do_basic_tokenize=True,
                           do_lower_case=False)
 
