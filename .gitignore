@@ -139,6 +139,7 @@ dmypy.json
 data/
 input/model*
 input/google-quest-challenge/*.csv
+!input/google-quest-challenge/*toy.csv
 input/lid.176.bin
 input/sx_dump/
 experiments/*/checkpoints

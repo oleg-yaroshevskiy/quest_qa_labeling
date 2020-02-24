@@ -1,0 +1,50 @@
+qa_id,question_title,question_body,question_user_name,question_user_page,answer,answer_user_name,answer_user_page,url,category,host
+39,Will leaving corpses lying around upset my prisoners?,"I see questions/information online about how to get rid of corpses but I'm not sure what the consequences to having them lying around are.
+
+I know that I can use a morgue to store them and that they will eventually be taken away in a hearse. However, I've always just left them lying around. This doesn't seem to have any obvious consequences.
+
+Do they upset prisoners or staff (e.g. increasing the danger level beyond what death normally does)? Make them sick? Slow down pathing? Is this something that's not implemented yet or is leaving dead bodies all over the place meant to be completely fine?
+
+The wiki's pages for Death and Morgue don't shed any light on this. All I'm finding is the how of getting rid of corpses/glitches related to it but not why it matters in the first place. All I've seen that's related is that apparently prisoners can loot guard corpses for keys, but there's no obvious consequences for prisoner corpses which are what I tend to end up with.
+
+So why not just leave them in the corridors?
+",Dylan,https://gaming.stackexchange.com/users/64471,"There is no consequence for leaving corpses anywhere. All it does if leave a mark of failure in your path of making a fully functional prison.
+",Nelson868,https://gaming.stackexchange.com/users/97324,http://gaming.stackexchange.com/questions/197934/will-leaving-corpses-lying-around-upset-my-prisoners,CULTURE,gaming.stackexchange.com
+46,Url link to feature image in the portfolio,"I am new to Wordpress. i have issue with Feature image. just i need to add URL to feature image(when we click on that feature image , it should redirect to that particular URL).
+
+also is it possible to give URL to Title of the Portfolio categories page which i used in normal page.
+
+
+
+This is Portfolio , i have used in the ""mypage"" . so in that"" mypage"" when we click on that image and title it should be redirect to the link (should able to give individual link)
+
+
+
+Any help would be appreciated. Thanks.
+",Anu,https://wordpress.stackexchange.com/users/72927,"I think it is possible with custom fields.
+
+Add a custom fields, for example, named link. Put the link into the value field. Then you will be able to access it something like that:
+
+&lt;a href=""&lt;?php echo get_post_meta( get_the_ID(), 'link', true ); ?&gt;""&gt;
+    &lt;?php the_post_thumbnail(); ?&gt;
+&lt;/a&gt;
+
+",Irina,https://wordpress.stackexchange.com/users/27233,http://wordpress.stackexchange.com/questions/187970/url-link-to-feature-image-in-the-portfolio,TECHNOLOGY,wordpress.stackexchange.com
+70,"Is accuracy, recoil or bullet spread affected by enemy hits?","To experiment I started a bot game, toggled invincibility and let the bots attack me. There were two clear hit effects: a major one that tilts view up a lot and sideways and a minor one that only tilts it up.
+
+So I tried releasing single shots exactly at the tilts: during a major one a single bullet ended up here (slightly covered by text). Actually the crosshair never moves that high so there tends to be a good amount of additional upward deviation of single shots fired.
+
+But when single-shooting during the minor tilts the marks seemed to end up exactly at the location of the crosshair.
+
+Now, when switching to spraying while being shot this pattern emerged. This was mostly caused by the minor tilts and, I guess, ""standard recoil"". Occasionally a major tilt caused a single bullet to lie severly outside of the depicted cone.
+",Konsta,https://gaming.stackexchange.com/users/37545,"You do not have armour in the screenshots. This suggests you are being affected by a large amount of aim punch.
+",Damon Smithies,https://gaming.stackexchange.com/users/70641,http://gaming.stackexchange.com/questions/215490/is-accuracy-recoil-or-bullet-spread-affected-by-enemy-hits,CULTURE,gaming.stackexchange.com
+132,Suddenly got an I/O error from my external HDD,"I have used my Raspberry Pi as a torrent-server for quite a while now. My Western Digital ""My Passport-Ultra"" external HDD and Transmission running on RPi has worked flawlessly for more than a year. Suddenly last week my setup started producing I/O errors and now when I SSH into my RPi I cant find the HDD folder. 
+
+I have not changed anything with my RPi or the torrent-server setup since I set it up.
+
+Can someone help me find a solution to my problem?
+
+EDIT:
+
+The external HHD works fine the first 20 minutes or so, and then Transmisson gives me ""Error: Input/output error"".

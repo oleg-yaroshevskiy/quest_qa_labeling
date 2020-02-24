@@ -1,0 +1,50 @@
+qa_id,question_title,question_body,question_user_name,question_user_page,answer,answer_user_name,answer_user_page,url,category,host,question_asker_intent_understanding,question_body_critical,question_conversational,question_expect_short_answer,question_fact_seeking,question_has_commonly_accepted_answer,question_interestingness_others,question_interestingness_self,question_multi_intent,question_not_really_a_question,question_opinion_seeking,question_type_choice,question_type_compare,question_type_consequence,question_type_definition,question_type_entity,question_type_instructions,question_type_procedure,question_type_reason_explanation,question_type_spelling,question_well_written,answer_helpful,answer_level_of_information,answer_plausible,answer_relevance,answer_satisfaction,answer_type_instructions,answer_type_procedure,answer_type_reason_explanation,answer_well_written
+0,What am I losing when using extension tubes instead of a macro lens?,"After playing around with macro photography on-the-cheap (read: reversed lens, rev. lens mounted on a straight lens, passive extension tubes), I would like to get further with this. The problems with the techniques I used is that focus is manual and aperture control is problematic at best. This limited my setup to still subjects (read: dead insects) Now, as spring is approaching, I want to be able to shoot live insects. I believe that for this, autofocus and settable aperture will be of great help.
+
+So, one obvious but expensive option is a macro lens (say, EF 100mm Macro) However, I am not really interested in yet another prime lens. An alternative is the electrical extension tubes.
+
+Except for maximum focusing distance, what am I losing when using tubes (coupled with a fine lens, say EF70-200/2.8) instead of a macro lens?
+",ysap,https://photo.stackexchange.com/users/1024,"I just got extension tubes, so here's the skinny.
+
+
+  ...what am I losing when using tubes...?
+
+
+A very considerable amount of light!  Increasing that distance from the end of the lens to the sensor can cut your light several stops.  Combined with the fact that you'll usually shoot stopped down - expect to need to increase your ISO considerably.
+
+The fact the macro's are usually considered very very sharp, although I believe that 70-200mm 2.8 is supposed to be quite sharp.
+
+The ultra low distortion typical of many macros.
+
+I wouldn't worry too much about the bokeh since the DOF will still be quite limited.
+
+Coupled on my 50mm, a full 60mm'ish extension tube results in a DOF of about a couple inches in front of the lens.  On my 70-300, its probably around 2-3 feet in front of the lens to about a foot in front of the lens.
+",rfusca,https://photo.stackexchange.com/users/1917,http://photo.stackexchange.com/questions/9169/what-am-i-losing-when-using-extension-tubes-instead-of-a-macro-lens,LIFE_ARTS,photo.stackexchange.com,1.0,0.3333333333333333,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,1.0,0.6666666666666666,1.0,1.0,0.8,1.0,0.0,0.0,1.0
+1,What is the distinction between a city and a sprawl/metroplex... between downtown and a commercial district?,"I am trying to understand what kinds of places the spam values on p 231 refer to in the 5th Edition main book for Shadowrun.
+
+Per p 15, a sprawl is a plex, a plex is a ""metropolitan complex, short for metroplex"". Per Google a metroplex is "" a very large metropolitan area, especially one that is an aggregation of two or more cities"".  A city downtown and sprawl downtown would tend to have similar densities, but for some reason the sprawl (which includes suburbs?) has a higher spam zone noise rating (p 231).  Similarly, I'd think of a downtown as being more dense and noisy (e.g. Office buildings and street vendors) than a commercial district, e.g. an outdoor mall.  The noise ratings make me think that I am thinking about this incorrectly. What is a better way of thinking of them?
+",russellpierce,https://rpg.stackexchange.com/users/8774,"It might be helpful to look into the definition of spam zone:
+
+(p.216) spam zone: An area flooded with invasive and/or viral AR advertising, causing noise.
+
+Because a metroplex has so many marketing targets, it seems a safe assumption that marketers would drown the plex with spam. Spam from the less dense areas would bleed into the urban cores. A smaller city with less urban/suburban territory surrounding it ostensibly wouldn't have as much spam.
+",Erik Schmidt,https://rpg.stackexchange.com/users/1871,http://rpg.stackexchange.com/questions/47820/what-is-the-distinction-between-a-city-and-a-sprawl-metroplex-between-downtow,CULTURE,rpg.stackexchange.com,1.0,1.0,0.0,0.5,1.0,1.0,0.4444444444444444,0.4444444444444444,0.6666666666666666,0.0,0.0,0.6666666666666666,0.6666666666666666,0.0,0.3333333333333333,0.0,0.0,0.0,0.3333333333333333,0.0,0.8888888888888888,0.8888888888888888,0.5555555555555556,0.8888888888888888,0.8888888888888888,0.6666666666666667,0.0,0.0,0.6666666666666666,0.8888888888888888
+2,Maximum protusion length for through-hole component pins,"I'm working on a PCB that has through-hole components on both sides of the board. The ""top"" side of the board is mounted flush to a Delrin plastic block (the only top-side component is a gas sensor that is fed air samples through hose fittings in the plastic block).
+
+The flush mounting means that I have to add grooves to the plastic block to accommodate the soldered pins of the bottom-side components. Assuming a standard 0.062"" thickness FR4 board, how deep do I need to make the grooves in the plastic block? The only thing I could find is this NASA workmanship standard that states 0.5mm to 2.29mm, but I'm not sure if that will always hold true.
+",Joe Baker,https://electronics.stackexchange.com/users/10157,"Do you even need grooves?  We make several products using through-hole components that are intended to mount using VHB double-sided foam tape.  The boards are 0.062"" thick double-sided with PTH and we use a table-top vertical belt sander to bring the component leads almost flush with the solder mask.  In other words, the solder mask isn't touched by the sand paper but the leads are all sanded flat and sitting just proud of the solder mask.
+
+This works well for small boards.
+
+For what it's worth, there are commercial machines available that use a rotary saw blade to do the same thing.  The board is held horizontal in a mounting / clamping system on the base and the saw motor is vertical on a sliding X-Y mechanism.  The saw blade simply cuts all of the leads almost flush with the board surface.  
+
+This system is suited for boards of all sizes but especially for those boards larger than can be handled easily to be sanded with the belt sander.
+
+Also note that these techniques are suitable only for PC boards with plated-through holes.  
+",Dwayne Reid,https://electronics.stackexchange.com/users/64754,http://electronics.stackexchange.com/questions/154225/maximum-protusion-length-for-through-hole-component-pins,SCIENCE,electronics.stackexchange.com,0.8888888888888888,0.6666666666666666,0.0,1.0,1.0,1.0,0.6666666666666666,0.4444444444444444,0.3333333333333333,0.0,0.3333333333333333,0.0,0.0,0.0,0.0,0.0,1.0,0.3333333333333333,0.3333333333333333,0.0,0.7777777777777778,0.7777777777777778,0.5555555555555556,1.0,1.0,0.6666666666666667,0.0,0.3333333333333333,1.0,0.8888888888888888
+3,Can an affidavit be used in Beit Din?,"An affidavit, from what i understand, is basically a signed document given by a witness to be used as evidence in a trial, without the witness themselves needing to take a stand.
+
+Can an affidavit be used in Beit Din? Or must witnesses take the stand in person for their testimony to count?
+
+(In case i'm misunderstanding what exactly an affidavit is, simply treat it as a signed document by a witness with their testimony.)
+",Scimonster,https://judaism.stackexchange.com/users/5151,"Sending an ""affidavit"" it is a dispute between Rashi and Rabbeinu Tam.
