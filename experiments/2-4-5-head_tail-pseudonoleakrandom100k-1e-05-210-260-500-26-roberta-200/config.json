@@ -1,0 +1,17 @@
+{
+    "_bert_model": "input/roberta-base",
+    "_pseudo_file": "pseudo-predictions/pseudo-100k-3x-blend-no-leak/fold-{}.csv.gz",
+    "_seed": 42,
+    "batch_accumulation": 2,
+    "batch_size": 4,
+    "folds": 5,
+    "head_tail": true,
+    "label": "pseudonoleakrandom100k",
+    "lr": 1e-05,
+    "max_answer_length": 210,
+    "max_question_length": 260,
+    "max_sequence_length": 500,
+    "max_title_length": 26,
+    "model_type": "roberta",
+    "warmup": 200
+}
