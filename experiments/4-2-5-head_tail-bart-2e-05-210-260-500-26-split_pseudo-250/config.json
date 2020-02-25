@@ -1,0 +1,17 @@
+{
+    "_bert_model": "input/model4_ckpt/bart.large/",
+    "_pseudo_file": "pseudo-predictions/pseudo-100k-3x-blend-no-leak/fold-{}.csv.gz",
+    "_seed": 42,
+    "batch_accumulation": 4,
+    "batch_size": 2,
+    "folds": 5,
+    "head_tail": true,
+    "label": "bart",
+    "lr": 2e-05,
+    "max_answer_length": 210,
+    "max_question_length": 260,
+    "max_sequence_length": 500,
+    "max_title_length": 26,
+    "split_pseudo": true,
+    "warmup": 250
+}
