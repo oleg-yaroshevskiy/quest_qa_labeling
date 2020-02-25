@@ -24,7 +24,7 @@ warnings.filterwarnings("ignore")
 
 config = {
     "_seed": args.seed,
-    "bert_model": args.bert_model.replace("-", "_"),
+    "_bert_model": args.bert_model,
     "batch_accumulation": args.batch_accumulation,
     "batch_size": args.batch_size,
     "warmup": args.warmup,
@@ -56,15 +56,27 @@ def seed_everything(seed: int):
 logging.getLogger("transformers").setLevel(logging.ERROR)
 seed_everything(args.seed)
 # load the data
-train_df = pd.read_csv(os.path.join(args.data_path, "train.csv"))
-test_df = pd.read_csv(os.path.join(args.data_path, "test.csv"))
-submission = pd.read_csv(os.path.join(args.data_path, "sample_submission.csv"))
+train_df = pd.read_csv(os.path.join(args.data_path,
+                                    "train_toy.csv" if args.toy in ["True", "toy"]
+                                    else "train.csv"
+                                    )
+                       )
+test_df = pd.read_csv(os.path.join(args.data_path,
+                                   "test_toy.csv" if args.toy in ["True", "toy"]
+                                   else "test.csv"
+                                   )
+                      )
+submission = pd.read_csv(os.path.join(args.data_path,
+                                      "sample_submission_toy.csv" if args.toy in ["True", "toy"]
+                                      else "sample_submission.csv"
+                                      )
+                         )
 
 if args.model_type == 'bert':
     tokenizer = BertTokenizer.from_pretrained(args.bert_model,
                                               do_lower_case=("uncased" in args.bert_model))
 elif args.model_type == 'roberta':
-    tokenizer = RobertaTokenizer.from_pretrained(args.bert_model)
+    tokenizer = RobertaTokenizer.from_pretrained("roberta-base")
 
 test_set = get_test_set(args, test_df, tokenizer)
 test_loader = DataLoader(test_set, batch_size=args.batch_size, shuffle=False)

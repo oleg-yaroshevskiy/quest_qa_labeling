@@ -3,6 +3,8 @@ import argparse
 parser = argparse.ArgumentParser()
 
 parser.add_argument("--data_path", type=str, default="../input/")
+parser.add_argument("--toy", type=str, default="False",
+                    help="Whether to run with a toy example")
 parser.add_argument("--pseudo_file", type=str)
 parser.add_argument("--n_pseudo", type=int)
 parser.add_argument("--seed", type=int, default=42)
