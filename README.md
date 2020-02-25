@@ -21,15 +21,15 @@ The solution is also described in [this post](https://www.kaggle.com/c/google-qu
 - cuDNN 7.5.0
 - NVIDIA drivers v. 418.67
 
-We run all experiments in a Conda environment and provide a ful list of required packages `requirements_full.txt`  To do the same, run:
+We run all experiments in a Conda environment and provide a full list of required packages `requirements_full.txt`  To do the same, run:
 
- - `conda create -n qa_ques_env python=3.6.6`
- - `conda activate qa_ques_env ` 
+ - `conda create -n qa_quest_env python=3.6.6`
+ - `conda activate qa_quest_env ` 
  - `pip install -r requirements_full.txt`
 
-However, there are a lot of packages listed there which are not much relevant to this project. A minimal list of requirements is specified in `requirements_minimal.txt` - this was formed with the `pipreqs` utility which crawls project source code and lists all required packages. So you can run `pip install -r requirements_minimal.txt` minimal and then install missing packages on the go (if any).
+However, there are a lot of packages listed there which are not much relevant to this project. A minimal list of requirements is specified in `requirements_minimal.txt` which was formed with the `pipreqs` utility. This handy utility crawls project source code and lists all required packages. So you can run `pip install -r requirements_minimal.txt` and then install missing packages on the go (if any).
 
-Apart from pip-installable packages, we use a custom lightweight library called [mag](https://github.com/ex4sperans/mag) to keep track of experiments.
+Apart from pip-installable packages, we use a custom lightweight library called [mag](https://github.com/ex4sperans/mag) to keep track of experiments. Also our installation of the `fairseq` library is a bit different. These two can be installed by running `sh bash/setup.sh`
 
 
 ## Model training 

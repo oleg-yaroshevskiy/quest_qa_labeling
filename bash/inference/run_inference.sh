@@ -1,7 +1,7 @@
 #!/bin/bash
 
 (echo "Downloading all model checkpoints"                                     && \
-sh bash/download_all_model_ckpts_for_inference.sh                            && \
+sh bash/download_all_model_ckpts_for_inference.sh                             && \
 
 echo "Inference with the 1st model (BERT-base-cased)"                         && \
 sh bash/inference/model1_inference.sh                                         && \
