@@ -31,7 +31,7 @@ We run all experiments in a Conda environment and provide a full list of require
 
 However, there are a lot of packages listed there which are not much relevant to this project. A minimal list of requirements is specified in `requirements_minimal.txt` which was formed with the `pipreqs` utility. This handy utility crawls project source code and lists all required packages. So you can run `pip install -r requirements_minimal.txt` and then install missing packages on the go (if any).
 
-Apart from pip-installable packages, we use a custom lightweight library called [mag](https://github.com/ex4sperans/mag) to keep track of experiments. Also our installation of the `fairseq` library is a bit different (actualy, it's hacked for our needs). These two can be installed by running `sh bash/setup.sh`
+Apart from pip-installable packages, we use a custom lightweight library called [mag](https://github.com/ex4sperans/mag) to keep track of experiments. Also our installation of the `fairseq` library is a bit different (actually, it's hacked for our needs). These two can be installed by running `sh bash/setup.sh`
 
 
 ## Model training
@@ -61,7 +61,7 @@ Output is written to the `input/qa_stackexchange_cleaned.csv` file. This files i
 
 #### 1b. Fine-tuning BERT language model with StackExchange data:
 
-`sh bash/training/train1b_train_bert_stackx_lang_model.sh` – this runs BERT language model fine-tuningwith StackExchange data from the previous step (`input/qa_stackexchange_cleaned.csv`).
+`sh bash/training/train1b_train_bert_stackx_lang_model.sh` – this runs BERT language model fine-tuning with StackExchange data from the previous step (`input/qa_stackexchange_cleaned.csv`).
 
 This script writes model checkpoints and training logs to `input/stackx-base-cased`, the following two BERT models use this checkpoint. The checkpoint is also shared as `stackx-base-cased.tar.gz` in the [archive](https://tinyurl.com/t9bjvlm). To go on reproducing results, it's better to unzip contents of `stackx-base-cased.tar.gz` into `input/stackx-base-cased`.
 
@@ -81,7 +81,7 @@ Training 5 BERT-base models (cross-validation): `sh bash/training/train4_bert_ba
 
 Download RoBERTa-base checkpoint by running `sh bash/training/load_roberta_weights.sh`
 
-Training 5 RoBERTa-base models (cross-validation): `sh bash/training/train5_roberta_with_pseudo_labels.sh`. The result is writen to `experiments/2-4-5-head_tail-pseudonoleakrandom100k-1e-05-210-260-500-26-roberta-200` and can also be found in [this Kaggle Dataset](https://www.kaggle.com/ddanevskyi/roberta-base-model) Also, [here](https://www.kaggle.com/dmitriyab/roberta-stackx-base-pl20k) 5 model checkpoints (one per each fold) are stored.
+Training 5 RoBERTa-base models (cross-validation): `sh bash/training/train5_roberta_with_pseudo_labels.sh`. The result is written to `experiments/2-4-5-head_tail-pseudonoleakrandom100k-1e-05-210-260-500-26-roberta-200` and can also be found in [this Kaggle Dataset](https://www.kaggle.com/ddanevskyi/roberta-base-model) Also, [here](https://www.kaggle.com/dmitriyab/roberta-stackx-base-pl20k) 5 model checkpoints (one per each fold) are stored.
 
 
 ### 6. BART-large with pseudo-labels
