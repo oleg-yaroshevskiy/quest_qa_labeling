@@ -1,15 +1,9 @@
 from math import floor, ceil
 
 import torch
-from iterstrat.ml_stratifiers import (
-    MultilabelStratifiedShuffleSplit,
-    MultilabelStratifiedKFold,
-)
 from torch.utils.data.dataloader import default_collate
-from sklearn.model_selection import GroupKFold, KFold
+from sklearn.model_selection import GroupKFold
 import numpy as np
-import pandas as pd
-from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 
 

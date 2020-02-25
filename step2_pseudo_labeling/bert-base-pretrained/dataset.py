@@ -1,15 +1,9 @@
 from math import floor, ceil
 
-import torch
-from iterstrat.ml_stratifiers import (
-    MultilabelStratifiedShuffleSplit,
-    MultilabelStratifiedKFold,
-)
-from torch.utils.data.dataloader import default_collate
-from sklearn.model_selection import GroupKFold, KFold
 import numpy as np
-import pandas as pd
-from torch.utils.data import DataLoader, Dataset
+import torch
+from sklearn.model_selection import GroupKFold
+from torch.utils.data.dataloader import default_collate
 from tqdm import tqdm
 
 
@@ -17,7 +11,7 @@ def _get_masks(tokens, max_seq_length):
     """Mask for padding"""
     if len(tokens) > max_seq_length:
         raise IndexError("Token length more than max seq length!")
-    return [1] * len(tokens) # + [0] * (max_seq_length - len(tokens))
+    return [1] * len(tokens)  # + [0] * (max_seq_length - len(tokens))
 
 
 def _get_segments(tokens, max_seq_length):
@@ -37,27 +31,27 @@ def _get_segments(tokens, max_seq_length):
                 first_sep = False
             else:
                 current_segment_id = 1
-    return segments # + [0] * (max_seq_length - len(tokens))
+    return segments  # + [0] * (max_seq_length - len(tokens))
 
 
 def _get_ids(tokens, tokenizer, max_seq_length):
     """Token ids from Tokenizer vocab"""
 
     token_ids = tokenizer.convert_tokens_to_ids(tokens)
-    input_ids = token_ids # + [0] * (max_seq_length - len(token_ids))
+    input_ids = token_ids  # + [0] * (max_seq_length - len(token_ids))
     return input_ids
 
 
 def _trim_input(
-    args,
-    tokenizer,
-    title,
-    question,
-    answer,
-    max_sequence_length=290,
-    t_max_len=30,
-    q_max_len=128,
-    a_max_len=128,
+        args,
+        tokenizer,
+        title,
+        question,
+        answer,
+        max_sequence_length=290,
+        t_max_len=30,
+        q_max_len=128,
+        a_max_len=128,
 ):
     # SICK THIS IS ALL SEEMS TO BE SICK
 
@@ -109,18 +103,18 @@ def _trim_input(
 
 
 def _convert_to_bert_inputs(
-    title, question, answer, tokenizer, max_sequence_length
+        title, question, answer, tokenizer, max_sequence_length
 ):
     """Converts tokenized input to ids, masks and segments for BERT"""
 
     stoken = (
-        ["[CLS]"]
-        + title
-        + ["[SEP]"]
-        + question
-        + ["[SEP]"]
-        + answer
-        + ["[SEP]"]
+            ["[CLS]"]
+            + title
+            + ["[SEP]"]
+            + question
+            + ["[SEP]"]
+            + answer
+            + ["[SEP]"]
     )
 
     input_ids = _get_ids(stoken, tokenizer, max_sequence_length)
@@ -134,33 +128,33 @@ def _get_stoken_output(title, question, answer, tokenizer, max_sequence_length):
     """Converts tokenized input to ids, masks and segments for BERT"""
 
     stoken = (
-        ["[CLS]"]
-        + title
-        + ["[SEP]"]
-        + question
-        + ["[SEP]"]
-        + answer
-        + ["[SEP]"]
+            ["[CLS]"]
+            + title
+            + ["[SEP]"]
+            + question
+            + ["[SEP]"]
+            + answer
+            + ["[SEP]"]
     )
     return stoken
 
 
 def compute_input_arays(
-    args,
-    df,
-    columns,
-    tokenizer,
-    max_sequence_length,
-    t_max_len=30,
-    q_max_len=128,
-    a_max_len=128,
+        args,
+        df,
+        columns,
+        tokenizer,
+        max_sequence_length,
+        t_max_len=30,
+        q_max_len=128,
+        a_max_len=128,
 ):
     input_ids, input_masks, input_segments = [], [], []
     for _, instance in tqdm(
-        df[columns].iterrows(),
-        desc="Preparing dataset",
-        total=len(df),
-        ncols=80,
+            df[columns].iterrows(),
+            desc="Preparing dataset",
+            total=len(df),
+            ncols=80,
     ):
         t, q, a = (
             instance.question_title,
@@ -243,7 +237,6 @@ class BucketingSampler:
 
 
 def make_collate_fn(padding_values={"input_ids": 0, "input_masks": 0, "input_segments": 0}):
-
     def _collate_fn(batch):
 
         for name, padding_value in padding_values.items():
@@ -326,16 +319,16 @@ class QuestDataset(torch.utils.data.Dataset):
 
 
 def cross_validation_split(
-    args,
-    train_df,
-    tokenizer,
-    ignore_train=False
+        args,
+        train_df,
+        tokenizer,
+        ignore_train=False
 ):
     kf = GroupKFold(n_splits=args.folds)
     y_train = train_df[args.target_columns].values
 
     for fold, (train_index, val_index) in enumerate(kf.split(
-        train_df.values, groups=train_df.question_title
+            train_df.values, groups=train_df.question_title
     )):
 
         if args.use_folds is not None and fold not in args.use_folds:

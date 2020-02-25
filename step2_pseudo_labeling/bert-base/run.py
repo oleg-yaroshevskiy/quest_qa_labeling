@@ -1,15 +1,15 @@
-import warnings, logging
+import logging
+import warnings
 
 warnings.filterwarnings("ignore")
 
 import gc
 import random
-import os, multiprocessing, glob
+import os
 import numpy as np
 import pandas as pd
 import torch
 from torch import nn
-import torch.nn.functional as F
 from torch.utils.data import ConcatDataset
 
 from transformers import get_linear_schedule_with_warmup
@@ -17,8 +17,8 @@ from model import get_model_optimizer
 from loops import train_loop, evaluate, infer
 from dataset import cross_validation_split, get_test_set, get_pseudo_set, make_collate_fn, BucketingSampler
 from args import args
-from transformers import BertTokenizer, AlbertTokenizer
-from torch.utils.data import DataLoader, Dataset
+from transformers import BertTokenizer
+from torch.utils.data import DataLoader
 
 from mag.experiment import Experiment
 import mag
@@ -58,10 +58,22 @@ def seed_everything(seed: int):
 logging.getLogger("transformers").setLevel(logging.ERROR)
 seed_everything(args.seed)
 
-## load the data
-train_df = pd.read_csv(os.path.join(args.data_path, "train.csv"))
-test_df = pd.read_csv(os.path.join(args.data_path, "test.csv"))
-submission = pd.read_csv(os.path.join(args.data_path, "sample_submission.csv"))
+# load the data
+train_df = pd.read_csv(os.path.join(args.data_path,
+                                    "train_toy.csv" if args.toy == "True"
+                                    else "train.csv"
+                                    )
+                       )
+test_df = pd.read_csv(os.path.join(args.data_path,
+                                   "test_toy.csv" if args.toy == "True"
+                                   else "test.csv"
+                                   )
+                      )
+submission = pd.read_csv(os.path.join(args.data_path,
+                                      "sample_submission_toy.csv" if args.toy == "True"
+                                      else "sample_submission.csv"
+                                      )
+                         )
 
 tokenizer = BertTokenizer.from_pretrained(
     args.bert_model, do_lower_case=("uncased" in args.bert_model)
@@ -78,13 +90,12 @@ test_loader = DataLoader(
     collate_fn=make_collate_fn(),
 )
 
-
 for fold, train_set, valid_set, train_fold_df, val_fold_df in (
-    cross_validation_split(
-        args,
-        train_df,
-        tokenizer
-    )
+        cross_validation_split(
+            args,
+            train_df,
+            tokenizer
+        )
 ):
 
     print()
@@ -122,7 +133,6 @@ for fold, train_set, valid_set, train_fold_df, val_fold_df in (
         epoch_train_set = train_set
 
         if args.pseudo_file is not None:
-
             pseudo_df = pd.read_csv(args.pseudo_file.format(fold))
 
             pseudo_set = get_pseudo_set(
@@ -146,7 +156,7 @@ for fold, train_set, valid_set, train_fold_df, val_fold_df in (
             optimizer,
             num_warmup_steps=args.warmup,
             num_training_steps=(
-                args.epochs * len(train_loader) / args.batch_accumulation
+                    args.epochs * len(train_loader) / args.batch_accumulation
             ),
         )
 

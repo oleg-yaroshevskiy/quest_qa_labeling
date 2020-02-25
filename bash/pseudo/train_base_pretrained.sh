@@ -1,5 +1,7 @@
 #!/bin/bash
 
+toy=${1:-False}
+
 python step2_pseudo_labeling/bert-base-pretrained/run.py \
   --epochs=3                                              \
   --max_sequence_length=500                                \
@@ -12,4 +14,5 @@ python step2_pseudo_labeling/bert-base-pretrained/run.py \
   --warmup=100                                                    \
   --lr=1e-5                                                        \
   --bert_model=input/stackx-base-cased                              \
-  --label=pretrained
+  --label=pretrained                                                 \
+  --toy=$toy
