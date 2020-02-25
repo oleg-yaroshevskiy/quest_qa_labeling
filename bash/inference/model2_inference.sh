@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python model2_bert_cased_code/run.py                     \
+python steps7_10_inference/model2_bert_code/run.py       \
   --sub_file=submissions/model2_bert_base_cased_pred.csv  \
   --data_path=input/google-quest-challenge/                \
   --max_sequence_length=500                                 \

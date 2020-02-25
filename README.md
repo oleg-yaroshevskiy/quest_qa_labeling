@@ -8,7 +8,8 @@ The solution is also described in [this post](https://www.kaggle.com/c/google-qu
 
 [The archive]() contains the following files:
 
-- ...
+- `stackx-base-cased.tar.gz` - pretrained BERT language model, output of step 1 below
+- `pseudo-100k-3x-blend-no-leak.tar.gz` - pseudo-labels, output of step 2 below
 
 ## Hardware
 - 1 x NVIDIA Quadro P6000
@@ -55,19 +56,19 @@ For this purpose, we download and process StackExchange dumps, to reproduce this
 
 See comments in these files. Also, you can find 2 corresponding Jupyter notebooks in the same folder, just for demonstration. 
 
-Output is written to the `input/qa_stackexchange_cleaned.tsv` file.
+Output is written to the `input/qa_stackexchange_cleaned.csv` file.
 
 This files is needed for the next step.
 
 #### 1b. Fine-tuning BERT language model with StackExchange data:
 
-`sh bash/training/train1b_train_bert_stackx_lang_model.sh` - this runs fine-tuning BERT language model with StackExchange data from the previous step (`input/qa_stackexchange_cleaned.tsv`). 
+`sh bash/training/train1b_train_bert_stackx_lang_model.sh` - this runs fine-tuning BERT language model with StackExchange data from the previous step (`input/qa_stackexchange_cleaned.csv`). 
 
-This script writes model checkpoints and training logs to `input/stackx-large-cased`, the following two BERT models use this checkpoint. 
+This script writes model checkpoints and training logs to `input/stackx-base-cased`, the following two BERT models use this checkpoint. The checkpoint is also shared as `stackx-base-cased.tar.gz` in the [archive]().
 
 ### 2. Generating pseudo-labels
 
-`sh bash/pseudo/create_all_pseudo_labels.sh` - this runs 3 basic models (bert-base, bert-large, and bert-base-pretrained) on the competition data, then creates pseudolabels using these 3 models
+`sh bash/pseudo/create_all_pseudo_labels_toy.sh` - this runs 3 basic models (bert-base, bert-large, and bert-base-pretrained) on the competition data (a toy example, first 50 rows), then creates pseudo-labels using these 3 models, the result is stored in the `pseudo-predictions/pseudo-100k-3x-blend-no-leak/` folder. Run `sh bash/pseudo/create_all_pseudo_labels_toy.sh` (without `_toy`) for the actual generation of pseudo-labels. This results in `pseudo-100k-3x-blend-no-leak.tar.gz` shared in the [archive](). 
 
 ### 3. BERT-base-cased pretrained with StackExchange
 

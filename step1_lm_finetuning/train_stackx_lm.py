@@ -27,7 +27,7 @@ TARGETS = ['question_score', 'question_views', 'question_favs',
 
 # change paths here!
 PATH_TO_DATA = Path('input')
-PATH_TO_STACKX_CONFIG = PATH_TO_DATA / 'stackx'
+PATH_TO_CKPT_CONFIG = Path('step1_lm_finetuning/data/')
 
 # for a toy example, change to 600000 for real LM training
 LEN_TO_SAMPLE = 50
@@ -40,19 +40,19 @@ LRATE = 1e-5
 BATCHES_PER_STEP = 32
 
 # the trained LM will be saved here
-checkpoint_dir = PATH_TO_DATA / 'stackx-large-cased'
-stackx_data = pd.read_csv(PATH_TO_DATA / 'qa_stackexchange_cleaned.tsv',
+checkpoint_dir = PATH_TO_DATA / 'stackx-base-cased'
+stackx_data = pd.read_csv(PATH_TO_DATA / 'qa_stackexchange_cleaned.csv',
                           nrows=LEN_TO_SAMPLE)
 
-stackx_data['title'] = stackx_data['title'].astype(str)
-stackx_data['body'] = stackx_data['body'].astype(str)
+stackx_data['question_title'] = stackx_data['question_title'].astype(str)
+stackx_data['question_body'] = stackx_data['question_body'].astype(str)
 stackx_data['answer'] = stackx_data['answer'].astype(str)
 
 
 class QuestMLMDataset(QuestDataset):
     def __init__(self, data_df, tokenizer, max_seg_length=512, answer_ratio=0.5,
                  use_title=True, use_body=True, use_answer=True,
-                 title_col='title', body_col='body', answer_col='answer',
+                 title_col='question_title', body_col='question_body', answer_col='answer',
                  mlm_probability=0.15, non_masked_idx=-1, padding_idx=0,
                  sop_prob=0.5, target_cols=TARGETS):
         super(QuestMLMDataset, self).__init__(data_df=data_df, tokenizer=tokenizer, max_seg_length=max_seg_length,
@@ -125,7 +125,7 @@ train_df, test_df = train_test_split(
     random_state=SEED)
 
 tokenizer = BertTokenizer(
-    PATH_TO_STACKX_CONFIG / 'stackx-large-cased-vocab.txt',
+    str(PATH_TO_CKPT_CONFIG / 'vocab.txt'),
     do_basic_tokenize=True,
     do_lower_case=False)
 
@@ -156,7 +156,7 @@ class BertPretrain(BertForPreTraining):
         return outputs
 
 
-config = BertConfig(str(PATH_TO_STACKX_CONFIG / 'stackx-large-cased-config.json'))
+config = BertConfig(str(PATH_TO_CKPT_CONFIG / 'config.json'))
 model = BertPretrain(config, len(TARGETS))
 
 device = "cuda"
@@ -277,7 +277,7 @@ trainer = Model(model,
 if not checkpoint_dir.exists():
     os.makedirs(str(checkpoint_dir))
 
-checkpoint_name = 'stackx_large_with_aux_ep_{epoch:03}_val_perplexity_{val_mlm_perplexity:.2f}_val_spearman_{val_spearman:.2f}.pth'
+checkpoint_name = 'stackx_base_with_aux_ep_{epoch:03}_val_perplexity_{val_mlm_perplexity:.2f}_val_spearman_{val_spearman:.2f}.pth'
 
 callbacks = [
     spearman.callback,
@@ -295,3 +295,14 @@ history = trainer.fit_generator(
 )
 
 torch.cuda.empty_cache()
+
+# prepare the latest checkpoint for further finetuning
+latest_ckpt = sorted(list(checkpoint_dir.glob('stackx_base_with_au*')))[-1]
+state_dict = torch.load(latest_ckpt)
+# we'll be adapting classification for 30 targets, so delete classifier weights
+del state_dict['classifier.bias']
+del state_dict['classifier.weight']
+torch.save(state_dict, checkpoint_dir / 'pytorch_model.bin')
+# also need config and vocabulary to reuse the model
+os.system(f"cp {str(PATH_TO_CKPT_CONFIG / 'vocab.txt')} {str(checkpoint_dir)}")
+os.system(f"cp {str(PATH_TO_CKPT_CONFIG / 'config.json')} {str(checkpoint_dir)}")

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-(echo "Downloading all model checkpoints"                                     && \
-sh bash/download_all_model_ckpts_for_inference.sh                             && \
+#echo "Downloading all model checkpoints"                                     && \
+#sh bash/download_all_model_ckpts_for_inference.sh                             && \
 
 echo "Inference with the 1st model (BERT-base-cased)"                         && \
 sh bash/inference/model1_inference.sh                                         && \
@@ -17,6 +17,4 @@ sh bash/inference/model4_inference.sh                                         &&
 
 echo "Blending and postprocessing"                                            && \
 sh bash/blending_n_postprocessing.sh                                             \
-
-> logs/all_inference.log 2>&1 &)
 

@@ -6,10 +6,10 @@ OUTPUT_DIR=submissions/model3_roberta-base-output
  
 cp -r input/model3_ckpt/folds/* experiments/$ROBERTA_EXPERIMENT_DIR
 
-python model3_roberta_base_code/infer.py           \
-  --experiment=$ROBERTA_EXPERIMENT_DIR              \
-  --checkpoint=best_model.pth                        \
-  --bert_model=input/model3_ckpt/roberta-base-model/  \
-  --dataframe=input/google-quest-challenge/test.csv    \
-  --output_dir=$OUTPUT_DIR                              \
+python steps7_10_inference/model3_roberta_code/infer.py   \
+  --experiment=$ROBERTA_EXPERIMENT_DIR                      \
+  --checkpoint=best_model.pth                                \
+  --bert_model=input/model3_ckpt/roberta-base-model/          \
+  --dataframe=input/google-quest-challenge/test.csv            \
+  --output_dir=$OUTPUT_DIR                                      \
   > logs/model3_inference.log 2>&1

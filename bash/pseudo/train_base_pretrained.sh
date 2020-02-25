@@ -2,8 +2,14 @@
 
 toy=${1:-False}
 
+if [ $toy = 'toy' ]; then
+    epochs=1
+else
+    epochs=3
+fi
+
 python step2_pseudo_labeling/bert-base-pretrained/run.py \
-  --epochs=3                                              \
+  --epochs=$epochs                                        \
   --max_sequence_length=500                                \
   --max_title_length=26                                     \
   --max_question_length=260                                  \

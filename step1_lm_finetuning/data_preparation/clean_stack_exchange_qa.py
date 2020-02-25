@@ -117,9 +117,12 @@ def process(all_questions, all_answers, path_to_save, detect_lang=False,
     qa_features[targets] = qa_features[targets] / qa_features[targets].std()
 
     # save results
-    qa_features.to_csv(path_to_save / 'qa_stackexchange_cleaned.tsv',
-                       index=False)
-
+    qa_features.rename(columns={'body': 'question_body',
+                                'title': 'question_title'}).to_csv(path_to_save / 'qa_stackexchange_cleaned.csv',
+                                                                   index=False)
+    qa_features.rename(columns={'body': 'question_body',
+                                'title': 'question_title'}).head(50).to_csv(path_to_save / 'qa_stackexchange_cleaned_toy.csv',
+                                                                   index=False)
 
 def select_answers(all_answers, max_answers_per_question=2):
     answer_ids = all_answers[['Id', 'ParentId', 'is_answer_accepted']]
@@ -157,3 +160,4 @@ if __name__ == '__main__':
 
     process(all_questions, all_answers, path_to_save=PATH_TO_SAVE_RESULT,
             detect_lang=DETECT_LANG)
+

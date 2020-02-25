@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python model4_bart_code/run.py                      \
+python steps7_10_inference/model4_bart_code/run.py  \
   --sub_file=submissions/model4_bart_large_pred.csv  \
   --data_path=input/google-quest-challenge/           \
   --max_sequence_length=500                            \

@@ -69,7 +69,8 @@ test_loader = DataLoader(
     collate_fn=make_collate_fn(),
 )
 
-os.makedirs(args.output_dir)
+if not os.path.exists(args.output_dir):
+    os.makedirs(args.output_dir)
 
 for fold in range(config.folds):
 
@@ -97,7 +98,7 @@ for fold in range(config.folds):
     del model, optimizer
     torch.cuda.empty_cache()
 
-    test_preds_df = test_df[["question_id", "host"]].copy()
+    test_preds_df = test_df[["id", "host"]].copy()
     for k, col in enumerate(target_columns):
         test_preds_df[col] = test_preds[:, k].astype(np.float32)
     test_preds_df.to_csv(

@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python final_steps/blending_n_postprocessing.py
+python step11_final/blending_n_postprocessing.py

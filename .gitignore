@@ -135,7 +135,8 @@ dmypy.json
 .pytype/
 
 # Custom
-*.pt
+*.pth
+*.bin
 input/model*
 input/google-quest-challenge/*.csv
 !input/google-quest-challenge/*toy.csv
@@ -146,6 +147,10 @@ input/stackx-large-cased/
 packages/fairseq-hacked/examples/speech_recognition/data/
 packages/fairseq-hacked/fairseq/data/
 experiments/*/checkpoints
+experiments/1-8-5-head_tail-pretrained-1e-05-210-260-500-26-100/
+experiments/1-8-5-head_tail-qa-1e-05-210-260-500-26-300/
+experiments/4-2-5-head_tail-large-1e-05-210-260-500-26-300/
+pseudo-predictions/
 .DS_Store
 .idea/
 mag/
