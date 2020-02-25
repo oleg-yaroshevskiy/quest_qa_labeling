@@ -63,7 +63,7 @@ This files is needed for the next step.
 
 `sh bash/training/train1b_train_bert_stackx_lang_model.sh` - this runs fine-tuning BERT language model with StackExchange data from the previous step (`input/qa_stackexchange_cleaned.tsv`). 
 
-This script writes model checkpoints and training logs to `input/stackx-large-cased`, the following two BERT models use this checkpoint. 
+This script writes model checkpoints and training logs to `input/stackx-base-cased`, the following two BERT models use this checkpoint. 
 
 ### 2. Generating pseudo-labels
 
@@ -71,7 +71,7 @@ This script writes model checkpoints and training logs to `input/stackx-large-ca
 
 ### 3. BERT-base-cased pretrained with StackExchange
 
-TODO. Training 5 BERT-base models (cross-validation): `sh bash/training/train2_bert_base_uncased_stackx.sh`. The result (one model checkpoint for each fold) is found in [this Kaggle Dataset](https://www.kaggle.com/dmitriyab/stackx-80-aux-ep-3).
+TODO. Training 5 BERT-base models (cross-validation): `sh bash/training/train2_old_bert_base_cased_stackx.sh`. The result (one model checkpoint for each fold) is found in [this Kaggle Dataset](https://www.kaggle.com/dmitriyab/stackx-80-aux-ep-3).
 
 ### 4. BERT-base-cased pretrained with StackExchange + pseudo-labels
 
