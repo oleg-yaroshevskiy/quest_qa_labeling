@@ -6,7 +6,7 @@ OUTPUT_DIR=submissions/model3_roberta-base-output
  
 cp -r input/model3_ckpt/folds/* experiments/$ROBERTA_EXPERIMENT_DIR
 
-python steps7_10_inference/model3_roberta_code/infer.py   \
+python steps7_10_inference/model3_roberta_code/infer.py    \
   --experiment=$ROBERTA_EXPERIMENT_DIR                      \
   --checkpoint=best_model.pth                                \
   --bert_model=input/model3_ckpt/roberta-base-model/          \
