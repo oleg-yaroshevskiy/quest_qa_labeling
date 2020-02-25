@@ -1,5 +1,7 @@
 #!/bin/bash
 
+toy=${1:-False}
+
 python step2_pseudo_labeling/bert-base/run.py \
   --epochs=5                                   \
   --max_sequence_length=500                     \
@@ -11,4 +13,5 @@ python step2_pseudo_labeling/bert-base/run.py \
   --batch_size=8                                      \
   --warmup=300                                         \
   --lr=1e-5                                             \
-  --bert_model=bert-base-uncased
+  --bert_model=bert-base-uncased                         \
+  --toy=$toy

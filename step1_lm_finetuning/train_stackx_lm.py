@@ -40,7 +40,7 @@ LRATE = 1e-5
 BATCHES_PER_STEP = 32
 
 # the trained LM will be saved here
-checkpoint_dir = PATH_TO_DATA / 'stackx-large-cased'
+checkpoint_dir = PATH_TO_DATA / 'stackx-base-cased'
 stackx_data = pd.read_csv(PATH_TO_DATA / 'qa_stackexchange_cleaned.tsv',
                           nrows=LEN_TO_SAMPLE)
 
@@ -125,7 +125,7 @@ train_df, test_df = train_test_split(
     random_state=SEED)
 
 tokenizer = BertTokenizer(
-    PATH_TO_STACKX_CONFIG / 'stackx-large-cased-vocab.txt',
+    PATH_TO_STACKX_CONFIG / 'stackx-base-cased-vocab.txt',
     do_basic_tokenize=True,
     do_lower_case=False)
 
@@ -156,7 +156,7 @@ class BertPretrain(BertForPreTraining):
         return outputs
 
 
-config = BertConfig(str(PATH_TO_STACKX_CONFIG / 'stackx-large-cased-config.json'))
+config = BertConfig(str(PATH_TO_STACKX_CONFIG / 'stackx-base-cased-config.json'))
 model = BertPretrain(config, len(TARGETS))
 
 device = "cuda"
