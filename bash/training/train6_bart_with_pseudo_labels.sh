@@ -1,6 +1,6 @@
 #!/bin/bash
 
-python model4_bart_code/run.py \
+python step6_model4_bart_code/run.py \
 --data_path=data \
 --epochs=4 \
 --max_sequence_length=500 \
