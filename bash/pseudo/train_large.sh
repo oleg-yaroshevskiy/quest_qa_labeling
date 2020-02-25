@@ -9,7 +9,7 @@ else
 fi
 
 python step2_pseudo_labeling/bert-large/run.py \
-  --epochs=$epochs                                    \
+  --epochs=$epochs                              \
   --max_sequence_length=500                      \
   --max_title_length=26                           \
   --max_question_length=260                        \
