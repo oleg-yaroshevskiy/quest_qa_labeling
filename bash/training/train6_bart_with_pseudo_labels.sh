@@ -19,7 +19,7 @@ python step6_model4_bart_code/run.py \
     --batch_size=2 \
     --warmup=250 \
     --lr=2e-5 \
-    --bert_model=bart.large \
+    --bert_model=input/model4_ckpt/bart.large/ \
     --pseudo_file=pseudo-predictions/pseudo-100k-3x-blend-no-leak/fold-{}.csv.gz \
     --split_pseudo \
     --leak_free_pseudo \
