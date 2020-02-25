@@ -75,7 +75,7 @@ Training 5 BERT-base models (cross-validation): `sh bash/training/train3_bert_ba
 
 ### 4. BERT-base-cased pretrained with StackExchange + pseudo-labels
 
-Training 5 BERT-base models (cross-validation): `sh bash/training/train4_bert_base_cased_stackx_with_pseudo_labels.sh`. The result is found in [this Kaggle Dataset](https://www.kaggle.com/yaroshevskiy/bert-base-pretrained).
+Training 5 BERT-base models (cross-validation): `sh bash/training/train4_bert_base_cased_stackx_with_pseudo_labels.sh toy`. The result is written to `experiments/1-8-5-head_tail-pseudonoleakrandom100k-1e-05-210-260-500-26-200`. Full training is done without the `toy` argument, the result is found in [this Kaggle Dataset](https://www.kaggle.com/yaroshevskiy/bert-base-pretrained).
 
 ### 5. RoBERTa-base with pseudo-labels
 
@@ -83,8 +83,9 @@ Training 5 RoBERTa-base models (cross-validation): `sh bash/training/train5_robe
 
 
 ### 6. BART-large with pseudo-labels
+ 
 
-Training 5 BART-large models (cross-validation): `sh bash/training/train6_bart_with_pseudo_labels.sh`. The result is found in [this Kaggle Dataset](https://www.kaggle.com/yaroshevskiy/bart-large), and [here](https://www.kaggle.com/yaroshevskiy/quest-bart) 5 model checkpoints (one per each fold) are stored.
+Training 5 BART-large models (cross-validation): `sh bash/training/train6_bart_with_pseudo_labels.sh toy`. The result is written to `experiments/4-2-5-head_tail-bart-2e-05-210-260-500-26-split_pseudo-250`. Full training is done without the `toy` argument, the result is found in [this Kaggle Dataset](https://www.kaggle.com/yaroshevskiy/bart-large), and [here](https://www.kaggle.com/yaroshevskiy/quest-bart) 5 model checkpoints (one per each fold) are stored.
 
 
 ## Inference
