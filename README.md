@@ -71,7 +71,7 @@ This script writes model checkpoints and training logs to `input/stackx-base-cas
 
 ### 3. BERT-base-cased pretrained with StackExchange
 
-Training 5 BERT-base models (cross-validation): `sh bash/training/train3_bert_base_cased_stackx_pretrained.sh`. The result (one model checkpoint for each fold) is found in [this Kaggle Dataset](https://www.kaggle.com/dmitriyab/stackx-80-aux-ep-3).
+Training 5 BERT-base models (cross-validation): `sh bash/training/train3_bert_base_cased_stackx_pretrained.sh toy`. The result (one model checkpoint for each fold) written to `input/model1_ckpt`. Full training is done without the `toy` argument, the result is found in [this Kaggle Dataset](kashnitsky/google-qa-quest-labeling-bibimorph-model-1-5-folds).
 
 ### 4. BERT-base-cased pretrained with StackExchange + pseudo-labels
 
