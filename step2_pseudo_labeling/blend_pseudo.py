@@ -1,7 +1,7 @@
 import os
 import sys
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 if len(sys.argv) == 1 or sys.argv[1] != 'toy':
     original_df = pd.read_csv("input/sampled_sx_so.csv.gz")
@@ -67,11 +67,10 @@ for fold in range(5):
     pseudo_df = bert_base_dfs[0].copy()
 
     for col in target_columns:
-
         blended = (
-            bert_base_dfs[fold][col] * 0.2 +
-            bert_large_dfs[fold][col] * 0.4 +
-            bert_base_pretrained_dfs[fold][col] * 0.4
+                bert_base_dfs[fold][col] * 0.2 +
+                bert_large_dfs[fold][col] * 0.4 +
+                bert_base_pretrained_dfs[fold][col] * 0.4
         ).astype(np.float16)
 
         pseudo_df[col] = blended

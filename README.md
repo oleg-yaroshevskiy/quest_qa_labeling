@@ -63,7 +63,7 @@ Output is written to the `input/qa_stackexchange_cleaned.csv` file. This files i
 
 `sh bash/training/train1b_train_bert_stackx_lang_model.sh` – this runs BERT language model fine-tuningwith StackExchange data from the previous step (`input/qa_stackexchange_cleaned.csv`).
 
-This script writes model checkpoints and training logs to `input/stackx-base-cased`, the following two BERT models use this checkpoint. The checkpoint is also shared as `stackx-base-cased.tar.gz` in the [archive](https://tinyurl.com/t9bjvlm).
+This script writes model checkpoints and training logs to `input/stackx-base-cased`, the following two BERT models use this checkpoint. The checkpoint is also shared as `stackx-base-cased.tar.gz` in the [archive](https://tinyurl.com/t9bjvlm). To go on reproducing results, it's better to unzip contents of `stackx-base-cased.tar.gz` into `input/stackx-base-cased`.
 
 ### 2. Generating pseudo-labels
 
@@ -71,7 +71,7 @@ This script writes model checkpoints and training logs to `input/stackx-base-cas
 
 ### 3. BERT-base-cased pretrained with StackExchange
 
-Training 5 BERT-base models (cross-validation): `sh bash/training/train3_bert_base_cased_stackx_pretrained.sh toy`. The result (one model checkpoint for each fold) written to `input/model1_ckpt`. Full training is done without the `toy` argument, the result is found in [this Kaggle Dataset](kashnitsky/google-qa-quest-labeling-bibimorph-model-1-5-folds).
+Training 5 BERT-base models (cross-validation): `sh bash/training/train3_bert_base_cased_stackx_pretrained.sh toy`. The result (one model checkpoint for each fold) is written to `input/model1_ckpt`. Full training is done without the `toy` argument, the result is found in [this Kaggle Dataset](kashnitsky/google-qa-quest-labeling-bibimorph-model-1-5-folds).
 
 ### 4. BERT-base-cased pretrained with StackExchange + pseudo-labels
 
@@ -81,7 +81,7 @@ Training 5 BERT-base models (cross-validation): `sh bash/training/train4_bert_ba
 
 Download RoBERTa-base checkpoint by running `sh bash/training/load_roberta_weights.sh`
 
-Training 5 RoBERTa-base models (cross-validation): `sh bash/training/train5_roberta_with_pseudo_labels.sh`. The result is found in [this Kaggle Dataset](https://www.kaggle.com/ddanevskyi/roberta-base-model) and [here](https://www.kaggle.com/dmitriyab/roberta-stackx-base-pl20k) 5 model checkpoints (one per each fold) are stored.
+Training 5 RoBERTa-base models (cross-validation): `sh bash/training/train5_roberta_with_pseudo_labels.sh`. The result is writen to `experiments/2-4-5-head_tail-pseudonoleakrandom100k-1e-05-210-260-500-26-roberta-200` and can also be found in [this Kaggle Dataset](https://www.kaggle.com/ddanevskyi/roberta-base-model) Also, [here](https://www.kaggle.com/dmitriyab/roberta-stackx-base-pl20k) 5 model checkpoints (one per each fold) are stored.
 
 
 ### 6. BART-large with pseudo-labels

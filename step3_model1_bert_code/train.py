@@ -1,6 +1,7 @@
 import os
 import sys
 from pathlib import Path
+
 import pandas as pd
 import torch
 from callbacks import CSVParamLogger
@@ -13,7 +14,7 @@ from torch.optim import Adam
 from torch.utils.data import DataLoader
 from transformers import BertTokenizer, BertConfig
 
-if len(sys.argv) == 1 or sys.argv[1] != 'toy': 
+if len(sys.argv) == 1 or sys.argv[1] != 'toy':
     train_df = pd.read_csv('input/google-quest-challenge/train.csv')
     N_EPOCHS, N_FOLDS = 8, 5
 else:
@@ -86,4 +87,3 @@ for fold_idx in range(N_FOLDS):
     model.to('cpu')
     del model
     torch.cuda.empty_cache()
-

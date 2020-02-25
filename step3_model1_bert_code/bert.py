@@ -20,7 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import json
 import logging
 import math
-import os
 import sys
 from io import open
 
@@ -28,8 +27,7 @@ import torch
 from torch import nn
 from torch.nn import CrossEntropyLoss, MSELoss
 from transformers import load_tf_weights_in_bert, add_start_docstrings
-
-from transformers.modeling_utils import (WEIGHTS_NAME, PretrainedConfig, PreTrainedModel, prune_linear_layer)
+from transformers.modeling_utils import (PretrainedConfig, PreTrainedModel, prune_linear_layer)
 
 logger = logging.getLogger(__name__)
 
@@ -1180,4 +1178,3 @@ class BertForQuestionAnswering(BertPreTrainedModel):
             outputs = (total_loss,) + outputs
 
         return outputs  # (loss), start_logits, end_logits, (hidden_states), (attentions)
-

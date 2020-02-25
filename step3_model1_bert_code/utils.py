@@ -1,11 +1,10 @@
 from copy import deepcopy
 
-import torch
 import numpy as np
 import pandas as pd
-from scipy.stats import rankdata
-
+import torch
 from data.dataset import ALL_TARGETS
+from scipy.stats import rankdata
 
 
 def encode_labels(df, target_columns=ALL_TARGETS, method='average'):

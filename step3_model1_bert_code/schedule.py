@@ -1,6 +1,6 @@
 import torch
-from pytorch_transformers import optimization
 from poutyne.framework.callbacks import Callback
+from pytorch_transformers import optimization
 
 
 class _PyTorchLRSchedulerWrapper(Callback):

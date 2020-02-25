@@ -1,9 +1,9 @@
 import numpy as np
 import pandas as pd
-from scipy.stats import spearmanr
-from poutyne.framework.metrics import EpochMetric
 from poutyne.framework.callbacks import Callback
+from poutyne.framework.metrics import EpochMetric
 from poutyne.utils import torch_to_numpy
+from scipy.stats import spearmanr
 
 
 def spearman_metric(y_true, y_pred, return_scores=False, colnames=None):
@@ -45,4 +45,3 @@ class Spearman(EpochMetric):
 
         self.preds, self.targets = [], []
         return np.mean(corr)
-
