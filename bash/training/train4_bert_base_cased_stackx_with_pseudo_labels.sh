@@ -1,5 +1,13 @@
 #!/bin/bash
 
+toy=${1:-False}
+
+if [ $toy = 'toy' ]; then
+    epochs=1
+else
+    epochs=5
+fi
+
 python step4_model2_bert_code/run.py \
     --epochs=5 \
     --max_sequence_length=500 \
@@ -14,5 +22,6 @@ python step4_model2_bert_code/run.py \
     --bert_model=input/stackx-base-cased \
     --label=pseudonoleakrandom100k \
     --pseudo_file pseudo-predictions/pseudo-100k-3x-blend-no-leak/fold-{}.csv.gz \
-    --n_pseudo=20000
+    --n_pseudo=20000 \
+    --toy=$toy
 

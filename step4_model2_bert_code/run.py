@@ -59,9 +59,21 @@ logging.getLogger("transformers").setLevel(logging.ERROR)
 seed_everything(args.seed)
 
 ## load the data
-train_df = pd.read_csv(os.path.join(args.data_path, "train.csv"))
-test_df = pd.read_csv(os.path.join(args.data_path, "test.csv"))
-submission = pd.read_csv(os.path.join(args.data_path, "sample_submission.csv"))
+train_df = pd.read_csv(os.path.join(args.data_path,
+                                    "train_toy.csv" if args.toy in ["True", "toy"]
+                                    else "train.csv"
+                                    )
+                       )
+test_df = pd.read_csv(os.path.join(args.data_path,
+                                   "test_toy.csv" if args.toy in ["True", "toy"]
+                                   else "test.csv"
+                                   )
+                      )
+submission = pd.read_csv(os.path.join(args.data_path,
+                                      "sample_submission_toy.csv" if args.toy in ["True", "toy"]
+                                      else "sample_submission.csv"
+                                      )
+                         )
 
 tokenizer = BertTokenizer.from_pretrained(
     args.bert_model, do_lower_case=("uncased" in args.bert_model)
