@@ -1,15 +1,15 @@
-# Google QUEST Q&A Labeling 1st place solution 
+# Google QUEST Q&A Labeling 1st place solution
 
-Below you can find an outline of how to reproduce our solution for the Google QUEST Q&A Labeling competition. If you run into any trouble with the setup/code or have any questions please contact me at [yury.kashnitsky@gmail.com](mailto:yury.kashnitsky@gmail.com). 
+Below you can find an outline of how to reproduce our solution for the Google QUEST Q&A Labeling competition. If you run into any trouble with the setup/code or have any questions please contact me at [yury.kashnitsky@gmail.com](mailto:yury.kashnitsky@gmail.com).
 
-The solution is also described in [this post](https://www.kaggle.com/c/google-quest-challenge/discussion/129840) on Kaggle, the inference part is fully reproduced in [this Kaggle Notebook](https://www.kaggle.com/ddanevskyi/1st-place-solution). 
+The solution is also described in [this post](https://www.kaggle.com/c/google-quest-challenge/discussion/129840) on Kaggle, the inference part is fully reproduced in [this Kaggle Notebook](https://www.kaggle.com/ddanevskyi/1st-place-solution).
 
 ## Archive contents
 
 [The archive](https://tinyurl.com/t9bjvlm) contains the following files:
 
 - `stackx-base-cased.tar.gz` – pretrained BERT language model, output of step 1 in the ["Model training" section](#model-training)
-- `sampled_sx_so.csv.gz` – chunk of StackExchange dump used to generate pseudo-labels 
+- `sampled_sx_so.csv.gz` – chunk of StackExchange dump used to generate pseudo-labels
 - `pseudo-100k-3x-blend-no-leak.tar.gz` – pseudo-labels, output of step 2 in the ["Model training" section](#model-training)
 
 ## Hardware
@@ -26,7 +26,7 @@ The solution is also described in [this post](https://www.kaggle.com/c/google-qu
 We run all experiments in a Conda environment and provide a full list of required packages `requirements_full.txt`.  To do the same, run:
 
  - `conda create -n qa_quest_env python=3.6.6`
- - `conda activate qa_quest_env ` 
+ - `conda activate qa_quest_env `
  - `pip install -r requirements_full.txt`
 
 However, there are a lot of packages listed there which are not much relevant to this project. A minimal list of requirements is specified in `requirements_minimal.txt` which was formed with the `pipreqs` utility. This handy utility crawls project source code and lists all required packages. So you can run `pip install -r requirements_minimal.txt` and then install missing packages on the go (if any).
@@ -34,7 +34,7 @@ However, there are a lot of packages listed there which are not much relevant to
 Apart from pip-installable packages, we use a custom lightweight library called [mag](https://github.com/ex4sperans/mag) to keep track of experiments. Also our installation of the `fairseq` library is a bit different (actualy, it's hacked for our needs). These two can be installed by running `sh bash/setup.sh`
 
 
-## Model training 
+## Model training
 
 For some of our models, we perform language model finetuning with StackExchange data. Then we run 5-fold cross-validation for 4 models (2 [BERT](https://arxiv.org/abs/1810.04805) ones, one [RoBERTa](https://arxiv.org/abs/1907.11692), and one [BART](https://arxiv.org/abs/1910.13461)) averaging predictions of all 5 model checkpoints for each model type. Finally, blending 4 predictions. In this section, we cover everything related to model training:
 
@@ -61,13 +61,13 @@ Output is written to the `input/qa_stackexchange_cleaned.csv` file. This files i
 
 #### 1b. Fine-tuning BERT language model with StackExchange data:
 
-`sh bash/training/train1b_train_bert_stackx_lang_model.sh` – this runs BERT language model fine-tuningwith StackExchange data from the previous step (`input/qa_stackexchange_cleaned.csv`). 
+`sh bash/training/train1b_train_bert_stackx_lang_model.sh` – this runs BERT language model fine-tuningwith StackExchange data from the previous step (`input/qa_stackexchange_cleaned.csv`).
 
 This script writes model checkpoints and training logs to `input/stackx-base-cased`, the following two BERT models use this checkpoint. The checkpoint is also shared as `stackx-base-cased.tar.gz` in the [archive](https://tinyurl.com/t9bjvlm).
 
 ### 2. Generating pseudo-labels
 
-`sh bash/pseudo/create_all_pseudo_labels_toy.sh` – this runs 3 basic models (bert-base, bert-large, and bert-base-pretrained) on the competition data (a toy example, first 50 rows), then creates pseudo-labels using these 3 models, the result is stored in the `pseudo-predictions/pseudo-100k-3x-blend-no-leak/` folder. Run `sh bash/pseudo/create_all_pseudo_labels_toy.sh` (without `_toy`) for the actual generation of pseudo-labels. This requires `sampled_sx_so.csv.gz` from [the shared archive](https://tinyurl.com/t9bjvlm) and results in `pseudo-100k-3x-blend-no-leak.tar.gz` shared in the same archive. 
+`sh bash/pseudo/create_all_pseudo_labels_toy.sh` – this runs 3 basic models (bert-base, bert-large, and bert-base-pretrained) on the competition data (a toy example, first 50 rows), then creates pseudo-labels using these 3 models, the result is stored in the `pseudo-predictions/pseudo-100k-3x-blend-no-leak/` folder. Run `sh bash/pseudo/create_all_pseudo_labels_toy.sh` (without `_toy`) for the actual generation of pseudo-labels. This requires `sampled_sx_so.csv.gz` from [the shared archive](https://tinyurl.com/t9bjvlm) and results in `pseudo-100k-3x-blend-no-leak.tar.gz` shared in the same archive.
 
 ### 3. BERT-base-cased pretrained with StackExchange
 
@@ -79,11 +79,13 @@ Training 5 BERT-base models (cross-validation): `sh bash/training/train4_bert_ba
 
 ### 5. RoBERTa-base with pseudo-labels
 
+Download RoBERTa-base checkpoint by running `sh bash/training/load_roberta_weights.sh`
+
 Training 5 RoBERTa-base models (cross-validation): `sh bash/training/train5_roberta_with_pseudo_labels.sh`. The result is found in [this Kaggle Dataset](https://www.kaggle.com/ddanevskyi/roberta-base-model) and [here](https://www.kaggle.com/dmitriyab/roberta-stackx-base-pl20k) 5 model checkpoints (one per each fold) are stored.
 
 
 ### 6. BART-large with pseudo-labels
- 
+
 
 Training 5 BART-large models (cross-validation): `sh bash/training/train6_bart_with_pseudo_labels.sh toy`. The result is written to `experiments/4-2-5-head_tail-bart-2e-05-210-260-500-26-split_pseudo-250`. Full training is done without the `toy` argument, the result is found in [this Kaggle Dataset](https://www.kaggle.com/yaroshevskiy/bart-large), and [here](https://www.kaggle.com/yaroshevskiy/quest-bart) 5 model checkpoints (one per each fold) are stored.
 
@@ -102,7 +104,7 @@ These are the steps to reproduce our final solution (same as our Kaggle Notebook
 3. Same for the BERT model with pseudo-labels:  `sh bash/inference/model2_inference.sh`
 4. Inference with with 5 checkpoints of RoBERTa finetuned with StackExchange data, with pseudo-labels: `sh bash/inference/model3_inference.sh`
 5. Inference with with 5 checkpoints of BART with pseudo-labels: `sh bash/inference/model4_inference.sh`
-6. Once inference is done, final steps include blending, and postprocessing model predictions: `sh bash/blending_n_postprocessing.sh` 
+6. Once inference is done, final steps include blending, and postprocessing model predictions: `sh bash/blending_n_postprocessing.sh`
 
 Final submission `submissions/submission.csv` scores 0.46893 on the public competition [leaderboard](https://www.kaggle.com/c/google-quest-challenge/leaderboard). To actually submit a CSV file, you can check [this Kaggle Notebook](https://www.kaggle.com/kashnitsky/google-quest-q-a-submit-from-a-csv-file).
 
