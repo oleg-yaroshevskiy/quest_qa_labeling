@@ -159,6 +159,32 @@ class BertPretrain(BertForPreTraining):
 config = BertConfig(str(PATH_TO_CKPT_CONFIG / 'config.json'))
 model = BertPretrain(config, len(TARGETS))
 
+# Prepare extended bert embedding
+orig_bert = BertForPreTraining.from_pretrained('bert-base-cased')
+orig_tokenizer = BertTokenizer.from_pretrained('bert-base-cased')
+
+state_dict = orig_bert.state_dict()
+del state_dict['cls.predictions.decoder.weight'], state_dict['cls.predictions.bias']
+
+orig_embedding = state_dict['bert.embeddings.word_embeddings.weight']
+
+extra_tokens = list(tokenizer.vocab.keys())[len(orig_tokenizer.vocab):]
+new_tokens_as_orig_indices = [[i] for i in range(len(orig_tokenizer.vocab))] + \
+                             [orig_tokenizer.encode(t, add_special_tokens=False) for t in extra_tokens]
+
+new_embedding = torch.zeros(len(new_tokens_as_orig_indices), orig_embedding.shape[-1])
+new_embedding.normal_(mean=0.0, std=0.02)
+
+for row, indices in enumerate(new_tokens_as_orig_indices):
+    if len(indices) > 0:
+        new_embedding[row] = orig_embedding[indices].mean(0)
+
+state_dict['bert.embeddings.word_embeddings.weight'] = new_embedding
+
+# Load original pretrained weight with extended embedding layer
+model.load_state_dict(state_dict, strict=False)
+model.tie_weights()
+
 device = "cuda"
 
 steps_per_epoch = LEN_TO_SAMPLE // BATCH_SIZE
