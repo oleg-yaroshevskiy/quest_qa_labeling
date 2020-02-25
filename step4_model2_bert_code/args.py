@@ -3,12 +3,11 @@ import argparse
 parser = argparse.ArgumentParser()
 
 parser.add_argument("--data_path", type=str, default="../input/")
-parser.add_argument("--checkpoints", type=str, default="../input/")
 parser.add_argument("--pseudo_file", type=str)
-parser.add_argument("--split_pseudo", action="store_true", default=False)
-parser.add_argument("--leak_free_pseudo", action="store_true", default=False)
+parser.add_argument("--n_pseudo", type=int)
 parser.add_argument("--seed", type=int, default=42)
 parser.add_argument("--folds", type=int, default=5)
+parser.add_argument("--use_folds", type=int, nargs="+")
 
 parser.add_argument("--label", type=str, default="qa")
 parser.add_argument("--bert_model", type=str, default="bert-large-uncased")
@@ -74,4 +73,3 @@ args.__dict__["target_columns"] = [
     "answer_type_reason_explanation",
     "answer_well_written",
 ]
-

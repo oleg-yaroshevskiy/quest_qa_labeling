@@ -1,9 +1,15 @@
 from math import floor, ceil
 
 import torch
+from iterstrat.ml_stratifiers import (
+    MultilabelStratifiedShuffleSplit,
+    MultilabelStratifiedKFold,
+)
+from torch.utils.data.dataloader import default_collate
 from sklearn.model_selection import GroupKFold, KFold
 import numpy as np
 import pandas as pd
+from torch.utils.data import DataLoader, Dataset
 from tqdm import tqdm
 
 
@@ -11,7 +17,7 @@ def _get_masks(tokens, max_seq_length):
     """Mask for padding"""
     if len(tokens) > max_seq_length:
         raise IndexError("Token length more than max seq length!")
-    return [1] * len(tokens) + [0] * (max_seq_length - len(tokens))
+    return [1] * len(tokens) # + [0] * (max_seq_length - len(tokens))
 
 
 def _get_segments(tokens, max_seq_length):
@@ -31,14 +37,14 @@ def _get_segments(tokens, max_seq_length):
                 first_sep = False
             else:
                 current_segment_id = 1
-    return segments + [0] * (max_seq_length - len(tokens))
+    return segments # + [0] * (max_seq_length - len(tokens))
 
 
 def _get_ids(tokens, tokenizer, max_seq_length):
     """Token ids from Tokenizer vocab"""
 
     token_ids = tokenizer.convert_tokens_to_ids(tokens)
-    input_ids = token_ids + [0] * (max_seq_length - len(token_ids))
+    input_ids = token_ids # + [0] * (max_seq_length - len(token_ids))
     return input_ids
 
 
@@ -176,19 +182,91 @@ def compute_input_arays(
             t, q, a, tokenizer, max_sequence_length
         )
 
-        input_ids.append(ids)
-        input_masks.append(masks)
-        input_segments.append(segments)
+        input_ids.append(np.array(ids, dtype=np.int64))
+        input_masks.append(np.array(masks, dtype=np.int64))
+        input_segments.append(np.array(segments, dtype=np.int64))
 
     return (
-        torch.from_numpy(np.asarray(input_ids, dtype=np.int32)).long(),
-        torch.from_numpy(np.asarray(input_masks, dtype=np.int32)).long(),
-        torch.from_numpy(np.asarray(input_segments, dtype=np.int32)).long(),
+        input_ids,
+        input_masks,
+        input_segments
     )
 
 
 def compute_output_arrays(df, columns):
     return np.asarray(df[columns])
+
+
+class BucketingSampler:
+
+    def __init__(self, lengths, batch_size, maxlen=500):
+
+        self.lengths = lengths
+        self.batch_size = batch_size
+        self.maxlen = 500
+
+        self.batches = self._make_batches(lengths, batch_size, maxlen)
+
+    def _make_batches(self, lengths, batch_size, maxlen):
+
+        max_total_length = maxlen * batch_size
+        ids = np.argsort(lengths)
+
+        current_maxlen = 0
+        batch = []
+        batches = []
+
+        for id in ids:
+            current_len = len(batch) * current_maxlen
+            size = lengths[id]
+            current_maxlen = max(size, current_maxlen)
+            new_len = current_maxlen * (len(batch) + 1)
+            if new_len < max_total_length:
+                batch.append(id)
+            else:
+                batches.append(batch)
+                current_maxlen = size
+                batch = [id]
+
+        if batch:
+            batches.append(batch)
+
+        assert (sum(len(batch) for batch in batches)) == len(lengths)
+
+        return batches
+
+    def __len__(self):
+        return len(self.batches)
+
+    def __iter__(self):
+        return iter(self.batches)
+
+
+def make_collate_fn(padding_values={"input_ids": 0, "input_masks": 0, "input_segments": 0}):
+
+    def _collate_fn(batch):
+
+        for name, padding_value in padding_values.items():
+
+            lengths = [len(sample[name]) for sample in batch]
+            max_length = max(lengths)
+
+            for n, size in enumerate(lengths):
+                p = max_length - size
+                if p:
+                    pad_width = [(0, p)] + [(0, 0)] * (batch[n][name].ndim - 1)
+                    if padding_value == "edge":
+                        batch[n][name] = np.pad(
+                            batch[n][name], pad_width,
+                            mode="edge")
+                    else:
+                        batch[n][name] = np.pad(
+                            batch[n][name], pad_width,
+                            mode="constant", constant_values=padding_value)
+
+        return default_collate(batch)
+
+    return _collate_fn
 
 
 class QuestDataset(torch.utils.data.Dataset):
@@ -217,8 +295,9 @@ class QuestDataset(torch.utils.data.Dataset):
             outputs = compute_output_arrays(df, args.target_columns)
             outputs = torch.tensor(outputs, dtype=torch.float32)
 
-        lengths = np.argmax(inputs[0] == 0, axis=1)
-        lengths[lengths == 0] = inputs[0].shape[1]
+        # lengths = np.argmax(inputs[0] == 0, axis=1)
+        # lengths[lengths == 0] = inputs[0].shape[1]
+        lengths = [len(x) for x in inputs[0]]
 
         return cls(inputs=inputs, lengths=lengths, labels=outputs)
 
@@ -231,70 +310,58 @@ class QuestDataset(torch.utils.data.Dataset):
         input_segments = self.inputs[2][idx]
         lengths = self.lengths[idx]
 
+        sample = dict(
+            idx=idx,
+            input_ids=input_ids,
+            input_masks=input_masks,
+            input_segments=input_segments,
+            lengths=lengths
+        )
+
         if self.labels is not None:
             labels = self.labels[idx]
-            return input_ids, input_masks, input_segments, labels, lengths
+            sample["labels"] = labels
 
-        return input_ids, input_masks, input_segments, lengths
+        return sample
 
 
 def cross_validation_split(
     args,
     train_df,
     tokenizer,
-    ignore_train=False,
-    pseudo_df=None,
-    split_pseudo=False,
+    ignore_train=False
 ):
     kf = GroupKFold(n_splits=args.folds)
     y_train = train_df[args.target_columns].values
 
-    leak_free_pseudo = isinstance(pseudo_df, list)
-
-    if pseudo_df is not None:
-
-        if leak_free_pseudo:
-            n_pseudo = len(pseudo_df[0])
-        else:
-            n_pseudo = len(pseudo_df)
-
-        if split_pseudo:
-            pseudo_kfold = KFold(args.folds)
-            pseudo_ids = iter(pseudo_kfold.split(np.arange(n_pseudo)))
-        else:
-            pseudo_ids = iter(
-                [(np.arange(len(np.pseudo)), np.arange(len(n_pseudo)))]
-                * args.folds
-            )
-
     for fold, (train_index, val_index) in enumerate(kf.split(
         train_df.values, groups=train_df.question_title
     )):
+
+        if args.use_folds is not None and fold not in args.use_folds:
+            continue
+
         if not ignore_train:
             train_subdf = train_df.iloc[train_index]
-
-            if pseudo_df is not None:
-                pseudo_train, pseudo_valid = next(pseudo_ids)
-
-                pseudo_subdf = (
-                    pseudo_df if not leak_free_pseudo else pseudo_df[fold])
-
-                pseudo_subdf = pseudo_subdf.iloc[pseudo_valid]
-                train_subdf = pd.concat([train_subdf, pseudo_subdf], sort=True)
-
             train_set = QuestDataset.from_frame(args, train_subdf, tokenizer)
         else:
             train_set = None
+
         valid_set = QuestDataset.from_frame(
             args, train_df.iloc[val_index], tokenizer
         )
 
         yield (
+            fold,
             train_set,
             valid_set,
             train_df.iloc[train_index],
             train_df.iloc[val_index],
         )
+
+
+def get_pseudo_set(args, pseudo_df, tokenizer):
+    return QuestDataset.from_frame(args, pseudo_df, tokenizer)
 
 
 def get_test_set(args, test_df, tokenizer):

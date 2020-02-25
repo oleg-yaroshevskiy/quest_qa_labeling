@@ -1,10 +1,19 @@
 import logging
-from transformers import BertModel
 from transformers.modeling_bert import BertPreTrainedModel
-import torch
-from torch import nn
-logging.getLogger("transformers").setLevel(logging.ERROR)
+from transformers import (
+    BertTokenizer,
+    BertModel,
+    BertForSequenceClassification,
+    BertConfig,
+    AdamW,
+    get_linear_schedule_with_warmup,
+    get_cosine_schedule_with_warmup,
+)
 
+logging.getLogger("transformers").setLevel(logging.ERROR)
+import torch
+import torch.nn.functional as F
+from torch import nn
 
 class Squeeze(nn.Module):
 
@@ -30,20 +39,20 @@ class CustomBert(BertPreTrainedModel):
         weights_init.data[:-1] = -3
         self.layer_weights = torch.nn.Parameter(weights_init)
 
-        self.classifier = nn.Linear(config.hidden_size,
-                                    self.config.num_labels)
+        self.classifier = nn.Linear(config.hidden_size, self.config.num_labels)
 
         self.init_weights()
 
     def forward(
-            self,
-            input_ids=None,
-            attention_mask=None,
-            token_type_ids=None,
-            position_ids=None,
-            head_mask=None,
-            inputs_embeds=None,
+        self,
+        input_ids=None,
+        attention_mask=None,
+        token_type_ids=None,
+        position_ids=None,
+        head_mask=None,
+        inputs_embeds=None,
     ):
+
         outputs = self.bert(
             input_ids,
             attention_mask=attention_mask,
@@ -61,7 +70,7 @@ class CustomBert(BertPreTrainedModel):
             dim=2
         )
         cls_output = (
-                torch.softmax(self.layer_weights, dim=0) * cls_outputs
+            torch.softmax(self.layer_weights, dim=0) * cls_outputs
         ).sum(-1)
 
         # multisample dropout (wut): https://arxiv.org/abs/1905.09788
@@ -80,5 +89,22 @@ def get_model_optimizer(args):
     model = CustomBert.from_pretrained(args.bert_model, num_labels=args.num_classes)
     model.cuda()
     model = nn.DataParallel(model)
+    params = list(model.named_parameters())
 
-    return model
+    def is_backbone(n):
+        return "bert" in n
+
+    optimizer_grouped_parameters = [
+        {'params': [p for n, p in params if is_backbone(n)],
+         'lr': args.lr},
+        {'params': [p for n, p in params if not is_backbone(n)],
+         'lr': args.lr * 500}
+    ]
+
+    optimizer = torch.optim.AdamW(
+        optimizer_grouped_parameters,
+        lr=args.lr,
+        weight_decay=0
+    )
+
+    return model, optimizer
