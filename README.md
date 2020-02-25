@@ -66,7 +66,8 @@ This files is needed for the next step.
 This script writes model checkpoints and training logs to `input/stackx-large-cased`, the following two BERT models use this checkpoint. 
 
 ### 2. Generating pseudo-labels
-TODO
+
+`sh bash/pseudo/create_all_pseudo_labels.sh` - this runs 3 basic models (bert-base, bert-large, and bert-base-pretrained) on the competition data, then creates pseudolabels using these 3 models
 
 ### 3. BERT-base-cased pretrained with StackExchange
 
