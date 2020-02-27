@@ -1,0 +1,1250 @@
+qa_id,question_title,question_body,question_user_name,question_user_page,answer,answer_user_name,answer_user_page,url,category,host,question_asker_intent_understanding,question_body_critical,question_conversational,question_expect_short_answer,question_fact_seeking,question_has_commonly_accepted_answer,question_interestingness_others,question_interestingness_self,question_multi_intent,question_not_really_a_question,question_opinion_seeking,question_type_choice,question_type_compare,question_type_consequence,question_type_definition,question_type_entity,question_type_instructions,question_type_procedure,question_type_reason_explanation,question_type_spelling,question_well_written,answer_helpful,answer_level_of_information,answer_plausible,answer_relevance,answer_satisfaction,answer_type_instructions,answer_type_procedure,answer_type_reason_explanation,answer_well_written
+0,What am I losing when using extension tubes instead of a macro lens?,"After playing around with macro photography on-the-cheap (read: reversed lens, rev. lens mounted on a straight lens, passive extension tubes), I would like to get further with this. The problems with the techniques I used is that focus is manual and aperture control is problematic at best. This limited my setup to still subjects (read: dead insects) Now, as spring is approaching, I want to be able to shoot live insects. I believe that for this, autofocus and settable aperture will be of great help.
+
+So, one obvious but expensive option is a macro lens (say, EF 100mm Macro) However, I am not really interested in yet another prime lens. An alternative is the electrical extension tubes.
+
+Except for maximum focusing distance, what am I losing when using tubes (coupled with a fine lens, say EF70-200/2.8) instead of a macro lens?
+",ysap,https://photo.stackexchange.com/users/1024,"I just got extension tubes, so here's the skinny.
+
+
+  ...what am I losing when using tubes...?
+
+
+A very considerable amount of light!  Increasing that distance from the end of the lens to the sensor can cut your light several stops.  Combined with the fact that you'll usually shoot stopped down - expect to need to increase your ISO considerably.
+
+The fact the macro's are usually considered very very sharp, although I believe that 70-200mm 2.8 is supposed to be quite sharp.
+
+The ultra low distortion typical of many macros.
+
+I wouldn't worry too much about the bokeh since the DOF will still be quite limited.
+
+Coupled on my 50mm, a full 60mm'ish extension tube results in a DOF of about a couple inches in front of the lens.  On my 70-300, its probably around 2-3 feet in front of the lens to about a foot in front of the lens.
+",rfusca,https://photo.stackexchange.com/users/1917,http://photo.stackexchange.com/questions/9169/what-am-i-losing-when-using-extension-tubes-instead-of-a-macro-lens,LIFE_ARTS,photo.stackexchange.com,1.0,0.3333333333333333,0.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,1.0,0.6666666666666666,1.0,1.0,0.8,1.0,0.0,0.0,1.0
+1,What is the distinction between a city and a sprawl/metroplex... between downtown and a commercial district?,"I am trying to understand what kinds of places the spam values on p 231 refer to in the 5th Edition main book for Shadowrun.
+
+Per p 15, a sprawl is a plex, a plex is a ""metropolitan complex, short for metroplex"". Per Google a metroplex is "" a very large metropolitan area, especially one that is an aggregation of two or more cities"".  A city downtown and sprawl downtown would tend to have similar densities, but for some reason the sprawl (which includes suburbs?) has a higher spam zone noise rating (p 231).  Similarly, I'd think of a downtown as being more dense and noisy (e.g. Office buildings and street vendors) than a commercial district, e.g. an outdoor mall.  The noise ratings make me think that I am thinking about this incorrectly. What is a better way of thinking of them?
+",russellpierce,https://rpg.stackexchange.com/users/8774,"It might be helpful to look into the definition of spam zone:
+
+(p.216) spam zone: An area flooded with invasive and/or viral AR advertising, causing noise.
+
+Because a metroplex has so many marketing targets, it seems a safe assumption that marketers would drown the plex with spam. Spam from the less dense areas would bleed into the urban cores. A smaller city with less urban/suburban territory surrounding it ostensibly wouldn't have as much spam.
+",Erik Schmidt,https://rpg.stackexchange.com/users/1871,http://rpg.stackexchange.com/questions/47820/what-is-the-distinction-between-a-city-and-a-sprawl-metroplex-between-downtow,CULTURE,rpg.stackexchange.com,1.0,1.0,0.0,0.5,1.0,1.0,0.4444444444444444,0.4444444444444444,0.6666666666666666,0.0,0.0,0.6666666666666666,0.6666666666666666,0.0,0.3333333333333333,0.0,0.0,0.0,0.3333333333333333,0.0,0.8888888888888888,0.8888888888888888,0.5555555555555556,0.8888888888888888,0.8888888888888888,0.6666666666666667,0.0,0.0,0.6666666666666666,0.8888888888888888
+2,Maximum protusion length for through-hole component pins,"I'm working on a PCB that has through-hole components on both sides of the board. The ""top"" side of the board is mounted flush to a Delrin plastic block (the only top-side component is a gas sensor that is fed air samples through hose fittings in the plastic block).
+
+The flush mounting means that I have to add grooves to the plastic block to accommodate the soldered pins of the bottom-side components. Assuming a standard 0.062"" thickness FR4 board, how deep do I need to make the grooves in the plastic block? The only thing I could find is this NASA workmanship standard that states 0.5mm to 2.29mm, but I'm not sure if that will always hold true.
+",Joe Baker,https://electronics.stackexchange.com/users/10157,"Do you even need grooves?  We make several products using through-hole components that are intended to mount using VHB double-sided foam tape.  The boards are 0.062"" thick double-sided with PTH and we use a table-top vertical belt sander to bring the component leads almost flush with the solder mask.  In other words, the solder mask isn't touched by the sand paper but the leads are all sanded flat and sitting just proud of the solder mask.
+
+This works well for small boards.
+
+For what it's worth, there are commercial machines available that use a rotary saw blade to do the same thing.  The board is held horizontal in a mounting / clamping system on the base and the saw motor is vertical on a sliding X-Y mechanism.  The saw blade simply cuts all of the leads almost flush with the board surface.  
+
+This system is suited for boards of all sizes but especially for those boards larger than can be handled easily to be sanded with the belt sander.
+
+Also note that these techniques are suitable only for PC boards with plated-through holes.  
+",Dwayne Reid,https://electronics.stackexchange.com/users/64754,http://electronics.stackexchange.com/questions/154225/maximum-protusion-length-for-through-hole-component-pins,SCIENCE,electronics.stackexchange.com,0.8888888888888888,0.6666666666666666,0.0,1.0,1.0,1.0,0.6666666666666666,0.4444444444444444,0.3333333333333333,0.0,0.3333333333333333,0.0,0.0,0.0,0.0,0.0,1.0,0.3333333333333333,0.3333333333333333,0.0,0.7777777777777778,0.7777777777777778,0.5555555555555556,1.0,1.0,0.6666666666666667,0.0,0.3333333333333333,1.0,0.8888888888888888
+3,Can an affidavit be used in Beit Din?,"An affidavit, from what i understand, is basically a signed document given by a witness to be used as evidence in a trial, without the witness themselves needing to take a stand.
+
+Can an affidavit be used in Beit Din? Or must witnesses take the stand in person for their testimony to count?
+
+(In case i'm misunderstanding what exactly an affidavit is, simply treat it as a signed document by a witness with their testimony.)
+",Scimonster,https://judaism.stackexchange.com/users/5151,"Sending an ""affidavit"" it is a dispute between Rashi and Rabbeinu Tam.
+
+Devarim 19:15:
+
+
+  לא יקום עד אחד באיש לכל עון ולכל חטאת בכל חטא אשר יחטא על פי שני עדים או על פי שלשה עדים יקום דבר
+
+
+Rashi:
+
+
+  ולא שיכתבו עדותם באגרת וישלחו לבית דין
+  
+  And not that they write their testimony in a letter and send it to Beis Din
+
+
+Tosefos Bava Basra 40a (continued from 39b):
+
+
+  ועוד אומר ר""י ששמע מן ר""ת שנוהגים לשלח העדים עדותם באיגרת לב""ד וחשיב עדות והא דדרשינן בספרי. מפיהם ולא מפי כתבם לא אתא אלא למעוטי דוקא אלם שאינו בר הגדה אבל ראוי להגדה אין הגדה מעכבת בו 
+  
+  R""i said that he heard from Rabbeinu Tam that the custom is to send testimony by a letter and it is considered [valid] testimony.  And that which it expounds in the Sifre ""From their mouths and not from their writing"" is only coming to exclude a mute who is not able to speak, but someone who is able to speak does not need to speak.
+
+
+Rambam concludes it is not allowed, but in monetary law the Chachomim enacted that it would be accepted in order to not prohibit the ability of people to secure loans (Hilchos Edus 3:4)
+
+
+  דין תורה שאין מקבלין עדות, לא בדיני ממונות ולא בדיני נפשות, אלא מפי העדים:  שנאמר ""על פי שניים עדים"" (דברים יז,ו)--מפיהם, ולא מכתב ידן.  אבל מדברי סופרים שחותכין דיני ממונות בעדות שבשטר, אף על פי שאין העדים קיימין, כדי שלא תנעול דלת בפני לווין.
+
+",Y     e     z,https://judaism.stackexchange.com/users/4794,http://judaism.stackexchange.com/questions/55182/can-an-affidavit-be-used-in-beit-din,CULTURE,judaism.stackexchange.com,0.8888888888888888,0.6666666666666666,0.6666666666666666,1.0,1.0,1.0,0.4444444444444444,0.4444444444444444,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.8888888888888888,0.8333333333333334,0.3333333333333333,0.8333333333333334,1.0,0.8,0.0,0.0,1.0,1.0
+5,How do you make a binary image in Photoshop?,"I am trying to make a binary image. I want more than just the look of the image to be black/white, but I want the actual file to be a binary file. Every pixel should be either black, or white. 
+
+I don't just want a monochrome image. I can't have varying shades of gray, every pixel needs to be black or white.
+
+Is this possible? I looked under Image > Mode but nothing there seems to indiciate a binary style image.
+",leigero,https://graphicdesign.stackexchange.com/users/21313,"Check out Image Trace in Adobe Illustrator. 
+
+I like using python and PIL, however.
+
+from PIL import Image
+image_file = Image.open(""myimage.bmp"") 
+image_file = image_file.convert('1') # convert
+image_file.save('result.bmp')
+
+",q2ra,https://graphicdesign.stackexchange.com/users/27160,http://graphicdesign.stackexchange.com/questions/35791/how-do-you-make-a-binary-image-in-photoshop,LIFE_ARTS,graphicdesign.stackexchange.com,1.0,0.6666666666666666,0.0,1.0,1.0,1.0,0.6666666666666666,0.6666666666666666,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0,1.0,1.0,0.6666666666666666,1.0,1.0,0.8,1.0,0.0,1.0,1.0
+6,Column Grouping with Title in DataTables,"I am creating an HTML table with jQuery's DataTables plug-in. I would like to know if there is a way to group a number of columns together with a Title which describes what the grouping represents. 
+
+In my specific case, 3 of my columns will display an address (Street, City, State). I'd like them to have an additional border around just those columns with a title that indicates to the end-user that those 3 columns represent the address.
+
+I'm considering just changing the background color of those 3 columns which will do the job but I'm wanting the Address title to be displayed. I've seen that rows can be grouped together and sections divided by separators; however, I haven't yet come across anything that makes it possible to group columns together.
+",Joe,https://stackoverflow.com/users/2888211,"To show group headers see this example (build the &lt;thead&gt; element using colspan and rowspan).
+
+To show borders around you group build CSS classes with border-left and border-right and use the columns.className option for the first and last column in your group.
+",Raidri,https://stackoverflow.com/users/2610249,http://stackoverflow.com/questions/23815544/column-grouping-with-title-in-datatables,STACKOVERFLOW,stackoverflow.com,1.0,0.6666666666666666,0.0,0.5,1.0,1.0,0.4444444444444444,0.3333333333333333,0.0,0.0,0.5,0.0,0.0,0.0,0.0,0.0,1.0,0.5,0.0,0.0,0.8333333333333334,0.8888888888888888,0.6666666666666666,0.8888888888888888,1.0,0.7333333333333333,0.6666666666666666,0.6666666666666666,0.0,0.7777777777777778
+7,core file size with ulimit,"My question is probably not related to Ubuntu in particular, but since my desktop running this OS, I came to this forum.
+
+I am trying to change the core file size using ulimit -c command as follows:
+
+$ ulimit -a
+core file size          (blocks, -c) 0
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 7959
+max locked memory       (kbytes, -l) 64
+max memory size         (kbytes, -m) unlimited
+open files                      (-n) 1024
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) 8192
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) 1024
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+
+
+Changing the limitation:
+
+$ ulimit -c unlimited
+
+
+Observing the result:
+
+$ ulimit -a
+core file size          (blocks, -c) unlimited
+data seg size           (kbytes, -d) unlimited
+scheduling priority             (-e) 0
+file size               (blocks, -f) unlimited
+pending signals                 (-i) 7959
+max locked memory       (kbytes, -l) 64
+max memory size         (kbytes, -m) unlimited
+open files                      (-n) 1024
+pipe size            (512 bytes, -p) 8
+POSIX message queues     (bytes, -q) 819200
+real-time priority              (-r) 0
+stack size              (kbytes, -s) 8192
+cpu time               (seconds, -t) unlimited
+max user processes              (-u) 1024
+virtual memory          (kbytes, -v) unlimited
+file locks                      (-x) unlimited
+
+
+Indeed the limit is changed.
+However, when I open another terminal and check the value, I still see zero value in core file size.
+
+Questions:
+
+
+Are changes made using ulimit command affect only current process, i.e. in this case the bash?
+I launch a program from shell as a fore- or-background process. Does the ulimit change apply for new process ?
+How can I make that all user processes are affected with this configuration ?
+
+",maximb,https://askubuntu.com/users/425067,"ulimit is a shell builtin, and thus only affects the current shell, and processes started by that shell:
+
+$ type ulimit
+ulimit is a shell builtin
+
+
+From man ulimit:
+
+The  ulimit  utility  shall  set  or report the file-size writing limit
+imposed on files written by the shell and its child processes (files of
+any  size  may be read). Only a process with appropriate privileges can
+increase the limit.
+
+
+So, yes, child processes are affected.
+
+To set limits permanently or for all processes, edit /etc/security/limits.conf and reboot. The examples in the manpage are fairly good. You just need to add something like:
+
+username - core unlimited
+
+",muru,https://askubuntu.com/users/158442,http://askubuntu.com/questions/642656/core-file-size-with-ulimit,TECHNOLOGY,askubuntu.com,0.8888888888888888,0.3333333333333333,0.0,0.0,1.0,1.0,0.4444444444444444,0.3333333333333333,1.0,0.0,0.6666666666666666,0.6666666666666666,0.0,0.0,0.0,0.0,1.0,0.0,0.3333333333333333,0.0,0.6666666666666666,1.0,0.7777777777777778,1.0,0.8888888888888888,0.8666666666666666,1.0,0.0,1.0,0.8888888888888888
+9,How do you get your Steam games to run on Ubuntu through Wine or something similar?,"Ok, I was kind of surprised that this hadn't been asked here before, but maybe it's too technical for this site. You guys decide.
+
+I've heard lots of different stories about setting up Wine on Ubuntu, WineTricks, PlayOnLinux etc., but never a 'This is the best way to do it for Steam and Steam games' thread.
+
+So has anyone had any real success getting their Steam games to run on Ubuntu through Wine or something similar? If so, could we get some specific steps?
+",LoveMeSomeCode,https://gaming.stackexchange.com/users/7157,"You could try http://transgaming.com/ (Cedega).  I did this in the past and it worked fine, but you have to pay for it - :\
+",VoltaicShock,https://gaming.stackexchange.com/users/8419,http://gaming.stackexchange.com/questions/16751/how-do-you-get-your-steam-games-to-run-on-ubuntu-through-wine-or-something-simil,CULTURE,gaming.stackexchange.com,1.0,1.0,0.0,0.0,1.0,1.0,0.8888888888888888,0.7777777777777778,0.3333333333333333,0.0,0.0,0.3333333333333333,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.6666666666666666,0.6666666666666666,0.8888888888888888,1.0,0.8666666666666666,0.6666666666666666,0.0,0.0,0.8888888888888888
+11,High memory usage Windows Server 2008r2 on VMware,"We are running Windows Server 2008r2 on VMware and are experiencing extremely high memory use when nothing is running. The server memory usages slowly creeps up to 98-99%. The server is configured to use 8GB of memory. Is there some setting we should be using so the server can better manage it's memory usage. It's behaving as if there is a memory leak.
+",Tim Britton,https://serverfault.com/users/72141,"Well to better assist with your question:
+
+-Which VMware Product &amp; Version
+-What is the Windows 2008 R2 VM running?
+-Where are you seeing the high memory usage? Windows or your VMware product?
+",colealtdelete,https://serverfault.com/users/47027,http://serverfault.com/questions/240076,TECHNOLOGY,serverfault.com,1.0,0.3333333333333333,0.0,1.0,1.0,1.0,0.6666666666666666,0.5555555555555556,0.0,0.0,0.3333333333333333,0.3333333333333333,0.0,0.0,0.0,0.0,0.6666666666666666,0.0,0.3333333333333333,0.0,0.8888888888888888,0.6666666666666666,0.3333333333333333,0.6666666666666666,0.6666666666666666,0.26666666666666666,0.0,0.0,0.0,0.8888888888888888
+12,How do you grapple in Dead Rising 3?,"I just started playing Dead Rising 3 on the Xbox One. I got to the first grapple, and I can't figure out what I'm supposed to do. The top of the screen says ""Perform a gesture to escape a grapple"" - what does ""gesture"" mean in this context? Is it something to do with Kinect?
+",Nick Heiner,https://gaming.stackexchange.com/users/31532,"You can also switch gesture based grapple escapes off in the Kinect settings of Dead Rising 3 (along with all the rest of the Kinect features) so that you have to do QTE type button presses instead.
+",Dewi Rees,https://gaming.stackexchange.com/users/43859,http://gaming.stackexchange.com/questions/147970/how-do-you-grapple-in-dead-rising-3,CULTURE,gaming.stackexchange.com,1.0,0.7777777777777778,0.0,0.3333333333333333,1.0,1.0,0.7777777777777778,0.8888888888888888,0.6666666666666666,0.0,0.0,0.3333333333333333,0.0,0.0,0.0,0.0,1.0,0.0,0.6666666666666666,0.0,1.0,0.7777777777777778,0.3333333333333333,0.7777777777777778,0.7777777777777778,0.5333333333333333,0.3333333333333333,0.0,0.6666666666666666,0.7777777777777778
+14,How to compile and install programs from source,"This is an issue that really limits my enjoyment of Linux. If the application isn't on a repository or if it doesn't have an installer script, then I really struggle where and how to install an application from source.
+
+Comparatively to Windows, it's easy. You're (pretty much) required to use an installer application that does all of the work in a Wizard. With Linux... not so much.
+
+So, do you have any tips or instructions on this or are there any websites that explicitly explain how, why and where to install Linux programs from source? 
+",Nitrodist,https://unix.stackexchange.com/users/193,"I think it's just best to read the documentation coming with that specific program or application that you're wanting to install.
+Usually there are readmes/READMEs inside the tarballs (the application source archive which you can usually download) or maybe even INSTALL files to read and learn about what is the preferred way of installing said application.
+In short: RTFM ;)
+",reiche,https://unix.stackexchange.com/users/280,http://unix.stackexchange.com/questions/173/how-to-compile-and-install-programs-from-source,TECHNOLOGY,unix.stackexchange.com,0.8333333333333334,0.6666666666666666,0.0,1.0,1.0,1.0,0.6666666666666666,0.5,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.6666666666666666,0.6666666666666666,0.5,0.6666666666666666,0.8333333333333334,0.6,1.0,0.0,0.0,0.8333333333333334
+15,sleeping SPID blocking other transactions,"I'm really having trouble tracking down some blocking we are experiencing.
+
+The root blocking SPID's status is 'sleeping', the cmd is 'AWAITING COMMAND', and the sqltext is 'SET TRANSACTION ISOLATION LEVEL READ COMMITTED'.
+
+When I view the Top Transactions by Blocked Transactions Count report, the Blocking SQL Statement is '--'.
+
+I've performed a trace on the SQL and when the blocking happens tracing the root blocking SPID but it hasn't really led me anywhere.  The last trace statement is the same as the sqltext above 'SET TRANSACTION ISOLATION LEVEL READ COMMITTED'.
+
+I've checked all the related SPROCs I can find to make sure they have TRY/CATCH BEGIN TRAN/COMMIT TRAN/ROLLBACK TRAN statements (we use SPROCs for everything so there are no standalone statements being ran).  This issue just started happening over the last 24 hours and no one is claiming to have made any changes to the system.
+
+Solution.  One of our seldomly used SPROCs had an error with an insert (number of columns didn't match), but we are still confused on what exactly was happening.
+
+When looking at all the trace information, the EXEC statement for this SPROC was listed at times, but NEVER just before the BLOCK happened on the blockking SPID.  It seemed that when it starting blocking, the trace didn't record the execution of it (or any of the statements within it either).  However there are other times were the trace did record it's execution and no blocking occurred.
+
+The SPROC error report came from a user, and I was able to find multiple EXEC statements in traces and run them in SSMS.  No time when I ran them did we have any blocking occur or did they hang.  They ran as expected (the catch block fired and rolled back the transaction after the error).  After resolving the fixing the SPROC, we have not seen the issue again.
+",Brad,https://dba.stackexchange.com/users/10561,"Have you tried using Adam Machanic's sp_whoisactive? There's an option to get the outer command to see if it really is within a proc. It could be the application is holding open a transaction instead of committing it. Try looking at DBCC OPENTRAN as well.
+",Eric Humphrey - lotsahelp,https://dba.stackexchange.com/users/247,http://dba.stackexchange.com/questions/41709/sleeping-spid-blocking-other-transactions,TECHNOLOGY,dba.stackexchange.com,0.8888888888888888,0.4444444444444444,0.0,0.6666666666666666,0.3333333333333333,0.6666666666666666,0.5555555555555556,0.4444444444444444,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,1.0,0.3333333333333333,0.6666666666666666,0.0,0.6666666666666666,1.0,0.6666666666666666,1.0,1.0,0.8,1.0,0.3333333333333333,0.6666666666666666,1.0
+16,Verify $_POST script will work correctly,"can someone read through this script really quick and verify that I didn't miss anything... I'm not getting any errors in my IDE so just have to make sure the structure is correct
+
+&lt;?php
+require_once '/usr/local/cpanel/3rdparty/lib/php/Mail.php';
+
+$db_server = 'localhost';
+$db_user = '-----';
+$db_pass = '-----';
+
+$dbc = mysql_connect ($db_server, $db_user, $db_pass);
+if (!$dbc) { 
+    die(mysql_error());
+    header ('Location: /contact');
+    exit;
+}
+
+if ($_POST['contactsent'] != 'yes') {
+    header ('Location: /contact');
+    exit;
+
+} else {
+
+    if (is_array($_POST)) {
+        foreach ($_POST as $key =&gt; $value) {
+            $_POST[$key] = mysql_real_escape_string(stripslashes($value));
+        }
+    }
+
+    $RequestType      = $_POST[""RequestType""];
+    $ConsumerBusiness = $_POST[""ConsumerBusiness""];
+    $GlobalLocation   = $_POST[""GlobalLocation""];
+    $FirstName        = strtolower(str_replace(""'"",""''"",$_POST[""FirstName""]));
+    $FirstName        = strtoupper(substr($FirstName,0,1)).substr($FirstName,1);
+    $LastName         = strtolower(str_replace(""'"",""''"",$_POST[""LastName""]));
+    $LastName         = strtoupper(substr($LastName,0,1)).substr($LastName,1);
+    $Email            = strtolower(str_replace(""'"",""''"",$_POST[""Email""]));
+    $Title            = strtolower(str_replace(""'"",""''"",$_POST[""Title""]));
+    $Title            = strtoupper(substr($Title,0,1)).substr($Title,1);
+    $Company          = strtolower(str_replace(""'"",""''"",$_POST[""Company""]));
+    $Company          = strtoupper(substr($Company,0,1)).substr($Company,1);
+    $Address          = strtolower(str_replace(""'"",""''"",$_POST[""Address""]));
+    $Address          = strtoupper(substr($Address,0,1)).substr($Address,1);
+    $City             = strtolower(str_replace(""'"",""''"",$_POST[""City""]));
+    $City             = strtoupper(substr($City,0,1)).substr($City,1);
+    $State            = $_POST[""State""];
+    $Zip              = $_POST[""Zip""];
+    $Phone            = $_POST[""Phone""];
+    $F              = $_POST[""F""];
+    $ProductDesc      = $_POST[""ProductDesc""];
+    $Comment          = $_POST[""Comment""];
+
+    if ($GlobalLocation == ""Canada""):
+        $SendTo=""canadainfo@------.com"";
+    elseif ($GlobalLocation == ""Central America""): 
+        $SendTo=""customer.service@------.com.pa"";
+    elseif ($GlobalLocation == ""Europe""):
+        $SendTo=""marketing@-----.uk"";
+    elseif ($GlobalLocation == ""Mexico""):
+        $SendTo=""ventas@------.com.mx"";
+    else:
+        $SendTo=""info@------.com"";
+    endif;
+
+function dbSet($fields, $source = array()) {
+    $set='';
+    if (!source) $source = &amp;$_POST;
+    foreach ($fields as $field) {
+        if (isset($source[$field])) {
+            $set.=""`$field`='"".mysql_real_escape_string($source[$field]).""', "";
+        }
+    }
+    return substr($set, 0, -2);
+}
+
+// INSERT INTO DATABASE
+            mysql_select_db(""new_contact"",$dbc) or die(""Could not select new_contact"");
+
+$fields =   explode("" "", ""RequestType ConsumerBusiness GlobalLocation FirstName LastName Email Title Company Address City State Zip Phone F ProductDesc Comment"");
+            $query = ""INSERT INTO new_contact SET "".dbSet($fields, $_POST);
+            mysql_query($query);
+
+// SETUP EMAIL
+        $Bodycopy = ""This information was submitted via the ------.com website and sent to you because of the location 
+        identified by the user. &lt;br&gt;If this has reached you in error, please forward this email to info@------.com"";
+        $Bodycopy. ""&lt;br&gt;----------------------------------------------------------------------------------------------&lt;br&gt;&lt;br&gt;"";
+
+        if ($RequestType != """")      $Bodycopy. ""What kind of information do you need? : "" .$RequestType. ""&lt;br&gt;"";   
+        if ($ConsumerBusiness != """") $Bodycopy. ""What type of customer or vendor are you? : "" .$ConsumerBusiness. ""&lt;br&gt;"";
+        if ($GlobalLocation != """")   $Bodycopy. ""Global Location : "" .$GlobalLocation. ""&lt;br&gt;"";
+        if ($Company != """")          $Bodycopy. ""Company : "" .$Company. ""&lt;br&gt;"";
+        if ($FirstName != """")        $Bodycopy. ""First Name : "" .$FirstName. ""&lt;br&gt;"";
+        if ($LastName != """")         $Bodycopy. ""Last Name : "" .$LastName. ""&lt;br&gt;"";
+        if ($Title != """")            $Bodycopy. ""Title : "" .$Title. ""&lt;br&gt;"";
+        if ($Email != """")            $Bodycopy. ""Email : "" .$Email. ""&lt;br&gt;"";
+        if ($Address != """")          $Bodycopy. ""Address : "" .$Address. ""&lt;br&gt;"";
+        if ($City != """")             $Bodycopy. ""City : "" .$City. ""&lt;br&gt;"";   
+        if ($State != """")            $Bodycopy. ""State : "" .$State. ""&lt;br&gt;"";
+        if ($Zip != """")              $Bodycopy. ""Zip/Postal Code : "" .$Zip. ""&lt;br&gt;"";
+        if ($Phone != """")            $Bodycopy. ""Phone : "" .$Phone. ""&lt;br&gt;"";
+        if ($F != """")              $Bodycopy. ""F : "" .$F. ""&lt;br&gt;"";
+        if ($ProductDesc != """")      $Bodycopy. ""UPC or product description : "" .$ProductDesc. ""&lt;br&gt;"";
+
+        $Bodycopy. ""&lt;br&gt;----------------------------------------------------------------------------------------------&lt;br&gt;&lt;br&gt;"";
+
+        if ($Comment != """")          $Bodycopy. ""Comments : &lt;br&gt;"" .$Comment. ""&lt;br&gt;"";
+
+        $Bodycopy. ""&lt;br&gt;&lt;br&gt;"";
+        $Bodycopy. $IP = $_SERVER[""remote_addr""];
+
+// PROCESS EMAIL
+
+// mail server info...
+
+        $from = $SendTo;
+        $to = ""Do Not Reply &lt;donotreply@------&gt;"";
+        $subject = ""Website Contact : "" . $GlobalLocation;
+        $body = $Bodycopy;
+        $host = ""mail.------"";
+        $port = ""25"";
+        $username = ""donotreply@-------"";
+        $password = ""-------"";
+
+        $headers = array ('From' =&gt; $from,
+        'To' =&gt; $to,
+        'Subject' =&gt; $subject);
+        $smtp = Mail::factory('smtp',
+        array ('host' =&gt; $host,
+         'auth' =&gt; true,
+         'port' =&gt; $port,
+         'username' =&gt; $username,
+         'password' =&gt; $password));
+
+        $mail = $smtp-&gt;send($to, $headers, $body);
+
+        if (PEAR::isError($mail)) {
+        echo(""&lt;p&gt;"" . $mail-&gt;getMessage() . ""&lt;/p&gt;"");
+        } else {
+        echo(""&lt;p&gt;Message successfully sent!&lt;/p&gt;"");
+        }
+
+// MAKE SURE DB CONN IS CLOSED
+        mysql_close($dbc);
+
+// REDIRECT TO THANK YOU PAGE
+        header ('Location: /index.php?option');
+        exit();
+
+}
+
+?&gt;
+
+",acctman,https://codereview.stackexchange.com/users/13137,"Although it'll lenghten your code quite a bit, in my opinion it's worth checking if the $_POST variables are set (using isset), to avoid any exceptions.
+",mikeythemissile,https://codereview.stackexchange.com/users/13145,http://codereview.stackexchange.com/questions/11466/verify-post-script-will-work-correctly,TECHNOLOGY,codereview.stackexchange.com,1.0,0.3333333333333333,0.0,1.0,0.3333333333333333,1.0,0.4444444444444444,0.4444444444444444,0.0,0.0,1.0,0.3333333333333333,0.0,0.0,0.0,0.0,0.3333333333333333,0.0,0.3333333333333333,0.0,0.6666666666666666,0.8888888888888888,0.5555555555555556,1.0,1.0,0.6,1.0,0.0,0.3333333333333333,1.0
+17,"what's the relation between sensor size and image quality (noise, dynamic range)?","I'm reading this description on sensor size:
+
+
+  Digital compact cameras have substantially smaller sensors offering a
+  similar number of pixels. As a consequence, the pixels are much
+  smaller, which is a key reason for the image quality difference,
+  especially in terms of noise and dynamic range.
+
+
+Could you please elaborate on the last sentence: what's the relation between sensor size and image quality? In particular, what are the advantages and disadvantages of a small sensor (of a compact camera, in contrast to a large sensor of a DSLR camera)?
+",cody,https://photo.stackexchange.com/users/11005,"A digital image sensor is ultimately a device that uses the photovoltaic or photoconductive properties of photodiodes to convert photons into electrons (charge), which can later be read out as a saturation value and converted to a digital pixel. This is an analog-to-analog then analog-to-digital conversion process. 
+
+The key behavior of a photodiode relevant to imaging, converting photons to electrons, improves with total surface area. The more surface area, the greater the area to detect photon strikes per photodiode, and the greater the physical material area within which electron charge (signal) can be collected. In other words, larger physical pixel area equates to higher signal ratio. The ""depth"" of a well is ultimately immaterial to modern Bayer-type CFA sensors, as deeper penetration only really has a filtration effect...the deeper a photon penetrates a photodiode, the more blueshifted light will be filtered out in favor of redshifted light. This is due to the response curve of the type of silicon used in photodiodes...which are more sensitive to infrared wavelengths than visible light wavelengths, and more sensitive to visible light wavelengths than ultraviolet and x-ray wavelengths.
+
+Finally, being electronic devices, image sensors produce a variety of forms of electronic noise. In particular, they are susceptible to a low number of electrons in any given photodiode being generated from the low level of dark current that is always running through the sensor. Being devices sensitive to electromagnetic frequencies, the intrinsic field of the sensor itself can be affected by strong, nearby devices that emit electromagnetic frequencies of their own (if its not shielded properly) which can produce banding. Slight differences in the exact electrical response of each pixel can produce slight variations in how the charge accumulated in a photodiode is read out, and there can be thermally induced forms of noise. These forms of noise create a signal floor wherein it becomes difficult or impossible to determine of a digital pixel level is the product of an actual photon capture or due to electronic and thermal noise. So long as the image signal is larger than the noise floor, or in other words the signal to noise ratio (SNR) is high, a useful image can be produced.
+
+All things being equal...and by that, I mean the same number of pixels, the same ultimate sensor design characteristics, the same amount of dark current, the same amount of read noise...a smaller sensor will be noisier than a larger sensor because the larger sensor, with the exact same number of pixels, can have larger surface area for each of those pixels, allowing more electrons to be captured for any given photon strike. A larger pixel has a higher maximum saturation point, which allows more total electron charge before the pixel is ""full"" or totally white. That intrinsically increases SNR, reducing the impact that electronic noise has on the final image signal, producing less noisy images at exactly the same settings as a smaller sensor.
+
+Dynamic range is the total usable tonal range available from a sensor. It is ultimately affected by the amount of electronic noise present in a sensor and the maximum saturation point of the pixels, or the ratio between the mean of electronic noise and the maximum saturation point of each pixel in the sensor. Again, all things being equal, dynamic range will be better on a larger sensor as the SNR, even at low signal levels, is going to be slightly better than a smaller sensor, and at higher signal levels it can be significantly better. As is often the case with image sensors these days, increasing pixel size, or for that matter increasing a pixels maximum sensitivity (ISO), has the effect of also increasing the maximum amount of read noise at low ISO. This is ultimately due to poor control over electronic noise to start with, resulting in higher read noise at minimum ISO for larger sensors than for smaller sensors. While the increase in read noise is often still minor compared to the increase in maximum saturation point, and therefor does not affect maximum SNR much, it can mitigate or eliminate any gains at the sensors minimal SNR level, reducing or eliminating any improvement in dynamic range as well.
+",jrista,https://photo.stackexchange.com/users/124,http://photo.stackexchange.com/questions/26001/whats-the-relation-between-sensor-size-and-image-quality-noise-dynamic-range,LIFE_ARTS,photo.stackexchange.com,0.8888888888888888,1.0,0.0,0.0,1.0,0.0,0.6666666666666666,0.3333333333333333,0.0,0.0,0.0,0.0,0.3333333333333333,0.0,0.0,0.0,0.0,0.0,0.6666666666666666,0.0,1.0,1.0,0.6666666666666666,1.0,1.0,1.0,0.0,0.0,1.0,1.0
+18,"multiple keys via HKDF - whats better, one or two applications of HKDF-extract","Assume for the sake of the question that I have two variable-length bit strings, each with 128 bit cryptographic randomness, and I want to extract two 128 bit keys via HKDF-SHA256.
+
+Which alternative is better (if any), and why?
+
+
+Use a single HKDF-extract on the concatenation of the two strings, and two HKDF-expands with different info strings to get two 128 bit keys.
+Use two HKDF-extract operations, one for each bit string, and use a single HKDF-expand on each to get two 128 bit keys.
+
+
+Or in other words, is it better to HKDF-extract on a longer IKM string and use multiple HKDF-expands, or is it better to use HKDF on independent but shorter IKMs.
+
+My intuition tells me that, if my randomness strings are really as good as I claim, then two independent HKDF extracts are better, but using a single one on the concatenation is, in practice, just as safe, and safer if my input randomness is not actually as good as assumed, so two HKDFs might be more robust in practice.
+",Marc Lehmann,https://crypto.stackexchange.com/users/7672,"Realistically, it probably doesn't matter, if all of your premises are accurate.
+
+If it were me, I'd probably concatenate the inputs, then apply a HKDF to the concatenation to derive two keys -- but honestly, it's unlikely to matter.  This is very unlikely to be the weakest link in your system.  Pick something that's easy to implement and easy to understand, and move on: focus your energy on some other aspect of your system.
+",D.W.,https://crypto.stackexchange.com/users/351,http://crypto.stackexchange.com/questions/9318/multiple-keys-via-hkdf-whats-better-one-or-two-applications-of-hkdf-extract,TECHNOLOGY,crypto.stackexchange.com,1.0,1.0,0.0,1.0,1.0,0.0,0.6666666666666666,1.0,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.3333333333333333,1.0,1.0,0.9,0.0,0.0,0.0,1.0
+19,What filter should I use to avoid overly-whitened daylight  images?,"What filter should I use to avoid whitened images (blown highlights) caused by intense daylight? At the moment I am only using an UV Filter, but it doesn't solve the whole problem.
+
+I am a newbie in photography, and I've recently bought a Nikon DSLR.
+",Daniel,https://photo.stackexchange.com/users/6471,"If you are indeed referring to your images having too much contrast to allow for both a properly exposed subject and sky, then there are a few options.
+
+
+As Zak stated, you could use exposure compensation to darken the entire image (this might make the non-sky portion of the image too dark though)
+Use a graduated neutral density filter. This will selectively darken one part of an image while leaving the other part alone. This is the old-school method. While it typically limits the transition between the filtered and unfiltered parts to a straight line, it does allow you to fix things at the time of the shot without having to spend time tweaking it on the computer afterwards. 
+HDR (High Dynamic Range) photography. This is the hi-tech way to do things. This requires that you take multiple shots of the same scene at different exposures and use software to combine them into one image where both the highlights and shadows are well-exposed. 
+
+",AndrewStevens,https://photo.stackexchange.com/users/6186,http://photo.stackexchange.com/questions/15334/what-filter-should-i-use-to-avoid-overly-whitened-daylight-images,LIFE_ARTS,photo.stackexchange.com,1.0,1.0,0.3333333333333333,1.0,0.6666666666666666,0.0,1.0,0.5555555555555556,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.6666666666666666,0.3333333333333333,0.0,0.0,0.0,1.0,1.0,0.6666666666666666,1.0,1.0,1.0,0.3333333333333333,0.0,0.0,1.0
+22,Create heatmap with PSTricks or TikZ,"I have a huge amount of 2D-coordinates, associated with a value, e.g.:
+
+  x   |   y   | value
+27.50   52.15   12.51
+61.83   13.32   57.56
+36.23   21.83   41.73
+40.46   85.67   25.20
+...
+
+
+The data is not tabular and I Want the points between two data-points to be interpolated in some way (which way is not really clear, yet)
+
+I want to preset the data as heatmap like this:
+
+
+Is there any ready-to-use package for PSTricks or TikZ to do it?
+",user2033412,https://tex.stackexchange.com/users/35228,"There is tikzDevice for R which will generate TikZ code for a plot created in R. So, if you use R to create your heat map (say, using ggplot2's geom_density2d()), you also get the TikZ code with little effort. There is a learning curve, though.
+
+However, this kind of image should be included as a (perhaps high-resolution) raster image in your document, as the vector version might take a long time to render. So you can create a TikZ version of the plot, compile it to PDF and then convert to PNG at the required resolution/pixel density.
+",krlmlr,https://tex.stackexchange.com/users/8057,http://tex.stackexchange.com/questions/133882/create-heatmap-with-pstricks-or-tikz,TECHNOLOGY,tex.stackexchange.com,1.0,0.7777777777777778,0.0,1.0,1.0,1.0,0.5555555555555556,0.3333333333333333,0.0,0.0,0.0,0.3333333333333333,0.0,0.0,0.0,0.3333333333333333,0.6666666666666666,0.0,0.0,0.0,0.7777777777777778,0.5555555555555556,0.7777777777777778,0.7777777777777778,1.0,0.9333333333333332,1.0,0.0,0.0,1.0
+23,Can you book hotels on a prepaid credit card worldwide?,"I tend to stay at smaller boutique hotels or local apartments when I visit a city but recently due to some credit card issues I will need to depend on prepaid Visa.  But I noticed when I try to shop online a lot of retailers don't accept prepaid credit cards so I'm thinking hotels would be even stricter.  Is there a list somewhere of countries or particular hotel chains than ban prepaid cards? If so, how does one book online or reserve a room without a card?  Do all hotels worldwide accept cash?
+",verve,https://travel.stackexchange.com/users/2283,"TL;DR - Depends, on your pre-paid card, the hotel, and how you book the hotel.
+
+There are a few different charges to consider here:
+
+
+Pre-payment of the room at/shortly after booking
+Holding the room on a flexible booking
+Deposit at checkin
+Room charge, meals, drinks, extras etc at checkout
+
+
+With many OTAs and hotel websites, if you make a non flexible booking, or some kinds of flexible bookings, they will charge your card for the room rate during the booking process. With some others, they'll send your card details through to the hotel, who'll put it through their tills later. (Maybe that day, maybe during a weekly sweep). In order for this pre-payment to go through, your card will need to support offline / cardholder-not-present transactions. As long as your card advertises itself as ""suitable for online shopping"" or similar, and as long as the card issuer doesn't block travel booking, you should be fine. Speak to your card issuer to be sure.
+
+Alternately, when reserving the room, you might opt for a flexible rate where you pay at checkout, with no pre-payment. This is typically offered on the hotel's own site, and some OTAs. They will normally ask for a credit card to ""hold"" the reservation, which would be charged in the event of a no-show, but as long as you turn up as planned the card won't be charged. These rates are normally a bit more expensive than non-flexible pre-paid ones, but this style of booking should be fine on any card.
+
+At checkin, most hotels (but not all) will want to take some sort of deposit. Typically this covers any unpaid parts of the room rate, along with expected spend in the restaurant / bar / etc. The details taken would also be used in the event of damage. If you've pre-paid the room and don't plan to run up extras in the hotel, many hotels would let you not leave a deposit, but not all. Very small hotels may take a look at you, decide you look fine, and tell you to pay everything at checkout. Some hotels may want to take something no matter what.
+
+For the deposit, this is normally done as a pre-authorisation. Not all pre-paid card support this, which would be a problem. Some pre-paid cards do support it, but badly, and might take a week or so to release the reserved funds, which could be a problem. Check with your card issuer about this. Alternately, many hotels which require a deposit will be willing to take a cash deposit, but they may well want a larger cash deposit than they'd normally authorise on a credit card. (They can't charge extras to the card later for example). Expect to leave a hefty chunk of cash as a deposit, expect checkin to take a while, expect several people to count the money, bills may be checked for counterfeits, and expect a receipt at the end. Speak with the hotel first to see if they need a deposit, and if they take cash ones. As a datapoint, I once got stuck in a checkin queue behind someone doing a cash deposit, he was asked to leave something like 4 nights room rate as a deposit on a 2 night stay.
+
+Finally, we have settling up the bill at the end. If you pre-paid, and didn't eat there, you could well find there's nothing to pay, or just a few dollars / pounds / euros in city taxes. Alternately, if you didn't pre pay (or they didn't take it), ate in the restaurant lots etc, you could have a decent amount to pay here. You'll be present, so any card which supports in-person transactions will be fine for this. Well, as long as you have the money on it for the bill that is! If you did a cash deposit, you should get the choice between taking the bill off that and getting the remainder, or getting the whole deposit back in cash and paying on a card.
+
+Oh, one more possibility - charges not noticed at checkout. Maybe you forgot to tell them about the minibar charges, maybe that morning's breakfast didn't go through, something like that. If you used a credit card for the deposit, expect them to charge it to that later when they notice. If you paid cash, expect to get a bill in the mail some time later.
+
+Can it be done - sure! Can it be done at one specific hotel with one particular kind of pre-paid card on one specific rate booked one specific way? Depends...
+",Gagravarr,https://travel.stackexchange.com/users/26,http://travel.stackexchange.com/questions/35395/can-you-book-hotels-on-a-prepaid-credit-card-worldwide,CULTURE,travel.stackexchange.com,0.7777777777777778,0.7777777777777778,0.0,1.0,0.6666666666666666,0.5,0.6666666666666666,0.6666666666666666,0.6666666666666666,0.0,0.6666666666666666,1.0,0.0,0.0,0.0,0.0,0.6666666666666666,0.0,0.3333333333333333,0.0,0.8888888888888888,1.0,0.7777777777777778,1.0,0.8888888888888888,0.9333333333333332,0.0,0.0,1.0,0.8888888888888888
+24,Fiber Channel SAN hooked up to 2 ESXi Hosts,"I have a PowerVault with 4 FC modules at 8gb/s. I don't want to jack the SAN into our 10/100/1000 switch because of the max 1gb/s speed.
+
+My question is can I jack both ESXi host's FC into the SAN's FCs and have HV and vMotion?
+",Frank,https://serverfault.com/users/95480,"The SAN itself doesn't need an Ethernet connection in this case, all it needs is FC to the ESXi hosts. The ESXi hosts will need GigE Ethernet. During VMotion, the source ESXi starts sending machine-state to the target ESXi host over the VMKernel connection in the virtual-switch. That's actually a connection between the two ESXi hosts over your physical Ethernet switch. Meanwhile, when state is fully transferred control of the VMDK files is passed over to the target server it it goes live. So, vMotion requires both FC and Ethernet.
+
+HA (what I presume you meant by HV) requires vMotion to work, so should be available if vMotion is working. 
+
+Unless you meant Hardware Virtualization, or direct LUN presentation. That can also work, but is trickier. The same volume needs to be presented to both ESXi hosts using exactly the same LUN number, if it doesn't have the same LUN number that volume won't be visible when the VM is on one or the other ESXi host. 
+",sysadmin1138,https://serverfault.com/users/3038,http://serverfault.com/questions/314105,TECHNOLOGY,serverfault.com,0.7777777777777778,0.5555555555555556,0.0,1.0,0.6666666666666666,1.0,0.5555555555555556,0.3333333333333333,0.0,0.0,0.3333333333333333,1.0,0.0,0.0,0.0,0.0,0.6666666666666666,0.0,0.6666666666666666,0.0,0.8888888888888888,0.6666666666666666,0.6666666666666666,0.6666666666666666,0.8888888888888888,0.9,0.3333333333333333,0.3333333333333333,0.6666666666666666,1.0
+25,How do I remove a Facebook app request?,"Unfortunately, because of some fat fingering when browsing the Klout website from my iPad I accidentally sent app requests to 50 friends. I am really annoyed by these sort of requests and certainly did not intend to send them to my friends.
+
+
+Can I view the app requests I've sent on Facebook?
+Can I undo the requests that I've sent?
+Can I add a privacy setting to prevent any Facebook app (Klout or otherwise) from ever sending these requests in the future?
+
+",ahsteele,https://webapps.stackexchange.com/users/186,"There isn't a native way with Klout's UI that I am aware of. Your best bet is finding a Chrome Extension that handles Facebook JS SDK API calls, then you can do something like this
+
+FB.api('/me/apprequests', function(response) {
+  var ids = [];
+  for (var i=0, l=response.data.length; i&lt;l; i++) {
+    FB.api('/' + response.data[i].id, 'DELETE', 
+      function(response){ console.log('cleared request:' + response) } 
+    );
+    console.log('For: ' + response.data[i].to.name);
+  }
+});
+
+
+Quick and dirty would be to just paste this into your Developer console on Klout's page.
+
+
+",phwd,https://webapps.stackexchange.com/users/40,http://webapps.stackexchange.com/questions/37568/how-do-i-remove-a-facebook-app-request,TECHNOLOGY,webapps.stackexchange.com,1.0,0.5555555555555556,0.0,0.3333333333333333,1.0,1.0,0.8888888888888888,0.8888888888888888,1.0,0.0,0.3333333333333333,0.3333333333333333,0.0,0.0,0.0,0.0,1.0,0.6666666666666666,0.0,0.0,1.0,0.8888888888888888,0.5555555555555556,1.0,1.0,0.7333333333333333,1.0,0.3333333333333333,0.0,0.8888888888888888
+27,How often do I need to change my oil in a VW TDI?,"The manual for my 2003 VW TDI says to change the oil every 12 months or 10,000 miles.  My dealer says every 6 months or 5,000 miles.
+
+Are they just trying to make twice as much money off my oil changes, or is there a legitimate reason to change the oil twice as often as VW originally printed in the book?
+",Ken,https://mechanics.stackexchange.com/users/3547,"2013 Passat TDI. Have an oil analysis done and quit speculating. I change at 8.5 to 9k as that is when the additive package was low on my last analysis. 
+",pete,https://mechanics.stackexchange.com/users/7604,http://mechanics.stackexchange.com/questions/6856/how-often-do-i-need-to-change-my-oil-in-a-vw-tdi,CULTURE,mechanics.stackexchange.com,1.0,1.0,0.0,0.5,1.0,1.0,0.6666666666666666,0.5555555555555556,0.0,0.0,0.3333333333333333,0.6666666666666666,0.0,0.0,0.0,0.0,0.3333333333333333,0.0,0.6666666666666666,0.0,1.0,0.6666666666666666,0.3333333333333333,0.7777777777777778,0.7777777777777778,0.5,0.6666666666666666,0.3333333333333333,0.0,0.6666666666666666
+29,Does this statement make any sense?,"I am asking this question completely out of curiosity. The other day, my roommate, by mistake, used 'Light year' as a unit of time instead of distance. When I corrected him (pedantic, much), he said the following:
+
+""Units are relative. And according to Fourier Transforms, units can be changed so Light year is a unit of time.""
+
+That got me thinking and I read up Fourier Transforms on wikipedia but couldn't find anything about using a unit in one domain as a unit for another measurement. I do agree that units (particularly, base units are relative. eg: the meter), but does his statement make any sense?
+
+EDIT
+Thank you everyone for all the answers. It isn't so much to in it in or prove a point as it is to understand the concept better. Anyways this is his response after I showed him this thread. Any comments would be appreciated.
+
+His response:
+Nevermind, for the first time I accept I was wrong. BUT using lightyears to measure time is possible. My example didn't make sense bacause I was wrong when I meantioned that I'm still measuring dist. If you have a signal in time domain and ...take the FT, I get a signal which DOES NOT HAVE to be in frequency domain. Clarify this to the guy who posted last. Now the new signal is in a domain defined by me and so is its units. This signal although not equal to the original signal, still represents that if ya take an inverse FT. So, the idea of time will still be there. Now coming back to our case: lightyears here is not the lightyears you are used to read when dealing with distance. It represents time.
+",xbonez,https://physics.stackexchange.com/users/436,"This doesn't make much sense: light year is in any case a unit of distance.
+
+What is common is to use ""reduced units"", for examples units where $c=1$ (speed of light) or $h=2\pi$. But in these cases the opposite would happen: you would say ""year"" to mean a distance. Or for example you say ""has a mass of xyz MeV"" instead of ""$MeV/c^2$"".
+
+
+
+About the Fourier transform: this allow to go from the so-called ""time domain"" (even if ""time"" is not always the usual time) to the ""frequency domain"" involving ... frequencies.
+
+But as you can see this cannot change the definition of light-year.
+",Cedric H.,https://physics.stackexchange.com/users/82,http://physics.stackexchange.com/questions/862/does-this-statement-make-any-sense,SCIENCE,physics.stackexchange.com,0.8333333333333334,0.6666666666666666,0.5,0.5,0.5,0.5,0.6666666666666666,0.6666666666666666,0.0,0.0,1.0,0.5,0.0,0.0,0.5,0.0,0.0,0.0,0.5,0.0,0.6666666666666666,0.8333333333333334,0.6666666666666666,1.0,1.0,0.8,0.0,0.0,1.0,0.8333333333333334
+30,"2 servers, high availability and faster response","I recently bought a second webserver because I worry about hardware failure of my old server. Now that I have that second server I wish to do a little more then just have one server standby and replicate all day. As long as it's there I might as well get some advantage our of it !
+
+I have a website powered by ubuntu 12.04, nginx, php-fpm, apc, mysql (5.5) and couchdb.
+
+Im currently testing configurations where i can achieve failover AND make good use of the extra harware for faster responses / distributed load.
+
+The setup I am testing nowinvolves heartbeat for ip failover and two identical servers. Of the two servers only one has a public ip adress. If one server crashes the other server takes over the public ip adress. On an incoming request nginx forwards the request tot php-fpm to either server a of server b (50/50 if both servers are alive). Once the request has been send to php-fpm both servers look at localhost for the mysql server. I use master-master mysql replication for this. The file system is synced with lsyncd.
+
+This works pretty well but Im reading it's discouraged by the (mysql) community.
+
+Another option I could think of is to use one server as a mysql master and one server as a web/php server. The servers would still sync their filesystem, would still run the same duplicate software (nginx,mysql) but master slave mysql replication could be used. As long as bother servers are alive I could just prefer nginx to listen to ip a and mysql to ip b. If one server is down, the other server could take over the task of the other server, simply by ip switching. 
+
+But im completely new at this so I would greatly value your expert advice. Is either of the two setups any good ? If you have any thoughts on this please let me know !
+
+PS, virtualisation, hosting on different locations or active/passive setups are not solutions im looking for. I find virtual server either too slow or too expensive. I already have a passive failover on another location. But in case of a crash I found the site was still unreachable for too long due to dns caching.
+",user17886,https://serverfault.com/users/133018,"We do it on all our customer HA boxes and our Magento MicroCloudTM/ configurations, so that the fail over system(s) isn't idle. Look into DRBD, Linux VServer and heartbeat. 
+
+Read the following for an insight into it.
+
+http://linux-vserver.org/Getting_high_with_lenny
+
+Caveat
+But as always, we advise not trying to do this unless you have substantial experience, as you are more likely to end up with a more unreliable configuration, that is harder to debug and if you end up in a split brain situation, more likely to have data loss ... than a plain old single server.
+",Ben Lessani - Sonassi,https://serverfault.com/users/113375,http://serverfault.com/questions/430759,TECHNOLOGY,serverfault.com,0.8888888888888888,0.3333333333333333,0.0,0.6666666666666666,0.0,0.3333333333333333,0.4444444444444444,0.3333333333333333,0.3333333333333333,0.0,1.0,0.3333333333333333,0.3333333333333333,0.0,0.0,0.0,0.3333333333333333,0.0,0.6666666666666666,0.0,0.6666666666666666,1.0,0.6666666666666666,1.0,1.0,0.9333333333333332,0.6666666666666666,0.0,0.6666666666666666,0.8888888888888888
+31,Why does string theory have such a huge landscape?,"I was browsing through Foundations of Space and Time, a compilation of essays on various theories of quantum gravity. The following passage in the introduction intrigued me:
+
+
+  Each compactification leads to a different vacuum state.... at least one state should describe our Universe in its entirety.... the enormous number (~10^500 at last count) of solutions, with no perturbative mechanism to select mechanism to select among them, leads some critics to question the predictive power of the theory..Even more worrying is that, while the theory is perturbatively finite order by order, the perturbation series does not seem to converge.
+
+
+I don't know anything about string theory and so I could not make head or tails this. All I know is that ~$10^{500}$    is a very large number. 
+
+
+What exactly is a 'solution' in string theory? Is it a spacetime metric of some sort or the terms of a S-matrix of some sort?  
+Why are there so many 'solutions'? 
+I thought string theory was supposed to be finite, why do perturbative series still diverge?
+Is there any experimental technique to limit the number of 'solutions'?  
+Will experimental techniques be able to pinpoint a solution within present day string theorists' lifetimes too? If not, how long will it take before we can experimentally probe these things? 
+Are string theorists completely relaxed about these issues? Or are they in anguish? 
+
+",dj_mummy,https://physics.stackexchange.com/users/28244,"
+  ""Each compactification leads to a different vacuum state.... at least
+  one state should describe our Universe in its entirety.... the
+  enormous number (~10^500 at last count) of solutions, with no
+  perturbative mechanism to select mechanism to select among them, leads
+  some critics to question the predicitive power of the theory..Even
+  more worrying is that, while the theory is perturubatively finite
+  order by order, the pertrubation series does not seem to converge.""
+
+
+Ok.  
+
+
+  I don't know anything about string theory and so I could not make head
+  or tails this. All I know is that ~10^500 is a very large number.
+
+
+That, it is.      
+
+
+  What exactly is a 'solution' in string theory? Is it a spacetime
+  metric of some sort or the terms of a S-matrix of some sort?  
+
+
+So, we have a non-peturbative definition of M-theory and string theories on AdS Space through the AdS/.CFT correspondence. Now,  these are 10 or 11-dimensional.          To get rid of the extra 6 or 7 dimensions, you need to compactify it on a 6-dimensional or 7-dimensional manifold. 
+
+A particularly convinient compactifications of 11-dimensional M-theory is on $G(2)$-holonomy manifolds.       Particularly convinient compactifications of 10-dimensional string theories, such as Type HE, are on $SU(3)$-holonomy Calabi-Yau manifolds.      Of course, it's not necessary; e.g. if the world happens to be something with $\mathcal N=2$ supersymmetry, as opposed to                           $\mathcal N=1$.             
+
+
+  Why are there so many 'solutions'?  
+
+
+Because there are lots of these manifolds!       
+
+
+  I thought string theory was supposed to be finite, why do perturbative
+  series still diverge?  
+
+
+Uh... Yes. But it's renormaliable. And there are non-peturbative definitions in AdS spacetime.     
+
+
+  Is there any experimental technique to limit the number of
+  'solutions'?  Will experimental techniques be able to pinpoint a
+  solution within present day string theorists' life      times too? If
+  not, how long will it take before we can experimentally probe these
+  things?
+
+
+In principle, it's possible.    But in anyone's lifetime... Do you know how big $10^{500} $ is? % See this.   
+
+
+  Are string theorists completely relaxed about these issues? Or are
+  they in anguish?    
+
+
+There's the branch of String Phenomenology that attempts  to find the correct vacua...     
+",centralcharge,https://physics.stackexchange.com/users/23119,http://physics.stackexchange.com/questions/75441/why-does-string-theory-have-such-a-huge-landscape,SCIENCE,physics.stackexchange.com,1.0,0.5555555555555556,0.0,0.6666666666666666,0.6666666666666666,1.0,0.6666666666666666,0.5555555555555556,0.6666666666666666,0.0,0.3333333333333333,0.3333333333333333,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,1.0,0.6666666666666666,1.0,1.0,1.0,0.0,0.0,1.0,1.0
+32,What are the benefits of owning a physical book?,"I have seen this question about updates of the D&amp;D 4th Edition books, and it got me thinking.
+Since I got my Kindle I have not read a single paper novel; they have fewer drawbacks compared to digital copies than rpg rulebooks.
+
+
+Dead-tree types have some benefits like looking good on a bookshelf, but any ebook reader weighs less with 100 novels than the usual hard-cover book. 
+If you want to look for the damage of Ares Alpha, even with a half-decent tablet it takes less than 2 seconds.  
+Digital copies do not get worn, they never get unwanted earmarks, but you can bookmark them.
+Rulebooks do get updates, and unless you are willing to take a pen to your book, your hard copies will never contain them. The pdfs can be edited and resent to the buyers. 
+Even better is the WotC approach with the DDI, you can look up any monster or item or (almost any) rule, in the most recent form, for 3 years at the cost of seven books. 
+
+
+I think this is the way to go, even considering the horribly slow character builder. Although I must admit good illustration can help build the athmosphere.
+
+So what am I missing? Why are people buying rpg rulebooks in paper format? Why are books even published, I do not need to know if feats are supposed to be on the right page and skills on the left, I just want a list of them, filterable any way I want. 
+
+Is this just a necessary part of earning money? I understand that pdfs are copied illegally, but the Compendium is not. 
+",András,https://rpg.stackexchange.com/users/9552,"As others have said - there's definitely something to be said about tactile navigation. 
+
+While digital formats (assuming they're text-parseable) can be searched, if you don't know the specific spelling or the specific term, they can be difficult to parse by hand. Quadruply so if the publisher did not provide bookmarks to the different chapters. (Which is really annoying, imo.)
+
+By contrast, with a physical copy, you can pick up a general sense of where the desired content is physically located fairly quickly. For example: Combat Rules are towards the middle. Spell lists are towards the end. Character classes are near the beginning. The more familiar one is with the book, the quicker this is to process (and more accurate one tends to get).
+
+Additionally - I stare at a digital monitor all day at work; then for most of the evening. So if I actually have to read something, I'll opt for ink on paper, just to save my eyes that itty little bit. :) 
+
+(Kindles are awesome, but they can be slow; plus, some books have art work and/or tables that I am unsure would translate over very well.)
+",phil,https://rpg.stackexchange.com/users/5603,http://rpg.stackexchange.com/questions/34615/what-are-the-benefits-of-owning-a-physical-book,CULTURE,rpg.stackexchange.com,1.0,0.3333333333333333,0.3333333333333333,0.0,0.6666666666666666,0.0,0.8888888888888888,0.8888888888888888,1.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.6666666666666666,0.0,0.3333333333333333,0.0,1.0,0.8888888888888888,0.6666666666666666,1.0,1.0,0.9333333333333332,0.0,0.0,1.0,1.0
+33,I teleported too high on my Minecraft server,"My friends own a Minecraft server and I was playing around with commands when I teleported to y 100000000000000000000000000000000 just because I wanted to see how high maps could go. That was a big mistake. Now every time I go on the server I crash. 
+
+I don't have access to the server files and I don't have the owner's email or phone number or anything and I'm the only one that plays on the server. I know that one solution is to make a new Minecraft character but that would involve me to pay. 
+
+Is there some way I can delete my player information or change the location without access to the server files? I don't want to leave the server because I've been building a castle for 3 months now and I don't want to give up that easy.
+",josiah,https://gaming.stackexchange.com/users/49831,"Yer, you're basically screwed :I. Even though you don't have contact to the owner maybe try and get a friend to go online and get them to teleport you to the ground or get them to contact the owner, as only he will be able to fix this.
+",ReallyGoodPie,https://gaming.stackexchange.com/users/47440,http://gaming.stackexchange.com/questions/119737/i-teleported-too-high-on-my-minecraft-server,CULTURE,gaming.stackexchange.com,0.8888888888888888,0.3333333333333333,0.0,1.0,0.6666666666666666,1.0,0.5555555555555556,0.5555555555555556,0.0,0.0,0.6666666666666666,0.3333333333333333,0.0,0.0,0.0,0.0,1.0,0.0,0.3333333333333333,0.0,0.6666666666666666,1.0,0.6666666666666666,1.0,1.0,0.9333333333333332,1.0,0.0,0.6666666666666666,0.8888888888888888
+36,How can I write HTML and send as an email?,"I want to send HTML email from my Outlook or Yahoo, Gmail, Hotmail. I wasn't able to find any such option where I could write HTML which will then be rendered at the receiver's end. How can I do that?
+",Umair Jabbar,https://webapps.stackexchange.com/users/2676,"HTML in email clients is a very very thorny problem because most of them do not just embed a browser, but implement random subsets of the HTML and CSS. And there is a LOT of email clients.
+
+If you really do need to do this, you may look at professional solutions from Mailing List Marketing companies. It is a known problem in that space and there are services, tutorials (example) and checklists for that. Here is a service from MailChimp. Most of the providers offer something similar.
+",Alexandre Rafalovitch,https://webapps.stackexchange.com/users/2820,http://webapps.stackexchange.com/questions/7932/how-can-i-write-html-and-send-as-an-email,TECHNOLOGY,webapps.stackexchange.com,1.0,0.8888888888888888,0.0,0.6666666666666666,1.0,0.6666666666666666,0.7777777777777778,0.6666666666666666,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,1.0,0.8888888888888888,0.5555555555555556,1.0,1.0,0.7333333333333333,0.0,0.0,1.0,1.0
+38,Why is the potential function defined differently in physics and calculus?,"I am very familiar with the concept of a potential function, and potential energy, from calculus-based physics.
+
+For instance, if we have the familiar force field $\mathbf{F} = -mg \,\mathbf{j}$, then a potential function is given by $U = mgy + C$. (Since potential energy is relative, we have an infinite number of potential functions.)
+
+Notice that the gradient of the potential function is the negative of the force field: $$\nabla U = \nabla(mgy + C) = mg \,\mathbf{j} = -\mathbf{F}.$$
+
+That was perfectly fine with me. But now in vector calculus, I am reading that the potential function $f$ of a vector function $\mathbf{F}$ is such that $\nabla f = \mathbf{F}$. A negative sign appears to have been lost when migrating from physics to calculus.
+
+It seems confusing to call $f$ a ""potential function"", since it cannot be interpreted as potential energy in the real world. So why is the calculus nomenclature as it is (i.e., why not call this something else and then say the potential function is the negative of it)?
+",Radon Rosborough,https://math.stackexchange.com/users/160658,"Recall where the negative sign comes from in physics -- it is simply due to your coordinate system and point of view. The difference is analogous to the difference between work done by gravity and work done on gravity.
+",Nitin,https://math.stackexchange.com/users/217285,http://math.stackexchange.com/questions/1335576/why-is-the-potential-function-defined-differently-in-physics-and-calculus,SCIENCE,math.stackexchange.com,1.0,0.7777777777777778,0.0,1.0,1.0,1.0,0.6666666666666666,0.4444444444444444,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.8888888888888888,1.0,0.6666666666666666,1.0,1.0,0.9333333333333332,0.0,0.0,1.0,0.8888888888888888
+40,What is Cold Iron actually?,"It came up in Dresden Files, but is not limited to that game, you can find the term in DnD as well. I would like to know what it means. 
+
+If you look for Cold Iron on Wikipedia, you only get iron: 
+""Cold iron is a poetic and archaic term for iron.""
+This would imply everything made mostly from Fe is cold iron. Clearly, this is not the case, in every game Cold Iron is something special, the every day sword is not made out of it. 
+
+The Dresden Files rulebook is not very specific about it:
+
+
+  something that anyone could reasonably get access to, but usually doesn’t carry on them (like cold iron) page 185.
+
+
+What is cold iron?
+How do I create cold iron?
+How do I get cold iron?   
+
+To make the question easier to understand, compare Cold Iron to Holy Water. You know how it is different from usual Water, you know how you get it or create it. 
+",András,https://rpg.stackexchange.com/users/9552,"Based on the events of Summer Knight cold iron is, in fact, just iron.  Dresden
+
+
+   kills Aurora with hundreds of pixies wielding common hobby knives with plastic casings.  The book specifically mentions how the cold iron of the knife blades makes the relatively minor cuts deadly to the Summer Lady.
+
+
+Referencing your quote, how much steel do you have on you right now?  Sure, some people still carry a Leatherman or a pocket knife but most don't in the US these days.  However, how easy is it to get one?  In Summer Knight Dresden specifically mentions needing to
+
+
+   stop at Walmart prior to the climatic battle but not what he needs,
+
+
+which is saved for the big reveal at the Stone Table.
+",HerbN,https://rpg.stackexchange.com/users/14,http://rpg.stackexchange.com/questions/40826/what-is-cold-iron-actually,CULTURE,rpg.stackexchange.com,1.0,0.5555555555555556,0.0,0.6666666666666666,1.0,0.6666666666666666,0.6666666666666666,0.5555555555555556,0.6666666666666666,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.3333333333333333,0.3333333333333333,0.3333333333333333,0.0,0.8888888888888888,1.0,0.6666666666666666,1.0,1.0,0.9333333333333332,0.3333333333333333,0.0,0.6666666666666666,1.0
+41,"Relationship between user story, feature, and epic?","As someone whose still new to agile, I'm not sure I completely understand the relationship or difference between a user story, feature, and epic.
+
+According to this question, a feature is a collection of stories.  One of the answers suggest that a feature is actually an epic.  
+
+So are features and epics considered the same thing, which is basically a collection of related user stories?
+
+Our project manager insists that there's a hierarchical structure:
+
+Epic -> Features -> User stories
+
+... basically all user stories must fall within this structure.  Therefore all user stories must fall under an umbrella feature and all features must fall under an epic.
+
+To me, that sounds awkward.  Can someone please clarify how user stories, features, and epics are related?  Or is there an article that clearly outlines the differences?
+",nivlam,https://programmers.stackexchange.com/users/45,"I caution you against applying too rigid a hierarchy to these terms.  We tried to do that in my previous job.  Twice.  Both attempts were different and both times we found we had unnecessarily limited ourselves.  The only constant was the definition of a User Story.  From a planning perspective, a story is the basic building block of a project.  The larger terms (epic, feature, etc.) are effectively just tags.  Tags are an easy way to allow a story to exist as part of multiple Epics and multiple Features at the same time.  It's not worth the mental effort to be more strict than that.
+
+Tags work for Stack Exchange and they can work for you too.
+",Kristo,https://programmers.stackexchange.com/users/1111,http://programmers.stackexchange.com/questions/182158/relationship-between-user-story-feature-and-epic,TECHNOLOGY,programmers.stackexchange.com,0.8888888888888888,0.6666666666666666,0.0,0.3333333333333333,1.0,0.6666666666666666,0.5555555555555556,0.4444444444444444,1.0,0.0,0.0,0.3333333333333333,0.0,0.0,0.3333333333333333,0.3333333333333333,0.0,0.0,0.6666666666666666,0.0,1.0,0.8888888888888888,0.5555555555555556,1.0,1.0,0.8,0.0,0.0,0.3333333333333333,1.0
+47,How do different tissue culture matrices affect background in fluorescent microscopy?,"In response to my previous question, I've been reading up a little bit on poly-D-lysine, Collagen I, Collagen IV, laminin, and other tissue culture coatings that promote cell adhesion. I've always assumed that anything other than standard TC-treated plastic or glass would significantly increase background, but perhaps my views on background fluorescence are a little outdated. Does anybody have experience with these in a fluorescent microscopy/high-throughput screening environment?
+
+Specifically in my case, I'm looking at endocytosis and trafficking of a labeled protein into the lysosome. I'm labeling the protein with the pH-dependent dye pHrodoTM from Molecular Probes, which supposedly has very little fluorescence at neutral pH, but becomes very bright as the pH drops when endocytic vesicles become lysosomes. This theoretically means that a final wash step is not needed, but with a matrix coating on the plates I'm worried about background.
+
+So, what is the current thinking as far as background fluorescence of the various TC matrices is concerned? Does the background come from the matrix itself, or by the fluorescent dye becoming adsorbed to it? Is it wavelength-dependent? Fortunately I may not be stuck with my poorly-adhering cells, and I may not need supplemental matrix at all in the end, but I still want a better understanding of how it works.
+",MattDMo,https://biology.stackexchange.com/users/948,"Extracellular matrix (ECM) fluoresces, especially Collagen and Laminin. The maximum is in the DAPI and FITC channels and the fluorescence becomes weaker towards longer wavelengths. However, since the coat on the TC flasks is very thin, I would not expect this to be a problem. The best thing is just to try it. There is also a quite famous document available which might be of help:
+
+Autofluorescence: Causes and Cures
+",Eekhoorn,https://biology.stackexchange.com/users/852,http://biology.stackexchange.com/questions/8656/how-do-different-tissue-culture-matrices-affect-background-in-fluorescent-micros,SCIENCE,biology.stackexchange.com,1.0,0.6666666666666666,0.0,1.0,1.0,1.0,0.6666666666666666,0.6666666666666666,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,1.0,0.0,1.0,1.0,0.6666666666666666,1.0,1.0,0.8,0.0,0.0,1.0,0.6666666666666666
+48,Tips for finding SPAM links injected into the_content,"I'm working on a client's site and I noticed that posts have a hidden &lt;div&gt; filled to SPAM links to dick pills, etc. Hoping to get lucky, I searched for some of the keywords in the database tables, but found no matches. I also searched the code in all the files, and also found no matches.
+
+I know that Wordpress hacks can be very tricky to remove, and they go to great lengths to make them hard to find. But perhaps there are some ""usual suspects"" that I could check, or maybe some tell-tale signs I could look for. 
+
+I'm not asking for anyone to solve this specific hack. I'm just looking for advice on where (in general) to look.
+
+In case it's useful, here's the unauthorized &lt;div&gt; which is injected right before the close of the first &lt;\p&gt;:
+
+&lt;div id='hideMeya'&gt; At that requires looking for how you http://www.cialis.com &lt;a href=""http://wwxcashadvancecom.com/"" title=""want $745? visit our site.""&gt;want $745? visit our site.&lt;/a&gt; sign any of money. Visit our secure bad creditors that cialis levitra sales viagra &lt;a href=""http://www10525.c3viagra10.com/"" title=""viagra australia online""&gt;viagra australia online&lt;/a&gt; payday lenders know otherwise. But the black you stay on discount price levitra &lt;a href=""http://www10385.x1cialis10.com/"" title=""what is impotence in men""&gt;what is impotence in men&lt;/a&gt; duty to their lives. Citizen at one online or after receiving their research viagra online &lt;a href=""http://www10675.80viagra10.com/"" title=""www.viagra.com""&gt;www.viagra.com&lt;/a&gt; to just take just wait until monday. This specifically relates to shop every pay stubs get viagra without prescription &lt;a href=""http://www10154.40cialis10.com/"" title=""cialis overnight delivery""&gt;cialis overnight delivery&lt;/a&gt; and only used or faxing required. We will turn double checked by some small business loans viagra for woman &lt;a href=""http://www10077.x1cialis10.com/"" title=""cialis india""&gt;cialis india&lt;/a&gt; sites that works the business before approval. Living paycheck went out cash there would generate levitra &lt;a href=""http://www10450.a1viagra10.com/"" title=""viagra cialis levitra""&gt;viagra cialis levitra&lt;/a&gt; the scheduled maturity day method. Own a short application on when money also buy cialis online &lt;a href=""http://buy4kamagra.com/"" title=""kamagra""&gt;kamagra&lt;/a&gt; plenty of personal initial limits. Even those loans quick because lenders realize http://cialis-ca-online.com &lt;a href=""http://levitra4au.com/"" title=""levitrafroaustraila""&gt;levitrafroaustraila&lt;/a&gt; you notice a payday advance. A loan applications are more common thanks http://www.cialis2au.com/ &lt;a href=""http://buy-7cialis.com/"" title=""cialis""&gt;cialis&lt;/a&gt; to only apply online website. Third borrowers will use your paycheck to levitra online pharmacy &lt;a href=""http://www10675.30viagra10.com/"" title=""viagra online purchase""&gt;viagra online purchase&lt;/a&gt; utilize these individuals can cover. Often there must also referred to ensure online pharmacy viagra usa &lt;a href=""http://www10600.90viagra10.com/"" title=""viagra effectiveness""&gt;viagra effectiveness&lt;/a&gt; you with financial expenses. Thanks to checking account also merchant cash loan wwwwviagracom.com &lt;a href=""http://www10075.90viagra10.com/"" title=""levitra viagra cialis""&gt;levitra viagra cialis&lt;/a&gt; comparison to state or from there. At that they pay them in mere viagra &lt;a href=""http://www10225.30viagra10.com/"" title=""cheapest generic viagra""&gt;cheapest generic viagra&lt;/a&gt; seconds and to comprehend. If a repossession or limited to see if approved www.cashadvances.com  | Apply for a cash advance online! &lt;a href=""http://www10385.70cialis10.com/"" title=""cialis dosage""&gt;cialis dosage&lt;/a&gt; the risks associated at your current address. Second borrowers should not start and struggle http://www.cashadvance.com &lt;a href=""http://levitra-online-ca.com/"" title=""levitra for sale""&gt;levitra for sale&lt;/a&gt; at least a button. Thanks to send the benefits of everyday living cheapest viagra order online &lt;a href=""http://www10462.70cialis10.com/"" title=""tadalafil""&gt;tadalafil&lt;/a&gt; from being foreclosed on its benefits. Finally you get help rebuild the original loan buy cialis viagra &lt;a href=""http://viagra5online.com/"" title=""viagra without prescription""&gt;viagra without prescription&lt;/a&gt; can really only to surprises. Bank loans out you will take http://wviagracom.com/ &lt;a href=""http://www10539.40cialis10.com/"" title=""erectile dysfunction supplements""&gt;erectile dysfunction supplements&lt;/a&gt; the conditions are a. Bills might provide an unexpected car cialis uk suppliers &lt;a href=""http://kamagra-ca-online.com/"" title=""kamagra""&gt;kamagra&lt;/a&gt; broke a repayment length. Third borrowers repay because payday industry has the results http://www.buy9levitra.com/ &lt;a href=""http://www10075.20viagra10.com/"" title=""viagra recreational use""&gt;viagra recreational use&lt;/a&gt; by the middle man and check process. After verifying your question with dignity and credit cards www.levitra.com &lt;a href=""http://www10300.b2viagra10.com/"" title=""overnight viagra delivery""&gt;overnight viagra delivery&lt;/a&gt; or drive to secure loan online. Most people for dollars you between bad and free cialis &lt;a href=""http://viagra7au.com/"" title=""http://viagra7au.com/""&gt;http://viagra7au.com/&lt;/a&gt; instead these applicants is available. Social security against your payday the larger sums buying viagra online &lt;a href=""http://payday7online.com/"" title=""direct lenders installment loans no credit check""&gt;direct lenders installment loans no credit check&lt;/a&gt; of gossip when working telephone calls. Face it provides hour payday industry levitra online &lt;a href=""http://www10150.30viagra10.com/"" title=""buy viagra now""&gt;buy viagra now&lt;/a&gt; has high credit score? Within minutes during your best score range from http://cashadvance8online.com &lt;a href=""http://www10450.60viagra10.com/"" title=""viagra dosage instructions""&gt;viagra dosage instructions&lt;/a&gt; fees if there for them most. To avoid paperwork you in crisis arise from wwwpaydayloancom.com | Online Payday Loans application form! &lt;a href=""http://www10225.80viagra10.com/"" title=""super active viagra""&gt;super active viagra&lt;/a&gt; online from paying the bank? Funds will know to throwing your cash advance no credit check &lt;a href=""http://orderviagrauaonline.com/"" title=""viagara online""&gt;viagara online&lt;/a&gt; finances there that purse. Companies realize that asks for which can become cialis online &lt;a href=""http://www10375.60viagra10.com/"" title=""sublingual viagra""&gt;sublingual viagra&lt;/a&gt; eligible to paycheck some lenders. Medical bills that be much easier than actually need only online cash advance &lt;a href=""http://cashadvance8online.com"" title=""online cash advance""&gt;online cash advance&lt;/a&gt; your funds via the freedom you out.  &lt;/div&gt;&lt;script type='text/javascript'&gt;if(document.getElementById('hideMeya') != null){document.getElementById('hideMeya').style.visibility = 'hidden';document.getElementById('hideMeya').style.display = 'none';}&lt;/script&gt; &lt;/p&gt;
+
+",emersonthis,https://wordpress.stackexchange.com/users/11363,"In general, the best place to look is in your theme folders, specifically the main theme and in the index.php file. Then the footer and header files.
+
+Also, check your modified dates and start with the most recently modified. Especially if there are several that were all modified around the same date/time.
+
+I've seen, and had to fix, this problem several times on people's servers. The false data is normally loaded via a script inserted into the php files of the template.
+
+First, you should definitely read over the Wordpress FAQ for dealing with a hacked site.
+
+Common entry points for gaining the ""access"" required to pull the injection off are outdated themes and/or plugins. It's best to run production servers with only the one active theme on the server, as well as removing unused plugins and replacing outdated active plugins.
+
+There are a few scripts out there that you can upload to your server to help you find infected files so you can replace, clean or delete them. (Links listed below)
+
+Again, try looking at file modified dates and check out ones you haven't modified/installed recently yet have a recent date on the.
+
+
+Look for Bad Guys : I've used this one. It takes a bunch of configuration to root out all the false positives ... but it can at least help you get a general idea of which files to check out.
+Wordfence offers the ability to scan your files with their free plugin, I can't personally endorse it though, since I haven't used it myself.
+https://www.wordfence.com/docs/how-to-clean-a-hacked-wordpress-site-using-wordfence/
+Sucuri is linked on the Wordpress forums frequently and they have a plugin for scanning as well, but once again... haven't personally used it. But I'm a hands-on kind of person.
+
+",Squish,https://wordpress.stackexchange.com/users/28821,http://wordpress.stackexchange.com/questions/134825/tips-for-finding-spam-links-injected-into-the-content,TECHNOLOGY,wordpress.stackexchange.com,0.8333333333333334,0.5,0.0,1.0,0.5,1.0,0.5,0.3333333333333333,0.0,0.0,0.5,0.0,0.0,0.0,0.0,0.5,1.0,1.0,0.5,0.0,0.8333333333333334,1.0,0.6666666666666666,1.0,0.8333333333333334,0.9,0.0,1.0,0.5,0.8333333333333334
+50,Photo icons have generic picture only,"When going to a JPG photo folder OS C drive and opening it to view photos in an icon mode the icons only show a generic picture. If I click on the icon then the actual photo comes up. It seems like this problem just started happening. In the past I would open a folder and view icons and the photos were all there to view at once. I don't believe I made any intentinal changes. Thanks for the help. 
+",Bob,https://superuser.com/users/323210,"I had this problem with my new installation of Windows 8.1.
+
+After I had installed most of the regular Windows applications I was using in Windows 7, I started on a getting-acquainted tour of the new OS and its ""ModernUI""apps.
+
+The generic file type icons displayed in the Photos app really puzzled me, but a lot of Internet searching finally led to the solution: any installation of a recent version of the open source office suite ""LibreOffice"" changes the Windows registry of common graphics file types in an undesirable way, so that they are treated as a document rather than a picture.
+
+There is a very long thread about the problems and solutions at http://answers.microsoft.com/en-us/windows/forum/windows8_1-pictures/windows-81-photos-app-does-not-show-any-photos/5b1740bc-d87d-4d07-afe5-c1a60cdecd55?page=6&amp;msgId=9cdf0542-aab0-4a0b-85aa-e9f6d40b64fc
+
+The simplest solution presented was a registry file which has to be reapplied every time LibreOffice is upgraded. The file must contain the following text and be named with a .reg suffix, then double click on it to load it into the registry. You may have to log out and back in, or even restart the computer--I can't remember which I did to get it to work.
+
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap]
+"".wpg""=""picture""
+"".dxf""=""picture""
+"".emf""=""picture""
+"".eps""=""picture""
+"".met""=""picture""
+"".pct""=""picture""
+"".wmf""=""picture""
+"".bmp""=""picture""
+"".cdr""=""picture""
+"".cmx""=""picture""
+"".gif""=""picture""
+"".jpg""=""picture""
+"".jpeg""=""picture""
+"".jpe""=""picture""
+"".pbm""=""picture""
+"".pcx""=""picture""
+"".pgm""=""picture""
+"".png""=""picture""
+"".ppm""=""picture""
+"".psd""=""picture""
+"".ras""=""picture""
+"".svg""=""picture""
+"".tga""=""picture""
+"".tif""=""picture""
+"".tiff""=""picture""
+"".xbm""=""picture""
+"".xpm""=""picture""
+"".pcd""=""picture""
+
+
+I hope this helps, but I am not (yet) sufficiently familiar with Windows internals to explain the problem and the solution presented here.
+",Insert Real Name,https://superuser.com/users/12204,http://superuser.com/questions/754061,TECHNOLOGY,superuser.com,1.0,0.5555555555555556,0.0,0.6666666666666666,1.0,0.3333333333333333,0.7777777777777778,0.5555555555555556,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.6666666666666666,0.3333333333333333,0.0,0.0,0.8888888888888888,0.7777777777777778,0.5555555555555556,0.8888888888888888,0.8888888888888888,0.8,0.6666666666666666,0.0,0.3333333333333333,0.7777777777777778
+51,More than 2 resistors in parallel,"Most people know the formula for the total resistance of parallel resistors:
+
+\$ \dfrac{1}{R_t} = \dfrac{1}{R_1} + \dfrac{1}{R_2} + {}...{} + \dfrac{1}{R_n} \$
+
+If there are only 2 resistors, that can be easily rearranged to solve for Rt:
+
+\$ {R_t} = \dfrac{(R_1 \cdot R_2)}{(R_1 + R_2)} \$
+
+Is there a safe way to do that for n resistors?
+",Bluefire,https://electronics.stackexchange.com/users/15851,"This is not an answer to your question but rather, additional information that may (or may not) be helpful in thinking about this kind of problem.
+
+When I teach introductory circuit classes, I always emphasize the notion of duality which, when mastered, can give you deep insight into many fundamental ""rules"" of circuit analysis.
+
+The idea is that if you know the answer for, say, a series circuit, you can take the dual of the result and get a correct answer for a seemingly very different problem.
+
+So, here is short list of circuit duals:
+
+
+  Voltage - Current
+  
+  Resistance - Conductance
+  
+  Inductance - Capacitance
+  
+  Impedance - Admittance
+  
+  Series - Parallel
+  
+  Thevenin - Norton
+
+
+There are others but these will do most of the time.
+
+Ohm's law is usually written as:
+
+\$V = I R \$
+
+To take the dual, replace all the variables in the above equation with their duals:
+
+The dual of Ohm's Law:
+
+\$I = VG \$
+
+where \$G = \dfrac{1}{R} \$
+
+Recall that for resistors in series, resistances add, so that the equivalent resistance is just the sum.
+
+Consider the dual of this, conductances in parallel.
+
+From the principle of duality, parallel conductances add just as series resistances.  So, if you have 3 conductances in parallel, the equivalent conductance is:
+
+\$G_{eq} = G_1 + G_2 + G_3 \$
+
+Now, convert back to resistance:
+
+\$R_{eq} = \dfrac{1}{G_{eq}} = \dfrac{1}{G_1 + G_2 + G_3} = \dfrac{1}{\frac{1}{R_1}+\frac{1}{R_2} +\frac{1}{R_3}}\$
+
+In other words, the equivalent resistance of \$n\$ parallel resistors is the reciprocal of the sum of the reciprocals.
+
+This is the origin of your first formula.
+",Alfred Centauri,https://electronics.stackexchange.com/users/10475,http://electronics.stackexchange.com/questions/47185/more-than-2-resistors-in-parallel,TECHNOLOGY,electronics.stackexchange.com,0.6666666666666666,0.3333333333333333,0.0,1.0,1.0,1.0,0.6666666666666666,0.3333333333333333,0.0,0.0,0.0,0.6666666666666666,0.0,0.0,0.0,0.0,0.6666666666666666,0.3333333333333333,0.3333333333333333,0.0,0.8888888888888888,1.0,0.8333333333333334,1.0,0.8333333333333334,0.7,0.3333333333333333,0.3333333333333333,1.0,1.0
+52,C# Test Assembly,"I am new to C# and am having a particularly difficult time figuring out how test assemblies work. This is my Solution directory (with a single project MyProject inside of it):
+
+MySolution/MySolutionFile.sln     -- My Solution File
+MySolution/packages               -- My Packages Directory
+MySolution/MyProject/Properties   -- My Project Properties
+
+MySolution/MyProject/src                    -- My Source Code
+                    /src/MyClass1.cs
+                    /src/MyClass2.cs
+
+MySolution/MyProject/test                   -- My NUnit Tests
+                    /test/MyClass1Test.cs
+                    /test/MyClass2Test.cs
+
+MySolution/MyProject/TheMainClass.cs
+
+
+Now I can run all the tests in the test folder from visual studio. However I want to run the tests from a CI system like TeamCity, in which case I need an assembly path. How do I generate just the test folder into an assembly to be run.
+
+Do I need to add to the main class a method that runs each test in the MySolution/test folder?
+",Anil Vaitla,https://stackoverflow.com/users/815977,"I think you need to read about projects and solutions: http://msdn.microsoft.com/en-us/library/ee817674.aspx
+
+And after that it all becomes more clear: Have one solution, inside of that solution create a project for your application and a project for your unit-tests. In test-project add reference to the testing framework of your choice and a reference to your application-project. 
+
+This way your application does not know about your tests and compiled into one assembly. At the same time your tests depend on your application, but compiled into another assembly, which can be used by your test-runner GUI/CI or whatever else you use.
+
+And to answer your next question, for test-project you need to choose project type of ""Library"" (console application will work as well if you like)
+",trailmax,https://stackoverflow.com/users/809357,http://stackoverflow.com/questions/12379599/c-sharp-test-assembly,STACKOVERFLOW,stackoverflow.com,1.0,0.3333333333333333,0.0,1.0,1.0,1.0,0.6666666666666666,0.3333333333333333,0.0,0.0,1.0,1.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.3333333333333333,0.6666666666666666,0.6666666666666666,0.6666666666666666,1.0,0.8,1.0,0.0,1.0,1.0
+54,Is there a general term for a single note or a chord?,"Take a passage like this:
+
+
+
+Fill in the blank: Each of these boxes denote a ______
+
+Is there a single general term for these that's better than note or chord? Or maybe there's a term for ""anything that has a duration"" that also encompasses rests? It seems like enough of a fundamental concept that it should have a name.
+",Trillian,https://music.stackexchange.com/users/16,"For formal, technical purposes (e.g. when discussing musical audiation and other aspects of musical cognition) the terms ""acoustic event"" or ""notated event"" or ""vertical event"" is pretty much standard terminology within psychology of music for referring broadly to any individual single tone or simultaneosly experienced combination of tones (i.e. an individual chord) within a passage or composition. An acoustic event can also include a silence. Really useful all-inclusive terms, (though not yet in  musicians' common parlance)!
+
+So, I'd  use the term ""notated event""  (or the more generalized ""vertical event"") to fill in the blank in the OP's question.
+",RichT,https://music.stackexchange.com/users/13338,http://music.stackexchange.com/questions/17282/is-there-a-general-term-for-a-single-note-or-a-chord,LIFE_ARTS,music.stackexchange.com,0.8888888888888888,0.8888888888888888,0.0,1.0,0.6666666666666666,0.3333333333333333,0.7777777777777778,0.7777777777777778,0.0,0.0,0.3333333333333333,0.0,0.0,0.0,0.3333333333333333,0.3333333333333333,0.0,0.0,0.3333333333333333,0.0,1.0,1.0,0.7777777777777778,0.8888888888888888,1.0,0.9333333333333332,0.0,0.0,0.6666666666666666,1.0
+55,How can I login to a website from terminal?,"As a student of computer science, I am now learning to work with command line.
+I need  to use brute force to login to a website, knowing the username and that the password is an integer in  a certain range. This is what I have so far but it doesn't seem to work. 
+
+ for i in {2000..3000}; do curl http://admin:$i@mywebsite.com/link; done
+
+
+How can I proceed?
+",Nat,https://unix.stackexchange.com/users/103602,"What your routine is lacking is some way to exit once the correct i is found.
+For that you can look at the exit code given back from curl:
+
+for i in {2000..3000}
+do 
+  curl http://admin:$i@mywebsite.com/link
+  if [ ""$?"" -eq 0 ]; then
+    echo Found ""$i""
+    break
+  fi
+done
+
+
+The exit value of curl is 0 when everything is correct and can be checked directly after the program stops by inspecting the special variable $?.
+Use man curl and search for EXIT CODE to see all the different things curl can tell you with its exit code.
+",Anthon,https://unix.stackexchange.com/users/33055,http://unix.stackexchange.com/questions/203827/how-can-i-login-to-a-website-from-terminal,TECHNOLOGY,unix.stackexchange.com,1.0,0.5555555555555556,0.0,0.5,1.0,1.0,0.3333333333333333,0.3333333333333333,0.0,0.0,0.3333333333333333,0.0,0.0,0.0,0.0,0.0,1.0,0.6666666666666666,0.0,0.0,0.8888888888888888,1.0,0.6666666666666666,1.0,1.0,1.0,1.0,0.6666666666666666,0.6666666666666666,0.8888888888888888
+56,Export error with addon,"Im trying to export a model for the Euro Truck Simulator 2 game with the Blender2SCS addon and I get the following error, any help?
+
+Traceback (most recent call last):
+  File ""C:\Program Files\Blender Foundation\Blender\2.72\scripts\addons\io_scene
+_scs\__init__.py"", line 1951, in execute
+    error = export_scs.save(filepath, origin_path, root_object, self.copy_textur
+es, int(self.pmg_version))
+  File ""C:\Program Files\Blender Foundation\Blender\2.72\scripts\addons\io_scene
+_scs\export_scs.py"", line 27, in save
+    status, ob = export_pmd.save(exportpath, originpath, root_ob, copy_textures)
+
+  File ""C:\Program Files\Blender Foundation\Blender\2.72\scripts\addons\io_scene
+_scs\export_pmd.py"", line 305, in save
+    pmd.write(f, exportpath, originpath, copy_tex)
+  File ""C:\Program Files\Blender Foundation\Blender\2.72\scripts\addons\io_scene
+_scs\export_pmd.py"", line 267, in write
+    ret_ob = exp_mat.write(copy_tex)
+  File ""C:\Program Files\Blender Foundation\Blender\2.72\scripts\addons\io_scene
+_scs\export_mat.py"", line 91, in write
+    for option in self.__options.keys():
+AttributeError: 'str' object has no attribute 'keys'
+
+location: &lt;unknown location&gt;:-1
+
+location: &lt;unknown location&gt;:-1
+
+",Pumizo,https://blender.stackexchange.com/users/6311,"The addon seems to be broken due to api changes in Blender, either use the addons bug tracker or try an older version of Blender that is compatible. According to the video tutorials version 2.66 was used. 
+",stacker,https://blender.stackexchange.com/users/29,http://blender.stackexchange.com/questions/23314/export-error-with-addon,TECHNOLOGY,blender.stackexchange.com,0.8888888888888888,0.3333333333333333,0.0,0.6666666666666666,1.0,1.0,0.5555555555555556,0.5555555555555556,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.3333333333333333,0.3333333333333333,0.0,0.5555555555555556,1.0,0.6666666666666666,1.0,1.0,0.8666666666666666,0.6666666666666666,0.3333333333333333,0.3333333333333333,0.8888888888888888
+58,Java final variables changes at the execution time,"I don't know the reason fo that. Maybe you could help me
+
+So code here creating a frame with 8 sliders.
+
+public class MyFrame extends JFrame {
+
+
+ImagePanel imagePanel;
+final int Minimum = 0;
+final int Maximum = 10;
+final int NumberOfSpheres = 8;
+final int NumberOfScales = 10;
+MyRandomAccessFile file;
+
+final String[] s = {""Друзья и Окружение"",
+        ""Отношения"", ""Карьера и Бизнес"",
+        ""Финансы"", ""Духовность и Творчество"",
+        ""Личностный Рост"", ""Яркость Жизни"", ""Здоровье и Спорт""};
+
+private final Color[] colors = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, Color.PINK, Color.MAGENTA, Color.DARK_GRAY};
+
+private final int[] array = {1, 0, 0, 0, 0, 0, 0, 0};
+
+public MyFrame () {
+
+    setTitle(""Wheel Of Life"");
+
+    MySlider[] sliders = new MySlider[NumberOfSpheres];
+    JButton saveButton = new JButton(""Save"");
+    MyActionListener listener1 = new MyActionListener();
+    saveButton.addActionListener(listener1);
+
+    file = new MyRandomAccessFile();
+
+    //String s3 = ""0 0 0 0 0 0 0 0"";
+    //array = stringToIntArray(s3);
+    array[1] = 4;
+
+    JLabel[] labels = new JLabel[NumberOfSpheres];
+    imagePanel = new ImagePanel(colors, array);
+    System.out.println(array[1]);
+    JPanel mainPanel = new JPanel();
+    JPanel[] sliderPanels = new JPanel[NumberOfSpheres];
+    JPanel mainSliderPanel = new JPanel(new GridLayout(4, 2, 20, 20));
+    MyChangeListener listener = new MyChangeListener();
+
+    for (int i = 0; i &lt; NumberOfSpheres; i++) {
+        sliders[i] = new MySlider(s[i]);
+        sliders[i].addChangeListener(listener);
+        labels[i] = new JLabel(s[i]);
+        labels[i].setForeground(colors[i]);
+        labels[i].setFont(new Font(""Droid Sans"", Font.BOLD, 20));
+        sliderPanels[i] = new JPanel();
+        sliders[i].setMinimum(Minimum);
+        sliders[i].setMaximum(Maximum);
+        System.out.print(array[i]);
+        sliders[i].setValue(4);
+        sliders[i].setMajorTickSpacing(1);
+        sliders[i].setMinorTickSpacing((int) 0.1);
+        sliders[i].setPaintLabels(true);
+        sliders[i].setPaintTicks(true);
+        sliderPanels[i].setLayout(new GridLayout(2, 1, 5, 5));
+        sliderPanels[i].add(sliders[i]);
+        sliderPanels[i].add(labels[i]);
+        mainSliderPanel.add(sliderPanels[i]);
+
+    }
+
+    mainPanel.setLayout(new BorderLayout());
+    mainPanel.add(imagePanel, BorderLayout.CENTER);
+    mainPanel.add(mainSliderPanel, BorderLayout.EAST);
+    mainPanel.add(saveButton, BorderLayout.SOUTH);
+
+    add(mainPanel);
+}
+
+
+And the output is this
+
+4
+99999999
+
+How can final variable change its value at the execution time, what the hell???
+Actual value of variable is depend on value that I writing at sliders[i].setValue(4); But I don't know how exactly...
+
+And I tried to set a watchpoint for this variable... Doesn't working. One time its zero and next time program stop in this for loop value is 9, 4 or whatever...
+",user1685095,https://stackoverflow.com/users/1685095,"Setting final to array does not mean that u cant add or change element value, but it means now you can assign another array reference to this variable. But you can add , update or remove the elements in that array
+",zaffargachal,https://stackoverflow.com/users/1227732,http://stackoverflow.com/questions/12806590/java-final-variables-changes-at-the-execution-time,STACKOVERFLOW,stackoverflow.com,0.6666666666666666,0.3333333333333333,0.0,0.0,1.0,0.0,0.5,0.3333333333333333,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.0,0.6666666666666666,0.8333333333333334,0.6666666666666666,0.8333333333333334,1.0,0.8,0.6666666666666666,0.0,1.0,0.8333333333333334
+59,Difference between busses,"I think I am confusing the difference between some of the of busses, such as IDE, SATA, USB, and PCI.  What is the relationship between all four, how are they connected to each other? From what I read it seems like PCI connects them together as well as to the CPU, but it's not clear.  Any help would be greatly appreciated. I am cross referencing this post with another I made about the Linux commands to browse them.  http://unix.stackexchange.com/questions/27414/ide-and-pci-bus-commands
+",rubixibuc,https://electronics.stackexchange.com/users/7163,"The interrelationship of the different busses is roughly as follows:
+
+                                               / SATA
+CPU =&gt; Northbridge =&gt; PCI Bus =&gt; Southbridge =&gt;  IDE
+                                               \ USB
+
+
+Where the Northbridge and Southbridge are names given to the two main controller chips inside a PC.
+
+IDE and SATA both perform the same job but through different physical media - they are for attaching hard drives etc.
+
+IDE is ""Integrated Device Electronics"" - also known as ""ATA"" or ""ATAPI"" (ATA Peripheral Interface).
+
+SATA is ""Serial ATA"" - the same ATA protocol but serial instead of parallel.
+
+USB is a serial communications bus which can communicate with any number of devices, not just hard drives and other storage devices.  It speaks a completely different protocol to the ATA family.
+
+PCI (and the derivatives PCIe, etc) are much closer to the CPU and generally provides much more direct access to the CPU.
+
+Edit:
+
+You can see how everything is connected together in Windows through the Device Manager set to View Devices by Connection:
+
+
+",Majenko,https://electronics.stackexchange.com/users/4245,http://electronics.stackexchange.com/questions/24077/difference-between-busses,SCIENCE,electronics.stackexchange.com,1.0,0.5555555555555556,0.0,0.6666666666666666,1.0,0.6666666666666666,0.4444444444444444,0.4444444444444444,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.3333333333333333,0.6666666666666666,0.0,0.8888888888888888,1.0,0.6666666666666666,1.0,1.0,1.0,0.0,0.0,0.6666666666666666,0.8888888888888888
+60,Flushing coolant after driving only with water in,"If I drive my truck for 30 min with just water in my system, would it be equivalent to just flushing it stationary (the proper way to flush it)? IOW, if I just drive around with a clean water refill in the coolant system instead of keeping the truck in place and then draining, would it be an okay way to flush?
+",amphibient,https://mechanics.stackexchange.com/users/2618,"It would make no difference if you are standing still or driving the vehicle. You want to ensure you have the heater wide open when you do it to ensure you are getting the old fluid from the heater core as well as the engine. Driving the vehicle around will probably allow the process to happen a little faster, as you engine will get up to operating temperature faster. The real thing you are trying to accomplish is to get the thermostat open to allow everything to circulate.
+",Pᴀᴜʟsᴛᴇʀ2,https://mechanics.stackexchange.com/users/4152,http://mechanics.stackexchange.com/questions/17345/flushing-coolant-after-driving-only-with-water-in,CULTURE,mechanics.stackexchange.com,0.8888888888888888,0.5555555555555556,0.0,1.0,0.3333333333333333,1.0,0.6666666666666666,0.7777777777777778,0.0,0.0,1.0,0.6666666666666666,0.0,0.0,0.0,0.0,0.3333333333333333,0.0,0.3333333333333333,0.0,1.0,1.0,0.6666666666666666,1.0,1.0,0.8666666666666666,0.6666666666666666,0.0,0.6666666666666666,0.8888888888888888
+61,How does critical strike chance stack?,"I was wondering how critical strike chance stacks? Say I buy a Phanton Dancer with its 30% crit chance. Now if I buy another Phanton Dancer, what is my critical chance?
+",BubBidderskins,https://gaming.stackexchange.com/users/22482,"they stack additively, so just add up the crit chance.  1 PD will increase your total crit chance by +30%.  The 2nd PD will increase your total crit chance by +30%, so +60% crit chance total from 2 PD's.
+",Masck,https://gaming.stackexchange.com/users/23074,http://gaming.stackexchange.com/questions/60921/how-does-critical-strike-chance-stack,CULTURE,gaming.stackexchange.com,0.7777777777777778,0.5555555555555556,0.0,1.0,1.0,1.0,0.7777777777777778,0.3333333333333333,0.3333333333333333,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.3333333333333333,0.6666666666666666,0.6666666666666666,0.0,0.7777777777777778,1.0,0.6666666666666666,1.0,1.0,1.0,0.3333333333333333,0.3333333333333333,0.6666666666666666,0.8888888888888888
+63,Directory.GetFiles string gives an error,"I am creating a website using asp.net and c#
+I need to access all files one by one in a directory. So I wrote the following code.
+
+    string[] ssImgs = Directory.GetFiles(""images/movies"");
+    Label1.Text = ssImgs[0];
+    Label2.Text = ssImgs[1];
+
+
+But it gives an error. What is the correct way to do this? Thanks in advance.
+",LIH,https://stackoverflow.com/users/2436770,"There are two potential issues here.
+
+
+If you doing have using System.IO; in your file, the Directory class will not be found by the compiler.
+The way you're specifying your path (""images/movies"") will be relative to the current working directory, which is likely not the proper directory.  You should use Server.MapPath or the Path class to build a full path to the proper folder, so you can specify the correct folder with a full, absolute path.
+
+",Reed Copsey,https://stackoverflow.com/users/65358,http://stackoverflow.com/questions/18471710/directory-getfiles-string-gives-an-error,STACKOVERFLOW,stackoverflow.com,0.8888888888888888,0.3333333333333333,0.0,1.0,0.6666666666666666,1.0,0.4444444444444444,0.3333333333333333,0.0,0.0,0.6666666666666666,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.6666666666666666,0.0,0.7777777777777778,1.0,0.6666666666666666,1.0,1.0,0.9,0.6666666666666666,0.0,0.6666666666666666,1.0
+64,Discontinuity at the edge of Chebychev window,"I am using Chebychev window for its narrow main lobe. The problem of chebychev window is that it has discontinuities at the edge, and it seems that Taylor window solves this issue. 
+
+More detail:
+http://de.mathworks.com/help/signal/ref/taylorwin.html
+http://en.wikipedia.org/wiki/Window_function#Dolph.E2.80.93Chebyshev_window
+
+I've searched around but I can't find any information on how to implement a Taylor window. Any information on taylor window or suggestions on fixing this issue of edge discontinuities would be very appreciated.
+",Thinium,https://dsp.stackexchange.com/users/16093,"A little Googling came up with this reference, which indicates that the impulse response for a Taylor window is:
+
+$$
+h[n] = 1 + 2 \sum_{m=1}^{\tilde{n}-1} F_m \cos\left(\frac{2\pi m}{N} \left(n-\frac{N}{2}+\frac{1}{2}\right)\right)
+$$
+
+$\tilde{n}$ is a parameter for controlling how many equal-height sidelobes there are in the window. $F_m$ is a parameter that is related to the maximum sidelobe height; the references given in Matt L's answer give more detail on how it is calculated.
+",Jason R,https://dsp.stackexchange.com/users/90,http://dsp.stackexchange.com/questions/23890/discontinuity-at-the-edge-of-chebychev-window,TECHNOLOGY,dsp.stackexchange.com,0.6666666666666666,0.3333333333333333,0.0,0.5,1.0,1.0,0.6666666666666666,0.3333333333333333,0.3333333333333333,0.0,0.3333333333333333,0.0,0.0,0.0,0.0,0.0,0.6666666666666666,0.0,0.6666666666666666,0.0,0.7777777777777778,1.0,0.5555555555555556,1.0,0.8888888888888888,0.7333333333333333,0.3333333333333333,0.0,0.6666666666666666,1.0
+65,Silverlight: Returning value from synchronous method using Rx,"I am writing a simple Silverlight application and WCF Service.
+I want to create a synchronous method that return a value.
+The method itself, call an asynchronous method from WCF Services. After I call asynchronous method, I want to get it value, and return to sender.
+I hear that Rx can solve this kind of problem.
+
+This is my code :
+
+    private void btnCreate_Click(object sender, RoutedEventArgs e)
+    {
+        string myResult = getMyBook(txtBookName.Text);
+        MessageBox.Show(""Result\n"" + myResult);
+        // myResult will be use for another purpose here..
+    }
+
+    // I want this method can be called anywhere, as long as the caller still in the same namespace.
+    public string getMyBook(string bookName)
+    {
+        Servo.ServoClient svc = new ServoClient();
+        string returnValue = """";
+
+        var o = Observable.FromEventPattern&lt;GetBookCompletedEventArgs&gt;(svc, ""GetBookCompleted"");
+        o.Subscribe(
+            b =&gt; returnValue = b.EventArgs.Result
+            );
+
+        svc.GetBookAsync(bookName);
+        return returnValue;
+    }
+
+
+When I click btnCreate, myResult variable still empty. Is that something wrong with my code? Or maybe I am just don't understand with Rx concept? I am new to Rx.
+
+My goal is : I need to get the result (myResult variable) from asynchronous method, and then used in later code.
+",Trom,https://stackoverflow.com/users/1219992,"Remember that GetBookAsync returns immediately, and will return the value stored in returnvalue. When the data arrives returnvalue will be out of scope, and by then btnCreate will have finished.
+
+U could use await on the GetBookAsync, so that it will wait for the data to arrive before continuing.  Don't forget that would mean u also need the async on the method.
+
+Not a great example or use of either RX or await, but trying is how we learn!
+",codeputer,https://stackoverflow.com/users/176338,http://stackoverflow.com/questions/15583781/silverlight-returning-value-from-synchronous-method-using-rx,STACKOVERFLOW,stackoverflow.com,0.8888888888888888,0.3333333333333333,0.0,1.0,0.3333333333333333,1.0,0.5555555555555556,0.3333333333333333,0.3333333333333333,0.0,0.6666666666666666,0.3333333333333333,0.0,0.0,0.0,0.0,0.6666666666666666,0.0,0.0,0.0,0.4444444444444444,1.0,0.6666666666666666,1.0,1.0,0.8666666666666666,0.6666666666666666,0.0,0.3333333333333333,1.0
+68,How to grep words in a file?,"
+  Possible Duplicate:
+  Regex for &ldquo;or&rdquo; in grep  
+
+
+
+
+How can I grep for lines with either 'disable' or 'enable' in my file?
+
+I tried 
+ $ grep   ""disable|enable"" fail.log 
+
+but that shows up nothing.
+",michael,https://superuser.com/users/31500,"Try ""grep ""disable\|enable"" fail.log
+
+The backslash turns the | into the ""or"" metacharacter, otherwise you are grepping for the literal 'disable|enable""
+",bdk,https://superuser.com/users/9262,http://superuser.com/questions/436426,TECHNOLOGY,superuser.com,0.8888888888888888,0.6666666666666666,0.0,0.3333333333333333,1.0,1.0,0.6666666666666666,0.4444444444444444,0.0,0.0,0.3333333333333333,0.0,0.0,0.0,0.0,0.0,1.0,0.6666666666666666,0.3333333333333333,0.0,0.7777777777777778,0.8888888888888888,0.6666666666666666,1.0,1.0,0.8666666666666666,1.0,0.3333333333333333,1.0,0.8888888888888888
+71,Get term weight in node object for ordering with EntityFieldQuery,"Is it posiible to expose taxonomy term weight in node object ?
+
+I need to sort nodes using EntityFieldQuery by term reference field, but weight is not exposed to node object so i can say for example 
+
+-&gt;fieldOrderBy('field_custom_terms', 'weight', 'ASC');
+
+
+and sort nodes by weight of terms.
+",NenadP,https://drupal.stackexchange.com/users/5970,"No, this is not possible. You can only order on actual field values, the term weight would require a JOIN to a non-field table and EFQ is not capable of doing that.
+
+You will have to create a manual SQL query to do this. Note that Drupal by default maintains the node &lt;-> term associations in the taxonomy_index table, that one is easier and more reliable to query than a field data table.
+",Berdir,https://drupal.stackexchange.com/users/31,http://drupal.stackexchange.com/questions/40815/get-term-weight-in-node-object-for-ordering-with-entityfieldquery,TECHNOLOGY,drupal.stackexchange.com,1.0,0.6666666666666666,0.0,1.0,1.0,1.0,0.6666666666666666,0.3333333333333333,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.6666666666666666,1.0,0.3333333333333333,1.0,1.0,0.4,1.0,0.0,1.0,1.0
+72,Why is my CV 145% complete?,"On Careers, when filling out my CV, it is listed as being 145% complete.  Could someone tell me why this is?
+",Matthew Jones,https://meta.stackexchange.com/users/133611,"145% means that you're 45% better than the average programmer.  Congratulations.
+",Lance Roberts,https://meta.stackexchange.com/users/13295,http://meta.stackexchange.com/questions/24964/why-is-my-cv-145-complete,TECHNOLOGY,meta.stackexchange.com,1.0,0.5555555555555556,0.0,1.0,1.0,1.0,0.6666666666666666,0.6666666666666666,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,1.0,0.3333333333333333,0.3333333333333333,0.3333333333333333,0.4444444444444444,0.2,0.0,0.0,1.0,0.7777777777777778
+74,Symfony 2 and Twig custom error page,"I give up.
+
+The problem is with the overrided Twig 404 template. It is overrided in a default way by creating an error404.html.twig under the /app/Resources/TwigBundle/views directory.
+
+The template itself does not contain any irregular or complex logic: just a layout with some translated text (|trans) and a menu with several links.
+
+The problem is, that I can't get app.user object (returned as NULL) or current app.request.locale (always returned as default locale) inside this template.
+
+I have even tried to override the twig exception controller and dump a current locale (Request::getLocale()) or get user - the results are the same - default locale and NULL for user.
+
+Then I decided to dig deeper and found a dozens of listeners (locale listeners, exception liteners, ...) and tried to debug/fix/test there, but I didn't proceed any further.
+
+By the way, I have overrided the 500 error page too, and everything is fine there. Well I guess that when 500 error (exception) is thrown, the symfony has already set up user/locale/etc, because it already has got to the target (controller/action) and other listeners been already executed. But 404 error (NotFoundHttpException) is being thrown BEFORE Symfony targets the action...
+
+Some words about project: symfony 2.4.8, doctrine, Gedmo extensions/stof bundle, JMS i18n routing bundle.
+
+Symfony version: v2.4.8
+JMS I18n Routing bundle: 1.1.1
+
+Appreciate your help.
+",Dmitry,https://stackoverflow.com/users/629899,"That's the way I do it (at least for 404 templates):
+
+In app/config/routing.yml append:
+
+#always in last position
+#------------&gt;
+nonexistent_route:
+    path:     /{url}
+    defaults: { _controller: ACMEDemoBundle:Default:wrongRoute}
+    requirements:
+        url: "".+""    
+#&lt;-----------
+
+
+The Controller:
+
+namespace ACME\DemoBundle\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+class DefaultController extends Controller
+{
+    ...
+
+    public function wrongRouteAction($url)
+    {
+        $user = $this-&gt;get('security.context')-&gt;getToken()-&gt;getUser();
+
+        return $this-&gt;render('TwigBundle:Exception:error404.html.twig', array(""user"" =&gt; $user, ""url"" =&gt; $url));
+
+    }
+}
+
+
+And in your twig template app/Resources/TwigBundle/views/Exception/error404.html.twig you can access {{ user }}
+",devilcius,https://stackoverflow.com/users/779388,http://stackoverflow.com/questions/27276778/symfony-2-and-twig-custom-error-page,STACKOVERFLOW,stackoverflow.com,0.8888888888888888,0.3333333333333333,0.0,0.5,1.0,1.0,0.3333333333333333,0.3333333333333333,0.0,0.0,0.3333333333333333,0.0,0.0,0.0,0.0,0.0,1.0,0.6666666666666666,0.6666666666666666,0.0,0.8888888888888888,0.8888888888888888,0.6666666666666666,1.0,1.0,0.9333333333333332,1.0,0.3333333333333333,0.0,0.8888888888888888
+75,Thunderbird 2.0: Inbox size is 4GB on disk: how do I reduce it?,"Mozilla Thunderbird 2.0: I have set Thunderbird never to delete a message that is on disk...Thus, after four short years, I have a 4GB Inbox file. Thunderbird needs about 10 minutes to read it, and even then I can't compact it. Anyone have some suggestions?
+",Eric,https://superuser.com/users/15673,"There is definitely a 4GB limit on Windows due to Windows limitations which means you will have problem with individual Thunderbird mail folders that are larger than 4GB.
+
+And I thought the 4GB limit existed on Mac and Linux as well (so I am curious as to how emgee can have a Thunderbird folder that's 7GB! emgee: perhaps you are referring to a Unified Folder being 7GB but your individual folders are &lt; 4GB?)
+
+Nick's suggestion (i.e. move to new, multiple Thunderbird folders each of which is &lt;4GB. please clarify emgee) should work. More info with a complete procedure (change ""Sent"" to ""Inbox""):
+http://getsatisfaction.com/mozilla_messaging/topics/version_3_1_2_still_has_the_missing_sent_message_bug#reply_3235232
+",Roland Tanglao,https://superuser.com/users/9764,http://superuser.com/questions/198503,TECHNOLOGY,superuser.com,0.7777777777777778,0.7777777777777778,0.3333333333333333,0.6666666666666666,1.0,0.3333333333333333,0.6666666666666666,0.4444444444444444,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.6666666666666666,0.3333333333333333,0.0,0.0,1.0,1.0,0.7777777777777778,1.0,1.0,0.8666666666666666,0.6666666666666666,0.3333333333333333,0.6666666666666666,1.0

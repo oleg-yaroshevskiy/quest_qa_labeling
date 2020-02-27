@@ -1,0 +1,719 @@
+qa_id,question_title,question_body,question_user_name,question_user_page,answer,answer_user_name,answer_user_page,url,category,host
+39,Will leaving corpses lying around upset my prisoners?,"I see questions/information online about how to get rid of corpses but I'm not sure what the consequences to having them lying around are.
+
+I know that I can use a morgue to store them and that they will eventually be taken away in a hearse. However, I've always just left them lying around. This doesn't seem to have any obvious consequences.
+
+Do they upset prisoners or staff (e.g. increasing the danger level beyond what death normally does)? Make them sick? Slow down pathing? Is this something that's not implemented yet or is leaving dead bodies all over the place meant to be completely fine?
+
+The wiki's pages for Death and Morgue don't shed any light on this. All I'm finding is the how of getting rid of corpses/glitches related to it but not why it matters in the first place. All I've seen that's related is that apparently prisoners can loot guard corpses for keys, but there's no obvious consequences for prisoner corpses which are what I tend to end up with.
+
+So why not just leave them in the corridors?
+",Dylan,https://gaming.stackexchange.com/users/64471,"There is no consequence for leaving corpses anywhere. All it does if leave a mark of failure in your path of making a fully functional prison.
+",Nelson868,https://gaming.stackexchange.com/users/97324,http://gaming.stackexchange.com/questions/197934/will-leaving-corpses-lying-around-upset-my-prisoners,CULTURE,gaming.stackexchange.com
+46,Url link to feature image in the portfolio,"I am new to Wordpress. i have issue with Feature image. just i need to add URL to feature image(when we click on that feature image , it should redirect to that particular URL).
+
+also is it possible to give URL to Title of the Portfolio categories page which i used in normal page.
+
+
+
+This is Portfolio , i have used in the ""mypage"" . so in that"" mypage"" when we click on that image and title it should be redirect to the link (should able to give individual link)
+
+
+
+Any help would be appreciated. Thanks.
+",Anu,https://wordpress.stackexchange.com/users/72927,"I think it is possible with custom fields.
+
+Add a custom fields, for example, named link. Put the link into the value field. Then you will be able to access it something like that:
+
+&lt;a href=""&lt;?php echo get_post_meta( get_the_ID(), 'link', true ); ?&gt;""&gt;
+    &lt;?php the_post_thumbnail(); ?&gt;
+&lt;/a&gt;
+
+",Irina,https://wordpress.stackexchange.com/users/27233,http://wordpress.stackexchange.com/questions/187970/url-link-to-feature-image-in-the-portfolio,TECHNOLOGY,wordpress.stackexchange.com
+70,"Is accuracy, recoil or bullet spread affected by enemy hits?","To experiment I started a bot game, toggled invincibility and let the bots attack me. There were two clear hit effects: a major one that tilts view up a lot and sideways and a minor one that only tilts it up.
+
+So I tried releasing single shots exactly at the tilts: during a major one a single bullet ended up here (slightly covered by text). Actually the crosshair never moves that high so there tends to be a good amount of additional upward deviation of single shots fired.
+
+But when single-shooting during the minor tilts the marks seemed to end up exactly at the location of the crosshair.
+
+Now, when switching to spraying while being shot this pattern emerged. This was mostly caused by the minor tilts and, I guess, ""standard recoil"". Occasionally a major tilt caused a single bullet to lie severly outside of the depicted cone.
+",Konsta,https://gaming.stackexchange.com/users/37545,"You do not have armour in the screenshots. This suggests you are being affected by a large amount of aim punch.
+",Damon Smithies,https://gaming.stackexchange.com/users/70641,http://gaming.stackexchange.com/questions/215490/is-accuracy-recoil-or-bullet-spread-affected-by-enemy-hits,CULTURE,gaming.stackexchange.com
+132,Suddenly got an I/O error from my external HDD,"I have used my Raspberry Pi as a torrent-server for quite a while now. My Western Digital ""My Passport-Ultra"" external HDD and Transmission running on RPi has worked flawlessly for more than a year. Suddenly last week my setup started producing I/O errors and now when I SSH into my RPi I cant find the HDD folder. 
+
+I have not changed anything with my RPi or the torrent-server setup since I set it up.
+
+Can someone help me find a solution to my problem?
+
+EDIT:
+
+The external HHD works fine the first 20 minutes or so, and then Transmisson gives me ""Error: Input/output error"".
+
+lsusb -t output:
+
+/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=dwc_otg/1p, 480M
+    |__ Port 1: Dev 2, If 0, Class=hub, Driver=hub/3p, 480M
+        |__ Port 1: Dev 3, If 0, Class=vend., Driver=smsc95xx, 480M
+        |__ Port 3: Dev 4, If 0, Class=stor., Driver=usb-storage, 480M
+
+lsusb -t output after a while:
+
+/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=dwc_otg/1p, 480M
+    |__ Port 1: Dev 2, If 0, Class=hub, Driver=hub/3p, 480M
+        |__ Port 1: Dev 3, If 0, Class=vend., Driver=smsc95xx, 480M
+
+mount output:
+
+/dev/root on / type ext4 (rw,noatime,data=ordered)
+devtmpfs on /dev type devtmpfs (rw,relatime,size=216132k,nr_inodes=54033,mode=755)
+tmpfs on /run type tmpfs (rw,nosuid,noexec,relatime,size=44880k,mode=755)
+tmpfs on /run/lock type tmpfs (rw,nosuid,nodev,noexec,relatime,size=5120k)
+proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)
+sysfs on /sys type sysfs (rw,nosuid,nodev,noexec,relatime)
+tmpfs on /run/shm type tmpfs (rw,nosuid,nodev,noexec,relatime,size=89740k)
+devpts on /dev/pts type devpts (rw,nosuid,noexec,relatime,gid=5,mode=620)
+/dev/mmcblk0p5 on /boot type vfat (rw,relatime,fmask=0022,dmask=0022,codepage=cp437,iocharset=ascii,shortname=mixed,errors=remount-ro)
+fusectl on /sys/fs/fuse/connections type fusectl (rw,relatime)
+/dev/sda1 on /NAS/USBHDD type fuseblk (rw,nosuid,nodev,noatime,user_id=0,group_id=0,allow_other,blksize=4096)
+
+
+
+
+
+lsusb -v output:
+
+Bus 001 Device 002: ID 0424:9512 Standard Microsystems Corp.
+Couldn't open device, some information will be missing
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass            9 Hub
+  bDeviceSubClass         0 Unused
+  bDeviceProtocol         2 TT per port
+  bMaxPacketSize0        64
+  idVendor           0x0424 Standard Microsystems Corp.
+  idProduct          0x9512
+  bcdDevice            2.00
+  iManufacturer           0
+  iProduct                0
+  iSerial                 0
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength           41
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0
+    bmAttributes         0xe0
+      Self Powered
+      Remote Wakeup
+    MaxPower                2mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           1
+      bInterfaceClass         9 Hub
+      bInterfaceSubClass      0 Unused
+      bInterfaceProtocol      1 Single TT
+      iInterface              0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            3
+          Transfer Type            Interrupt
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0001  1x 1 bytes
+        bInterval              12
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       1
+      bNumEndpoints           1
+      bInterfaceClass         9 Hub
+      bInterfaceSubClass      0 Unused
+      bInterfaceProtocol      2 TT per port
+      iInterface              0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            3
+          Transfer Type            Interrupt
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0001  1x 1 bytes
+        bInterval              12
+
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Couldn't open device, some information will be missing
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass            9 Hub
+  bDeviceSubClass         0 Unused
+  bDeviceProtocol         1 Single TT
+  bMaxPacketSize0        64
+  idVendor           0x1d6b Linux Foundation
+  idProduct          0x0002 2.0 root hub
+  bcdDevice            3.06
+  iManufacturer           3
+  iProduct                2
+  iSerial                 1
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength           25
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0
+    bmAttributes         0xe0
+      Self Powered
+      Remote Wakeup
+    MaxPower                0mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           1
+      bInterfaceClass         9 Hub
+      bInterfaceSubClass      0 Unused
+      bInterfaceProtocol      0 Full speed (or root) hub
+      iInterface              0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            3
+          Transfer Type            Interrupt
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0004  1x 4 bytes
+        bInterval              12
+
+Bus 001 Device 003: ID 0424:ec00 Standard Microsystems Corp.
+Couldn't open device, some information will be missing
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass          255 Vendor Specific Class
+  bDeviceSubClass         0
+  bDeviceProtocol         1
+  bMaxPacketSize0        64
+  idVendor           0x0424 Standard Microsystems Corp.
+  idProduct          0xec00
+  bcdDevice            2.00
+  iManufacturer           0
+  iProduct                0
+  iSerial                 0
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength           39
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0
+    bmAttributes         0xe0
+      Self Powered
+      Remote Wakeup
+    MaxPower                2mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           3
+      bInterfaceClass       255 Vendor Specific Class
+      bInterfaceSubClass      0
+      bInterfaceProtocol    255
+      iInterface              0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0200  1x 512 bytes
+        bInterval               0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x02  EP 2 OUT
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0200  1x 512 bytes
+        bInterval               0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x83  EP 3 IN
+        bmAttributes            3
+          Transfer Type            Interrupt
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0010  1x 16 bytes
+        bInterval               4
+
+Bus 001 Device 004: ID 1058:0810 Western Digital Technologies, Inc.
+Couldn't open device, some information will be missing
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.10
+  bDeviceClass            0 (Defined at Interface level)
+  bDeviceSubClass         0
+  bDeviceProtocol         0
+  bMaxPacketSize0        64
+  idVendor           0x1058 Western Digital Technologies, Inc.
+  idProduct          0x0810
+  bcdDevice           10.42
+  iManufacturer           1
+  iProduct                2
+  iSerial                 3
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength           32
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0
+    bmAttributes         0x80
+      (Bus Powered)
+    MaxPower              100mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           2
+      bInterfaceClass         8 Mass Storage
+      bInterfaceSubClass      6 SCSI
+      bInterfaceProtocol     80 Bulk-Only
+      iInterface              0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x8b  EP 11 IN
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0200  1x 512 bytes
+        bInterval               0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x0a  EP 10 OUT
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0200  1x 512 bytes
+        bInterval               0
+
+
+lsusb -v output after a while:
+
+Bus 001 Device 002: ID 0424:9512 Standard Microsystems Corp.
+Couldn't open device, some information will be missing
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass            9 Hub
+  bDeviceSubClass         0 Unused
+  bDeviceProtocol         2 TT per port
+  bMaxPacketSize0        64
+  idVendor           0x0424 Standard Microsystems Corp.
+  idProduct          0x9512
+  bcdDevice            2.00
+  iManufacturer           0
+  iProduct                0
+  iSerial                 0
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength           41
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0
+    bmAttributes         0xe0
+      Self Powered
+      Remote Wakeup
+    MaxPower                2mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           1
+      bInterfaceClass         9 Hub
+      bInterfaceSubClass      0 Unused
+      bInterfaceProtocol      1 Single TT
+      iInterface              0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            3
+          Transfer Type            Interrupt
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0001  1x 1 bytes
+        bInterval              12
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       1
+      bNumEndpoints           1
+      bInterfaceClass         9 Hub
+      bInterfaceSubClass      0 Unused
+      bInterfaceProtocol      2 TT per port
+      iInterface              0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            3
+          Transfer Type            Interrupt
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0001  1x 1 bytes
+        bInterval              12
+
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+Couldn't open device, some information will be missing
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass            9 Hub
+  bDeviceSubClass         0 Unused
+  bDeviceProtocol         1 Single TT
+  bMaxPacketSize0        64
+  idVendor           0x1d6b Linux Foundation
+  idProduct          0x0002 2.0 root hub
+  bcdDevice            3.06
+  iManufacturer           3
+  iProduct                2
+  iSerial                 1
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength           25
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0
+    bmAttributes         0xe0
+      Self Powered
+      Remote Wakeup
+    MaxPower                0mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           1
+      bInterfaceClass         9 Hub
+      bInterfaceSubClass      0 Unused
+      bInterfaceProtocol      0 Full speed (or root) hub
+      iInterface              0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            3
+          Transfer Type            Interrupt
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0004  1x 4 bytes
+        bInterval              12
+
+Bus 001 Device 003: ID 0424:ec00 Standard Microsystems Corp.
+Couldn't open device, some information will be missing
+Device Descriptor:
+  bLength                18
+  bDescriptorType         1
+  bcdUSB               2.00
+  bDeviceClass          255 Vendor Specific Class
+  bDeviceSubClass         0
+  bDeviceProtocol         1
+  bMaxPacketSize0        64
+  idVendor           0x0424 Standard Microsystems Corp.
+  idProduct          0xec00
+  bcdDevice            2.00
+  iManufacturer           0
+  iProduct                0
+  iSerial                 0
+  bNumConfigurations      1
+  Configuration Descriptor:
+    bLength                 9
+    bDescriptorType         2
+    wTotalLength           39
+    bNumInterfaces          1
+    bConfigurationValue     1
+    iConfiguration          0
+    bmAttributes         0xe0
+      Self Powered
+      Remote Wakeup
+    MaxPower                2mA
+    Interface Descriptor:
+      bLength                 9
+      bDescriptorType         4
+      bInterfaceNumber        0
+      bAlternateSetting       0
+      bNumEndpoints           3
+      bInterfaceClass       255 Vendor Specific Class
+      bInterfaceSubClass      0
+      bInterfaceProtocol    255
+      iInterface              0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x81  EP 1 IN
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0200  1x 512 bytes
+        bInterval               0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x02  EP 2 OUT
+        bmAttributes            2
+          Transfer Type            Bulk
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0200  1x 512 bytes
+        bInterval               0
+      Endpoint Descriptor:
+        bLength                 7
+        bDescriptorType         5
+        bEndpointAddress     0x83  EP 3 IN
+        bmAttributes            3
+          Transfer Type            Interrupt
+          Synch Type               None
+          Usage Type               Data
+        wMaxPacketSize     0x0010  1x 16 bytes
+        bInterval               4
+
+",robbannn,https://raspberrypi.stackexchange.com/users/17341,"Your Western Digital hard drive is disappearing as shown in your lsusb output (Port 3):
+
+lsusb -t output:
+
+/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=dwc_otg/1p, 480M
+    |__ Port 1: Dev 2, If 0, Class=hub, Driver=hub/3p, 480M
+        |__ Port 1: Dev 3, If 0, Class=vend., Driver=smsc95xx, 480M
+        |__ Port 3: Dev 4, If 0, Class=stor., Driver=usb-storage, 480M
+
+lsusb -t output after a while:
+
+/:  Bus 01.Port 1: Dev 1, Class=root_hub, Driver=dwc_otg/1p, 480M
+    |__ Port 1: Dev 2, If 0, Class=hub, Driver=hub/3p, 480M
+        |__ Port 1: Dev 3, If 0, Class=vend., Driver=smsc95xx, 480M
+
+
+I recommend that you copy all of your data off of this drive to another hard drive before it fails completely. 
+
+It is possible that it could be the USB connection on the Pi instead of the drive.  Does the drive behave like this on a different computer system?
+
+Again, I strongly recommend that you backup any irreplaceable data on this drive before it fails completely.  If you have another USB drive I recommend using rsync.  I use the following command to backup one external hard drive to a 2nd device on my Pi where /media/USBHDD1 is the mount point of the 1st drive and /media/USBHDD2 is the mount point of the 2nd drive.  rsync can recover from an interrupted copy in case your drive disappears while performing the copy.  You should be able to just power cycle failed drive and perform the copy command again.  rsync should pick up where it left off.
+
+rsync -av --delete /media/USBHDD1/* /media/USBHDD2/
+
+",HeatfanJohn,https://raspberrypi.stackexchange.com/users/1311,http://raspberrypi.stackexchange.com/questions/19357/suddenly-got-an-i-o-error-from-my-external-hdd,TECHNOLOGY,raspberrypi.stackexchange.com
+200,Passenger Name - Flight Booking Passenger only have First Name in Passport,"I have bought Delhi-London return flights for 4 on Saudi Airlines.
+2 of the passengers only have ‘First name’ in their passports, hence i have used the same in ‘First Name’ and ‘Last Name’ while booking the tickets, as that is generally a common practice suggested by many airlines.
+
+Saudi Airlines do not mention anything about this situation on their website and when i called their UK helpline, they were not very sure
+
+Do you see travelers encountering any problem at airport because of this?
+",Amit,https://travel.stackexchange.com/users/29089,"I called two persons who work for Saudia (ticketing agents), they both said adding the first name in both fields should work, one of them said he would add ""MR"" as the first name and then add the only name as the last name, either way it should work.  
+
+They also mentioned there is no clear policy regarding this and it might be confusing for people, but once the passport is found with one name people usually accept any of the solutions above. So no worries, you will be fine.
+",Nean Der Thal,https://travel.stackexchange.com/users/10051,http://travel.stackexchange.com/questions/47043/passenger-name-flight-booking-passenger-only-have-first-name-in-passport,CULTURE,travel.stackexchange.com
+245,Exactly how are Avenger elites buffed when one of them dies?,"I understand that elites with the Avenger property get stronger as the others in the pack with that property die, but how exactly do they get stronger?
+
+I'm looking for hard numbers.
+",Sterno,https://gaming.stackexchange.com/users/3062,"
+  Only Champion monster types will spawn with the Avenger trait. If a
+  Champion touting this ability appears, it can imbue all other
+  Champions in the area with the same type of powers it spawned with,
+  increasing movement and attack speed and damage inflicted until the
+  foe is felled. This effect may be stacked up to three times.
+
+
+Source
+
+I highlighted the important bits.
+",ayckoster,https://gaming.stackexchange.com/users/10933,http://gaming.stackexchange.com/questions/70417/exactly-how-are-avenger-elites-buffed-when-one-of-them-dies,CULTURE,gaming.stackexchange.com
+257,Configure which plugin custom post types get registered,"I am writing a plugin that creates custom post types, but i want users to be able to turn them on and off via a filter in the functions.php file.
+
+The issue i'm having is that custom post types register_post_type has to be called during init and functions.php is read far after this.
+
+How can I allow users to provide an array using a filter or action that will control which post types register_post_type gets called?
+
+// currently the custom post type constructor has this
+if(!post_type_exists($this-&gt;name)) {
+  add_action(""init"", array($this, ""register_post_type""));
+  add_action(""init"", array($this, ""configure_meta_boxes""));
+  add_action(""save_post"", array($this, ""save""));
+
+  add_filter('myplugin_get_shortcodes', array($this, ""configure_shortcodes""));
+}
+
+
+The filter works just fine so I know it's being called, but for whatever reason the actions aren't.
+",Rabbott,https://wordpress.stackexchange.com/users/35459,"
+  The issue i'm having is that custom post types register_post_type has
+  to be called during init and functions.php is read far after this.
+
+
+That's not true. functions.php is read before init because you can declare your functions in there and then hook them to init.
+
+Since you want to avoid a settings page and you want your users to modify the code (at your own risk), you could use some flags:
+
+add_action('init', 'wpse_109719_post_types');
+
+function wpse_109719_post_types(){
+
+  $post_type1 = true;
+  $post_type2 = true;
+  $post_type3 = false; // your users don't want this one
+
+  if( $post_type1 ){
+    register_post_type( 'your_post_type_1', $args );
+  }
+
+  if( $post_type2 ){
+    register_post_type( 'your_post_type_2', $args );
+  }
+
+  if( $post_type3 ){
+    // won't be registered since $post_type3 was declared as false
+    register_post_type( 'your_post_type_3', $args );
+  }
+
+}
+
+
+
+Not tested, but you can use something like that to collect the post types:
+
+$val = array ();
+$options_array = apply_filters( 'my_unique_filter', $val );
+print_r( $options_array );
+// make a loop and register_post_type here. don't forget to hook at init
+
+
+In your plugins:
+
+function filter1( $val ){
+  $val[] = 'post_type1';
+  return $val;
+}
+
+function filter2( $val ){
+  $val[] = 'post_type2';
+  return $val;
+}
+
+function filter3( $val ){
+  $val[] = 'post_type3';
+  return $val;
+}
+
+
+add_filter('my_unique_filter', 'filter1');
+add_filter('my_unique_filter', 'filter2');
+add_filter('my_unique_filter', 'filter3');
+
+",RRikesh,https://wordpress.stackexchange.com/users/17305,http://wordpress.stackexchange.com/questions/109719/configure-which-plugin-custom-post-types-get-registered,TECHNOLOGY,wordpress.stackexchange.com
+267,"Why say ""it rhymes with Grape""?","There is a scene in 21 Jumpstreet where Dave Franco' character Eric says ""do you know what they'll do to me in prison it rhymes with grape"" and it made me curious as to why it was phrased that way. 
+
+In Knocked Up a similar joke was made ""it rhymes with smabortion"" which I believe I read was done due to censors. However the repeating setup for the joke has me curious if this time it was due to censors or if it was just considered a funny setup that bared repeating. So was it censoring or continuing a joke?
+",Kevin Howell,https://movies.stackexchange.com/users/645,"Opinion: It was a funny(?) joke.
+
+Although a similar setup was used in Knocked Up, the truth is similar setups have been used in plenty of comedy movies.
+
+Whilst I understand your query regarding the censors, it seems difficult to imagine why censorship would be an issue, the main reason I can think of being:
+
+
+There is a colossal amount of crass language, violence, partial nudity and drug taking in the film. Why would all this be considered acceptable but a line about rape wouldn't be?
+
+
+It seems more likely to me that it was a funny line that works in the context of the scene as it seems so abhorrent that he can't bring himself to utter the actual word, instead resorting to childish rhyming (suggesting the mere thought of it makes him regress to his inner child in fear). 
+
+Whether it was a homage to his (extremely popular) line from Knocked Up is something I can find no reference to online, but solely in my own opinion, I can't see how this was a censorship issue.
+",Andrew Martin,https://movies.stackexchange.com/users/8219,http://movies.stackexchange.com/questions/21090/why-say-it-rhymes-with-grape,LIFE_ARTS,movies.stackexchange.com
+284,c++ getline and stringstream,"I'm trying to read in a file, which has 5 lines, and every line is 3-4 string long.
+Here's my input file:
+
+10:30 Hurley 1234567A 10:15
+10:45 Hurley 1234567A 11:30
+08:35 Jacob 1x1x1x1x1x
+08:35 Jacob 1x1x1x1x1x 08:10
+08:05 Jacob 1x1x1x1x1x
+08:45 Sayid 33332222 09:15
+
+
+And this is what I get:
+
+10:30 Hurley 1234567A   10:15
+10:45 Hurley 1234567A   11:30
+08:35 Jacob  1x1x1x1x1x 11:30
+08:35 Jacob  1x1x1x1x1x 08:10
+08:05 Jacob  1x1x1x1x1x 08:10
+08:45 Sayid  33332222   09:15
+
+
+This is my code:
+
+void enor::Read(status &amp;sx,isle &amp;dx,ifstream &amp;x){
+    string str;
+    getline(x, str, '\n');
+    stringstream ss;
+    ss &lt;&lt; str;
+    ss &gt;&gt; dx.in &gt;&gt; dx.name &gt;&gt; dx.id &gt;&gt; dx.out;
+    /*getline(x, str, '\n');
+    x&gt;&gt;dx.in&gt;&gt;dx.name&gt;&gt;dx.id&gt;&gt;dx.out;*/
+    if(x.fail())
+        sx=abnorm;
+    else
+        sx=norm;
+}
+
+
+How can I read in the file without having the 3rd and 5th line filled with the 2nd and 4th line's time? I want the dx.out to be empty. Should I use another method, or is it possible to be done with stringstream? 
+",wfmn17,https://stackoverflow.com/users/1430743,"If &gt;&gt; sees that there is nothing left in the stringstream, it will leave the variable untouched - so dx.out keeps its value from the last line. However, you can do
+
+ss &gt;&gt; dx.in &gt;&gt; dx.name &gt;&gt; dx.id;
+if (!(ss &gt;&gt; dx.out))
+    dx.out = """";
+
+
+because ss &gt;&gt; dx.out returns ss, and when a stream is converted to a bool (such as when it is used in an if condition), it returns false if the last read attempt failed.
+",Aasmund Eldhuset,https://stackoverflow.com/users/626853,http://stackoverflow.com/questions/16374187/c-getline-and-stringstream,STACKOVERFLOW,stackoverflow.com
+292,"Outlook doesn't download all emails, whereas iphone does","When I check my emails on my iPhone, I notice I am seeing emails that are not appearing in Outlook on my computer. This has only happened since I downloaded an Outlook upgrade. I'm afraid of missing important emails. Where are they going?
+",Samantha,https://superuser.com/users/148771,"It could be that your iPhone is deleting the messages off the server before your Outlook client downloads them. Check for a setting related to this. It might be called something like ""Leave a copy on the server"" or ""Delete messages from server after downloading.""
+",Tanner Faulkner,https://superuser.com/users/146694,http://superuser.com/questions/454556,TECHNOLOGY,superuser.com

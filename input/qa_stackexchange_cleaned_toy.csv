@@ -1,0 +1,759 @@
+id,host,question_username,question_score,question_views,question_favs,answers_count,answers_max_score,answers_mean_score,question_title,question_body,answer_username,answer,answer_score,is_answer_accepted
+1,3dprinting.stackexchange.com,Adam Davis,3.767809650974757,3.912607320579891,0.0,3.1880595895805834,3.749318730431847,3.4319460411998994,How to obtain high resolution prints in a shorter period of time?,"When I've printed an object I've had to choose between high resolution and quick prints.  What techniques or technologies can I use or deploy to speed up my high resolution prints?
+",hroncok,"You could experiment with slicing. For example, you might not need high resolution all over the object, but you can speed up some straight parts by using greater layer high there. See a part of Slic3r manual about such thing.
+
+It is also possible to print thicker infill every Nth layer, see Infill optimization in Slic3r.
+
+Other slicers might have those features as well.
+",3.2133663407215876,2.0769199823829045
+1,3dprinting.stackexchange.com,Adam Davis,3.767809650974757,3.912607320579891,0.0,3.1880595895805834,3.749318730431847,3.4319460411998994,How to obtain high resolution prints in a shorter period of time?,"When I've printed an object I've had to choose between high resolution and quick prints.  What techniques or technologies can I use or deploy to speed up my high resolution prints?
+",plaintoothpaste,"For FDM technologies in general with a single extruder, slicing modifications is your only options. However there will be a trade off between quality and speed. 
+For ABS, changing to a machine with a enclosed build (such as a zortrax) chamber may help and a heated build chamber (Stratasys machine) will help the quality and reliability but not the print speed directly. As ABS has a tendency to warp vase mode is not the best idea either.
+
+If you only need high resolution and not strength then reducing the infill percentage or even using vase mode will speed up the print. Also changing to a material that you can print at higher speeds like PLA will magnify any of the previous settings.
+
+If you have two extruders then changing to a wider nozzle and using that for infill may speed up the print, heating and cooling time during extruder changeover may actually make it slower.
+
+For other technologies there are lots of options digital light projection (DLP) and stereolithography (SLA) both provide significantly higher resolution then FDM, with DLP being the faster of the two, comparison. Take the review with a grain of salt though as the technologies are far from standardised, for example out DLP at work offers far higher resolution and speed then our SLA which is quite old.
+
+Sintering or melting technologies can scan the outline every layer then perform a infill of multiple layers at once to speed up the process. 
+",1.6066831703607938,0.0
+4,3dprinting.stackexchange.com,Adam Davis,4.541637296610063,3.9215535641013384,2.7799718631987322,4.670422881206417,3.320478682445624,3.4319460411998994,Are there any metals that exhibit a large glass state?,"Plastic is used in 3D FDM/FFF printing partly because it had a wide temperature range for its glass state - where it can be flowed with some force, but won't flow due only to gravity.
+
+Most metals have a very narrow, or non-existant, glass state.  They transition from solid to liquid with almost no flowable-but-not-liquid state.
+
+Are there any metals or alloys that display a glass transition state?
+",TextGeek,"I""m no expert on this, but the article at https://en.wikipedia.org/wiki/Amorphous_metal may be relevant for you.
+
+There are some special alloys, such as gold/silicon and various titanium-based ones, that become ""bulk metal glasses"" if cooled extremely quickly (for example, by sputtering onto a spinning cold surface). The speed of cooling prevents crystal formation. Early BMGs were quite strong but brittle; improvements have reduced brittleness and required cooling speed.
+",2.620387387103937,0.0
+4,3dprinting.stackexchange.com,Adam Davis,4.541637296610063,3.9215535641013384,2.7799718631987322,4.670422881206417,3.320478682445624,3.4319460411998994,Are there any metals that exhibit a large glass state?,"Plastic is used in 3D FDM/FFF printing partly because it had a wide temperature range for its glass state - where it can be flowed with some force, but won't flow due only to gravity.
+
+Most metals have a very narrow, or non-existant, glass state.  They transition from solid to liquid with almost no flowable-but-not-liquid state.
+
+Are there any metals or alloys that display a glass transition state?
+",Ryan Carlyle,"A few things are required for effective extrusion-style 3d printing materials:
+
+
+It must stay where placed by the nozzle long enough to harden (or, alternately for pastes and such, have a shear-thinning or thixotropic viscous profile so it will not flow under its own weight). 
+If using a filament extruder, it must have a wide range of viscosity that varies gradually over a considerable temperature range. This is necessary to develop the proper ""cap zone"" semi-melt shearing behavior that allows the incoming filament to act like a piston and generate pressure upstream of the nozzle. Pellet extruders have a similar requirement but related to screw/wall shearing rather than filament/wall shearing. If using neither filament nor pellets, such as clay printers, the material must be pumpable by a positive-displacement pump. (It is possible to pump molten metal, but the cost is quite high.)
+It must form some kind of bond with previously-deposited solid material, without needing to be in a state that will rapidly flow and lose shape.
+It must have some combination of low shrinkage, the ability to creep at the printer's ambient temp, and/or low stiffness that allows consecutive layers to be stacked without an unacceptable amount of warping. 
+
+
+Liquid metals tend to have a conflict between ""Staying where you put it"" and ""bonding with the previous layer."" In order for deposited metal to fully bond, the interface material needs to reach the melting point so a true fusion weld occurs. And in order to supply enough heat to remelt the interface without an additional heat source like an arc, the deposited molten metal needs to be very hot. So it will tend to run while it cools. High density and high heat capacity makes it run fast and cool slowly. 
+
+Pretty much every DIY metal 3d print (such as made by wire-feed MIG welders) ends up looking something like this:
+
+
+https://3dprint.com/29944/diy-metal-printing-garage/
+
+In comparison, polymers have long molecular chains that allow them to ""diffusion weld"" and adhere WITHOUT fully remelting the interface. Molten liquid plastic will stick to solid plastic quite effectively. The interface only needs to get hot enough for appreciable diffusion to intertwine the molecular chains. This will occur between the glass point and melting point, without true fusion occurring. So you can print molten plastic at a temperature where it will stay in place long enough to harden, and still get good bonding.
+
+Metals also tend to be very stiff, which encourages warping. It is difficult to build a heated environment of sufficient temperature to properly stress-relieve the thermal contraction stress as the print progresses, whereas with plastic a heated build plate and warm enclosure can permit warping stresses to start relaxing as the print progresses. 
+
+It is possible to ""FDM-style"" 3d print filament/wire made of metal alloys that have a wide range between solidus and liquidus. It has been done using solder and similar alloys. However, between the warping stresses, poor layer bonding from inadequate interface re-melting, and use of soft low-melting alloys, the resulting printed parts will usually end up being weaker than if they had simply been printed in a strong plastic. For example, PEEK is nearly as strong as aluminum, and carbon fiber or fiberglass composite plastics can exceed metals on various performance metrics. So what's the point of printing with weak, brittle metal alloys?
+
+Over the years, lots of people have tried FDM-style metal printing, but no one has found it worthwhile to pursue in the long run. More typical DIY metal printing approaches like 3D MIG welding following by cleanup machining will produce better results.
+",2.845827522384412,2.0769199823829045
+2,3dprinting.stackexchange.com,kenorb,5.291027456384213,5.52632428328061,3.507933925167123,5.199501240805782,5.195138047661548,4.521992869097919,Is 3D printing safe for your health?,"I would like to buy a 3D printer, but I'm concerned about the health risks that are associated with its operation. Some groups of scientists say it can be harmful for humans.
+
+What do I need to consider before buying a 3D printer if I care about my health? Are there any safe printers?
+",Tom van der Zanden,"There is very little information about safety available, as home 3D printers are relatively new. However, plastics such as ABS have a long history in making plastic products, and a study found that at traditional manufacturing methods (such as injection molding and hot wire cutting) do not release dangerous levels of carcinogens and/or respiratory sensitizers in to the air.
+
+Of course, 3D printers are not among the processes covered in the study. In home 3D printing circles, this study that looks at ultrafine particle (UFP) emissions, is often cited. It finds that printing ABS releases relatively high levels of UFP's and PLA releases significantly fewer (but still quite a large amount). However, it is unclear whether/how dangerous these UFP's are in the amounts emitted.
+
+It is often suggested that PLA, partly because of the reduced UFP emissions is safer to print than ABS, partly because of its ""natural"" origins as it can be derived from materials such as cornstarch. I would caution against this line of reasoning since ""natural"" materials can still be poisonous (snake venom is natural, after all) and the cornstarch is heavily processed so it hardly resembles its original form. The lower UFP emissions may suggest it is safer, but the study is only quantitative, not qualitative.
+
+That said, PLA does probably pose less of a risk (despite my earlier argumentation against ""natural"" materials, PLA does play quite nicely with the human body), but I contend the risk with ABS is not too large anyways, given that it has been safely used in factories for decades.
+
+Another study is often miscited, supposedly saying that 3D printing ABS releases hydrogen cyanide. The study only looks at the thermal decomposition of ABS, which happens at significantly higher temperatures than are reached during printing (but a significantly malfunctioning printer might cause toxic gasses to be released, but I contend that at that point you should worry about your printer being on fire, rather than temporary exposure to some toxins).
+
+There are no printers out there that are fundamentally safer than others. However, some printers have an enclosure (containing the fumes) and some even have a carbon filter and a fan for fume extraction. If you would like to err on the side of caution, this might be a good choice (but again, it is not clear if a carbon filter is totally effective).
+
+Finally, as printers are generally quite noisy it tends to be preferrable to keep your printer in a separate room from where you usually work. In this case, fume exposure (during the few minutes that you go to check on your print) is minimal, and the potential advantages of a ""safer"" printers or using ""safer"" materials diminish.
+
+Incidental exposure as a hobbyist is probably not a big deal; workers in factories are exposed to the fumes of melted plastic their entire lives and they don't seem to be dropping dead. On the other hand, if you are going to be printing structurally then it is probably preferable to move your printer to a separate room, if not because of health and safety because of the noise.
+",4.452510692745205,2.0769199823829045
+2,3dprinting.stackexchange.com,kenorb,5.291027456384213,5.52632428328061,3.507933925167123,5.199501240805782,5.195138047661548,4.521992869097919,Is 3D printing safe for your health?,"I would like to buy a 3D printer, but I'm concerned about the health risks that are associated with its operation. Some groups of scientists say it can be harmful for humans.
+
+What do I need to consider before buying a 3D printer if I care about my health? Are there any safe printers?
+",KobeJohn,"I am going to address the air issue as it is currently unresolved. the third dimension offers a great answer for common safety issues.
+
+The short answer is that based on our limited knowledge at this point, there may be imperceptible health hazards related to FDM / FFF printers and therefore additional safety precautions are, in my opinion, necessary and not optional or secondary as suggested by some in the community.
+
+In other words, if you can isolate your printer in a well-vented area where people rarely go, then of course it's not a health risk, but if people will be exposed to the air of the printer for any significant periods of time, you need to do something about it. This is my situation - where I live dedicated workshops and extra rooms are luxuries that most people do not have.
+
+
+
+Realistic Chance of Being Dangerous --> Treat It As Dangerous
+
+The key information at this point in time is the UFP (Ultra-Fine Particle) study that is linked in Tom's answer.
+
+Leaving out the scary / detailed parts:
+
+
+  Therefore, results herein suggest that caution should be used when
+  operating these 3D printing instruments inside unvented or unfiltered
+  indoor environments due to their large emissions of UFPs.
+  
+  One important limitation to this study is that we have no information
+  about the chemical constituents of the UFPs emitted from either type
+  of 3D printer [...]
+  
+  [...] there may also be
+  differences in toxicity because of differences in chemical
+  composition.
+
+
+This means that although many processes release UFPs (the authors of the paper compare to cooking), all UFPs are not created equal. Since the UFPs from 3D printing are still an unknown, the only real answer from a safety perspective is to treat them as dangerous.
+
+
+
+This is not legal, safety, or professional advice!
+
+I am not qualified to give an opinion on what should be done but I will share what I would do:
+
+
+Venting - Active airflow pushing the envelope of air around the print into a large, unpopulated body of air.
+Enclosure + Venting - By fully enclosing your printer, it will probably keep the UFPs mostly within the enclosure. You could combine that with either continuous venting or as some have suggested purge venting before opening the enclosure.
+Enclosure + Filtering - A filter can be applied both to the vent to reduce the output of UFPs (e.g. if you have no access to a safe body of air) and as a recirculating system that removes the UFPs from the body of air within the enclosure.
+
+
+A note on positive vs negative pressure related to venting and filtering: if you produce positive pressure within the enclosure, you are going to be blowing all the UFPs out into your environment anyway. Negative pressure vented to a safe body of air or neutral pressure with good seals and recirculated filtering may avoid that.
+
+A note on filters: Activated carbon filters will not remove UFPs. HEPA filters may remove 3D printing UFPs.
+
+
+
+Which Printer?
+
+As long as the uncertainty exists, I predict that as the market matures, filtering and enclosures will become more standard. At this point in time, the only enclosed AND HEPA filtered consumer-grade FDM printers I am aware of are the Up! Box and the Zortrax Inventure. There are a number of enclosed printers without filtering.
+
+As an alternative, at least one company has appeared with products targeted at those who are concerned about various safety aspects of 3d printing.
+",3.2133663407215876,0.0
+6,3dprinting.stackexchange.com,kenorb,3.767809650974757,4.305810774244716,1.7539669625835614,5.199501240805782,3.749318730431847,3.299796711874648,Multi-color printing with desktop 3D printer?,"My MakerBot printer supports only two filaments at the same time.
+
+What are techniques to print objects with more than two colors for one object?
+",Tom van der Zanden,"The most obvious solution is to pause the print and swap filament for another color.
+
+Another option is to splice pieces of filament together, though this does not allow very precise control of when the switch happens. There is also a device that can automatically slice filament this way.
+
+Finally, another option that uses very little external equipment is to use (permanent) markers to colorize light-colored filament.
+
+Other options include upgrading to a printer with more hotends, or installing a hotend with multiple filament inputs and one outputs, but these options would involve significantly changing your printer setup.
+",3.2133663407215876,2.0769199823829045
+6,3dprinting.stackexchange.com,kenorb,3.767809650974757,4.305810774244716,1.7539669625835614,5.199501240805782,3.749318730431847,3.299796711874648,Multi-color printing with desktop 3D printer?,"My MakerBot printer supports only two filaments at the same time.
+
+What are techniques to print objects with more than two colors for one object?
+",Tony Hansen,"Answering this question fully depends on the type of printer you have. Some printers have a pause capability, while others do not. Some have multiple extruders, while most do not. Some have a tube leading to the extruder and others do not. You specifically are asking about dealing with more than two colors when you have a dual-extruder, but the question generalizes to how to get more colors than you have extruders.
+
+Markers probably offer the easiest solution. You could have different markers on the feeds for each extruder.
+
+For printers with no pause ability, you might have to snip one filament and hand feed the second color after the first one until it can be caught by the feeder gear.
+
+There are rigs that are available, or that you can make, that will let you connect two strands together lengthwise. You can then make up a single piece of filament that has multiple colors. Thus, one extruder head will be generating multiple colors.
+
+The Kickstarter mentioned elsewhere essentially does this automatically for several strands whose lengths are calculated precisely by special software. The result is a single strand of filament that goes into one of your extruders - the other extruder would be unused with this solution.
+",2.0274084334862867,0.0
+11,3dprinting.stackexchange.com,kenorb,6.049731802703411,7.633809159772513,7.703979648734118,6.681864532431616,6.457297638258076,4.431549196390846,How do I give 3D-printed parts in PLA a shiny smooth finish?,"The surfaces of my printed parts using PLA plastic look rough and uneven.
+
+Would changing filament to a better one make any difference?
+
+If not, what kind of methods can I use to achieve a smoother finish for my for 3D-printed objects?
+",TheNewHobbyist,"PLA parts can be finished with a coat of epoxy like XTC-3D from Smooth-On. This will smooth out the part and give it a pretty nice shine.
+
+I've also had a fair amount of success sanding prints, giving them a coat of automotive filler primer, and using glossy spray paint.
+
+You can also get great results with an acetone vapor finish if you're willing to switch to ABS. Though that will require a heated bed and can be a bit more finicky to work with than PLA.
+",5.534248852833473,2.0769199823829045
+11,3dprinting.stackexchange.com,kenorb,6.049731802703411,7.633809159772513,7.703979648734118,6.681864532431616,6.457297638258076,4.431549196390846,How do I give 3D-printed parts in PLA a shiny smooth finish?,"The surfaces of my printed parts using PLA plastic look rough and uneven.
+
+Would changing filament to a better one make any difference?
+
+If not, what kind of methods can I use to achieve a smoother finish for my for 3D-printed objects?
+",Jason lapointe,"So we know what doesn't work but what does work (but not well) is alcohol! Only isopropyl alcohol 90% (and up) will work! Also at Walmart you can get stuff called Goo Gone or even better is Oops! 
+
+What you're doing is melting the plastic chemically. Since PLA is made from corn (more or less) the same chemicals won't work on this kind of bio plastic that PLA is. ABS is an oil based product so that's why acetone works. 
+
+I use those two mentioned products because they are made to remove glues and waxes and don't immediately evaporate so it has time to do its job and dissolve the plastic. Alcohol will evaporate, especially with less water content, and I absolutely positively don't want anyone doing this in a bedroom or kitchen especially do not do it without ventilation! The vapors are flammable and will build up fast at room temp and takes little to set off and it's just bad! 
+
+With alcohol I dip and soak the parts till I see them looking kind of soft like having a skin or depending on the PLA used silky. I print hotter than recommended with hot bed little to no fan and more feed because what happens is it gets denser past a certain temp and will look like its messing up and not print right like its clogged or not being fed fast enough and it's true but if you increase the feed rate to say 108 or 115 it compensates for the shrinkage and you get the same fill. 
+
+Now that being said your going to get smoother prints because it becomes like watery but with faster speed and or little fan snaps it in place but the hot bed will keep it from getting too hard for the next pass of the hot end and new layer so the next layer wont go on a cold surface and can easily get squished and fused to the last layer and now two  0.15&nbsp;mm layers act like three but denser and smoother. 
+
+Then with the Oops! chemical or alcohol I just take what's left of the imperfections off. I take a dustless cloth and apply the solution onto it and wiping in the same direction with very little pressure till it feels like the cloth is getting stuck or its biting then I leave it alone for 15 seconds and wash it off by dunking it in a bucket of cold soapy water then rinse with fresh water and repeat if necessary. It's best if you use string to hold or suspend the parts because it's easy to leave prints behind. 
+
+Also even better (and I don't offer this because any liquid when atomized can be flammable - besides water) is to use spray bottles instead and lightly spray the same process on and dip-and-dunk to take it off - instead of wiping and risking leaving prints with marks on the finished parts. 
+
+There is sanding. Lots of sanding is another way to smooth parts. 
+
+I also tried conformal coating my parts which works but gets messy when trying to apply over a pre applied coat. 
+
+Then there's body filler or if you use paint I recommend either automotive paint with filler primer or a paint in the automotive section specifically for plastic and vinyl or heavy thick paints but not latex but lacquer paint that is heavy and fills in imperfections but lays flat when dried! There are Lexan paints for RC and model plastics but need primer.  
+
+But your best bet is make sure that your printer is running 100&nbsp;% print in as fine detail with no bigger than 0.4&nbsp;mm nozzle and make sure your slicer profile is setup to work perfectly with how your machine works like your stepper numbers and everything because all that matters first and foremost your first layer determines the rest of the print! Level bed and clean level surface! New nozzle every few dozen prints makes a difference unless you get a high end tip! 
+
+Keeping your Bowden tube fresh also makes a big difference! Get yourself feeler gauges and use them to level your bed instead of paper and it will be exact every time! And print the same speed and make as few adjustments as possible through the whole print and it will come out uniform. Taller prints if you need hot bed add heat as the print gets taller or nozzle temp because the print will lose heat as it gets higher up and won't print the same as the bottom layers.
+
+I hope this helps or was the answers you were looking for! I was just passing through and hate useless answers that done have anything to do with the question asked! People like to just talk I guess.
+",-1.0137042167431434,0.0
+14,3dprinting.stackexchange.com,kenorb,4.707190134647046,5.332345899456804,4.072585167927022,6.034324953675596,4.620985695623129,3.7272071097011072,How to print metal-like parts?,"I would like to print parts (e.g. jewellery) for use which I don't want to look or feel like a plastic, but metal-like, so briefly people won't see much difference.
+
+Are there any specific type of home-printers that can achieve that? Or it's rather kind of filament that you should use?
+",TextGeek,"There's also an interesting discussion of printing with specially-designed solder alloys, at RepRap: Blog - A new approach to printing metals. 
+
+The author settled on 57.5%Sn, 41.3%Bi, 1.2% In, which begins to melt at 130&nbsp;°C and finishes by about 170&nbsp;°C. This has much better viscosity after melting, so it doesn't just drip away or bead up, and whose melting point is low enough that it can be applied directly on top of PLA or ABS. 
+
+Brass nozzles corrode quickly, however, so another material is needed (anodized Al was an improvement). It sounds difficult but feasible.
+",1.0137042167431434,0.0
+14,3dprinting.stackexchange.com,kenorb,4.707190134647046,5.332345899456804,4.072585167927022,6.034324953675596,4.620985695623129,3.7272071097011072,How to print metal-like parts?,"I would like to print parts (e.g. jewellery) for use which I don't want to look or feel like a plastic, but metal-like, so briefly people won't see much difference.
+
+Are there any specific type of home-printers that can achieve that? Or it's rather kind of filament that you should use?
+",hroncok,"If you'd like to print on RepRap like FDM printers, you cannot print from metal, but you can use some filament that tries to look like metal. I have good experience with Bronzefill, but there are plenty of others, just Google for metal filament 3d printing. Note that sometimes the parts need to be post-processed with a rock tumbler. There are several open source DIY tumblers you can build and use.
+
+If you actually want to print from metal, you would need SLS (Selective laser sintering) printer, which is much more expensive.
+",3.9604314711224866,2.0769199823829045
+19,3dprinting.stackexchange.com,kenorb,4.030301511886631,4.904433942959754,1.7539669625835614,4.670422881206417,4.091740895605862,3.4319460411998994,How to easily get rid of rafts and support structures?,"My printed parts consist rafts, supports and other extraneous filament when printing with ABS or PLA.
+
+What are efficient general techniques of removing them?
+",the third dimension,"The best way to get rid of them is to change the design of the printed object to make them unnecessary.
+
+Instead of printing the one part with support material, the piece can be split into two or more parts which can be printed without support material and assembled after the printing.
+
+
+
+Given that this is not always fully possible, a convenient way to get rid of additional structures is to use a different fillament for them that can be removed easily. This list of printing materials includes Polyvinyl Acetate (PVA), which is water soluble. You can wash the support material away given that your actual printign material is not water soluble. Here's a quote from the website (emphasize mine):
+
+
+  PVA (Polyvinyl Acetate) filament prints translucent with a slightly yellow tint and is primarily used as a 3D printing support material because it is water-soluble, meaning that it will dissolve when exposed to water (and so MUST be kept dry prior to use). PVA is most often used with 3D printers capable of dual extrusion: one extruder printing a primary material (such as ABS or PLA) and the other printing this dissolvable filament to provide support for overhanging features. PVA 3D printer filament is available in 1.75mm and 3mm.
+
+",3.5068404193471867,2.0769199823829045
+19,3dprinting.stackexchange.com,kenorb,4.030301511886631,4.904433942959754,1.7539669625835614,4.670422881206417,4.091740895605862,3.4319460411998994,How to easily get rid of rafts and support structures?,"My printed parts consist rafts, supports and other extraneous filament when printing with ABS or PLA.
+
+What are efficient general techniques of removing them?
+",Pete,"I use diagonal cutters and a pair of mini pliers. 
+I print with Simplify3d and the support structures are remarkably easy to remove, I find giving a quick pull pops most off. The diagonal cutters get rid of any small beads leftover.  
+",2.353748300761693,0.0
+20,3dprinting.stackexchange.com,kenorb,5.235888512265087,6.732353551784467,3.507933925167123,3.1880595895805834,6.377916418987655,6.203382699249042,"What are main differences between rafts, skirts and brims?","I would like to understand the differences between rafts, skirts and brims. They appear in the software which I'm using to edit my 3D objects.
+
+Can anybody elaborate what are these and what are the main differences between them?
+",ζ--,"All three of these features are used to improve the quality and success rate of prints, especially those failing due to issues on the first few layers, or due to the small size of the first layer.
+
+Raft
+
+A raft is a horizontal feature made as the first few layers of a print, and is used to help with bed adhesion issues, primarily used with ABS. The first few layers printed are the brim (typically prismatic), with the part itself on top of it (with a small separation distance to aid in separation, to allow the part to be removed from the raft). This separation distance needs to be adjusted to allow the first layer of the actual part to adhere, but also for the raft to be removed easily.
+
+Skirt
+
+A skirt is a single-layer feature designed to help extruder priming and to establish a stable filament flow for an optimal first layer. They are generally a few passes around the first layer ""footprint"" in the rough shape of the first layer, but they do not touch the part itself or help adhesion directly (although having a primed and ready extruder helps extrusion on its own). 
+
+Brim
+
+A brim can be considered a skirt touching the first layer shape. It is used to help adhesion, and increases the first layer surface area (thus having more area to adhere to the bed). Brims are best used for parts with small first layers that fail to adhere properly. They are generally done as perimeters (as opposed to the crosshatching of infill) to be easily removable without damaging the part.
+",3.2133663407215876,0.0
+20,3dprinting.stackexchange.com,kenorb,5.235888512265087,6.732353551784467,3.507933925167123,3.1880595895805834,6.377916418987655,6.203382699249042,"What are main differences between rafts, skirts and brims?","I would like to understand the differences between rafts, skirts and brims. They appear in the software which I'm using to edit my 3D objects.
+
+Can anybody elaborate what are these and what are the main differences between them?
+",Eric Johnson,"Rafts:
+
+Rafts are a few layers of plastic a placed on the printing surface before the object is printed.  If non water dissoluble filament is used, a bit of an air gap will be placed between the raft and the print itself so it can be removed easily. A raft can help a print stick to the printing surface as it normally has a larger surface area than the bottom of the print.  It also allows the bottom layers of the print to contact another layer of plastic so there is less spreading compared to printing on the printing bed itself.
+
+
+
+Skirts:
+
+Skirts are loops of plastic that are extruded around the object that is being printed.  On the first layer this allows the filament to get pushed through the extruder so that a steady flow can be established.  A multiple layer skirt can be used to create a blockage around the print so there is less air movement on the print and the print can cool slower.
+
+
+
+Brims:
+
+A brim is a layer of plastic that is placed on the first layer of the print go allow for better adhesion to the printing surface.  It does not extend under the print as a raft does, but only goes from the edge of the print to a set distance away.  
+
+
+
+Credits: Images from Slic3r
+",5.466214909488349,2.0769199823829045
+28,3dprinting.stackexchange.com,kenorb,-2.8153892694839717,3.642950305588681,0.0,2.011441651225199,3.0574377365420307,3.4319460411998994,How to 3D print a bike?,"I've seen article about World's First 3D Printed Bike.
+
+What kind of printer is required to do that, briefly how long it takes and how much does it cost? Is this even achievable at home? Doesn't need to be that specific one. 
+",Dani Epstein,"You will need a laser sintering or lasercusing printer, which will not be something you can buy for home use. They are horribly expensive.
+
+You could always print this in PLA or ABS and cast it in aluminium. Then you have to find a safe method to test the result, because casting is not quite as simple as it looks and the bike could be seriously dangerous.
+",2.620387387103937,2.0769199823829045
+33,3dprinting.stackexchange.com,kenorb,3.9045305118418514,3.828896735094969,1.7539669625835614,4.022883302450398,4.731113485304429,4.278234949448167,How many times printed printer can print it-self?,"There is a 3D desktop printer RepRap which can print most of its own components.
+
+Assuming each printed printer will print the next one and so on. Are there any limitation how many times this can be achieved?
+
+For example somebody printed for me printer and I do the same for my friends and they do the same for theirs. Can this go forever (since 3D model stays the same), or there are any serious side-effects/disadvantages of doing that continuously?
+",Adam Davis,"The files used to print these objects are digital, and do not degrade in any way after each printing. There are no side effects or degradation that occurs over time due simply to printing them multiple times.
+
+This is the RepRap philosophy, and the machines are actually designed with enough tolerance for printing and building mistakes that even if the print isn't perfect, it will not only work fine, but it can print a printer better than it was printed, with some care and attention to calibration.
+
+The process still takes a lot of human intervention, in the way of building the new printer and properly calibrating it.  If there are errors in the printer or the prints it produces, they can almost always be attributed to the builder/calibrator/user, and not to the design or the fact it's the Nth generation of printer.
+",4.0548168669725735,2.0769199823829045
+33,3dprinting.stackexchange.com,kenorb,3.9045305118418514,3.828896735094969,1.7539669625835614,4.022883302450398,4.731113485304429,4.278234949448167,How many times printed printer can print it-self?,"There is a 3D desktop printer RepRap which can print most of its own components.
+
+Assuming each printed printer will print the next one and so on. Are there any limitation how many times this can be achieved?
+
+For example somebody printed for me printer and I do the same for my friends and they do the same for theirs. Can this go forever (since 3D model stays the same), or there are any serious side-effects/disadvantages of doing that continuously?
+",Matt Clark,"As long as you maintain each printer and keep a proper calibration, go for it, this is what they were designed to do, I've even made replacement parts for myself.
+
+Unfortunately the RepRap project just shut down on 1/15/16 due to their lack of sales.
+
+I have a reprap that came from a reprap, and has made another reprap.
+
+Just make sure that when printing out the pieces for the next you are properly calibrated, otherwise the next machine might be built crooked;
+
+Your only limitations will be the electronics pieces and the small amount of hardware that you will need to buy.
+",2.353748300761693,0.0
+49,3dprinting.stackexchange.com,kenorb,3.267423727073639,3.4733367161777027,1.7539669625835614,2.011441651225199,3.320478682445624,3.7272071097011072,Are there any methods of limiting exposure of hazardous fumes and odors emitted by heating the plastics?,"When using thermoplastic-filament, this can be potentially hazardous, since constant printing can emit hazardous fumes and odors that may be emitted by heating the plastics.
+
+I understand it normally should be used in well ventilated areas. However I would like to use it heavily in the basement which is not well ventilated.
+
+Are there any practical methods of limiting such exposure? For example locking it in some special box, covering it or suck the odors? Would that help?
+
+Do you have any experience doing so?
+",Adam Davis,"Using negative pressure ventilation and a suitable organic filter will limit your exposure to toxic compounds, but won't completely remove them from your environment.
+
+Enclose your printer in as air-tight a box as you can manage, then use a fan to suck air out of the box.  This negative pressure will ensure that any leaks in the box will not allow gasses to escape.
+
+The air should be blown through an organic filter.  This might be done with face mask filters for painting, for instance.
+
+Additional filtering may be done depending on the compounds you expect the printer to produce, but the ideal situation is to set up a ventilation system to the outdoors where the products cannot concentrate and harm anyone.
+
+Another poorer option is to simply wear a proper organic filter mask yourself.  It's not as good, since the compounds can spread through your residence or remain in the air and be inhaled when you aren't printing.
+",2.845827522384412,2.0769199823829045
+59,3dprinting.stackexchange.com,kenorb,5.178744081378276,4.941464167462551,4.072585167927022,3.1880595895805834,5.623978095647771,5.3106318412626115,How to recycle filament material from printed parts?,"Is it possible to re-use ABS or PLA filament material from printed parts?
+
+If so, what is the techniques to reform it?
+",Kevin Morse,"There are a few options.
+
+
+Machines are available which grind the used plastic into fine pieces, melt it down, and extrude it as filament to be reused. Filabot is perhaps the most well known.
+Depending on where you live the local recycling programs may accept PLA or ABS. They will then shred it and melt it down for reuse.
+PLA is bio-degradable so you can put it in the compost.
+I put scrap ABS in acetone which results in a slurry which can be used as a glue to attach ABS parts, fix cracks, and hold parts to the bed.
+
+",4.820049511082381,2.0769199823829045
+59,3dprinting.stackexchange.com,kenorb,5.178744081378276,4.941464167462551,4.072585167927022,3.1880595895805834,5.623978095647771,5.3106318412626115,How to recycle filament material from printed parts?,"Is it possible to re-use ABS or PLA filament material from printed parts?
+
+If so, what is the techniques to reform it?
+",YetAnotherRandomUser,"If you're more interested in the recycling and reuse aspect than the re-print aspect, you could melt all the scrap filament onto a cookie sheet or into a bar (like in a bread ban).  You could then manually work the material, or use a CNC machine to carve out your next thing.
+
+This Youtube video refers to HDPE, but the same concept will apply to other thermoplastics.
+
+This Youtube video uses a cookie sheet and failed prints.
+",2.353748300761693,0.0
+83,3dprinting.stackexchange.com,kenorb,4.356564969431519,4.590028253642861,0.0,4.670422881206417,4.503257053771732,3.4319460411998994,How to automate printing of multiple parts continuously?,"I would like to print multiple parts continuously (non-interactively), so
+I can leave the printer alone for a longer time. So after finish, parts could be moved somehow out from the printing area, so the next can start.
+
+Are there any methods of achieving that with standard desktop printers without having to use multiple printers?
+",tbm0115,"The only thing I can think of off hand is an old mod for the early MakerBot machines. It first was released for the Thing-O'-Matic I believe, but is compatible with Replicator 1 machines (and its knock-offs). Here's the Thingiverse page, but look up Automatic Build Plate.
+
+Essentially, you can use the Replicator G slicing program and there is a setting for ""ABP"" or Automatic Build Plate. This will basically tell the ABP to run its routine after the controller receives the response that the printing program is done and roll the finished part off the edge of the build plate, then start the same program over again.
+
+Drawbacks:
+
+
+I don't think it's easily compatible with newer machines/slicers. But, it's open source
+Pretty sure you have to use Replicator G, which is outdated now and may make your machine sound like it's going to fall apart (I know from experience)
+
+
+Going off of @Pete's answer about solenoids. It reminded me that someone integrated a solenoid ""ejector"" (aka Boxing Glove) for their machine.
+
+Update (06/08/2016):
+
+Forgot to mention that if you choose to create your own ""Boxing Glove"" or conveyor belt, some software such as Octo-Pi and Repetier-Host allow plugins. So, you could interface with your hardware via customized code and integrate the functionality directly into the slicing application for the full closed loop operation.
+",3.859531739127555,2.0769199823829045
+83,3dprinting.stackexchange.com,kenorb,4.356564969431519,4.590028253642861,0.0,4.670422881206417,4.503257053771732,3.4319460411998994,How to automate printing of multiple parts continuously?,"I would like to print multiple parts continuously (non-interactively), so
+I can leave the printer alone for a longer time. So after finish, parts could be moved somehow out from the printing area, so the next can start.
+
+Are there any methods of achieving that with standard desktop printers without having to use multiple printers?
+",Pete,"It would be possible and not too terribly difficult to rig a servo or solenoid with a push plate like a plow, on top of your build plate. 
+
+However this would require another processor via raspberry pi or arduino to control it. Scripting execution when the print has completed wouldn't be terribly difficult either, but it isn't readily available and certainly isn't part of a mass produced printer. 
+
+My issue with the concept is if you push a bunch of prints off the build plate, what guarantee do you have they wont become damaged in the process?
+",1.6066831703607938,0.0
+92,3dprinting.stackexchange.com,kenorb,3.0576060275493275,3.282132985301826,1.7539669625835614,2.011441651225199,1.8746593652159236,2.104288080884247,What type of plastic can be used to produce your own filament?,"I'm considering purchasing Filabot or some similar filament maker.
+
+What kind of plastic can I use to produce my own filament? Can I use any type of plastic or just specific printable filaments? Can I also mix different types of filament together or only one type at a time?
+",Oleg Mazurov,"Filament manufacturers (for example, Colorfabb) also sell pellets, price per kilo would be about 10 times less than the same plastic in filament form.
+
+Out of household garbage only ABS can be easily extruded into filament with Filabot-grade machine. PET AKA plastic bottles looks promising as well.
+
+You can also use certain products ""off-label"". For example, string trimmer string (line) is simply a nylon filament and can be used as-is in modern diameter-agnostic hot end.
+",1.6066831703607938,2.0769199823829045
+164,3dprinting.stackexchange.com,kenorb,3.267423727073639,4.573087342022355,0.0,2.011441651225199,4.091740895605862,4.592941926651472,Can I print my own Lego bricks?,"Assuming I've 3D design (or I've created one) which looks very similar to Lego bricks, I am allowed to 3D print them for my personal use?
+
+Do I need to obtain some permission to do so, because of some patents? Or how does it work?
+",Tom van der Zanden,"The patents that cover Lego bricks have expired, so you are free to print bricks using the same interlocking system. You are even allowed to offer such prints commercially.
+
+What is not allowed (and a violation of trademark law) is to call them ""Lego bricks"" or use Lego's logo. ""Compatible with Lego"" on the other hand, would be fine.
+",3.5068404193471867,2.0769199823829045
+168,3dprinting.stackexchange.com,kenorb,1.0891412423578797,3.2764534681924653,0.0,2.011441651225199,1.1827783713261073,1.3276579603156529,"I've exported 3D models from the game, can I print them?","Assuming I've extracted 3D models from a game which I legally bought (such as StarCraft). I am allowed to 3D print them for personal use or give it to close friends?
+
+Is there any general rule, or this suppose to be specified in the license? If so, which section/clause potentially can prevent me from doing that? Or I need to contact the company who owns the game to obtain the permission?
+",Tom van der Zanden,"No. Such figures are generally covered by copyright, which means that nobody but the copyright holder is allowed to (re-)produce copies of the work. Copyright also covers personal use. In the US there are limited fair use exceptions but they do not apply here.
+
+The only way to do this legally is if it is specifically authorized in a license or if you get permission.
+",1.0137042167431434,2.0769199823829045
+171,3dprinting.stackexchange.com,kenorb,3.9045305118418514,5.298134376100513,0.0,4.022883302450398,3.320478682445624,3.535506697183007,How to print edible food?,"I would like to print edible cookies or ornamentation for a cake.
+
+Is printing with edible materials achievable by standard thermoplastic-like 3D desktop printer? Or you need to buy a special printer to do that?
+",Daniel M.,"You can, but that doesn't mean it's very easy.
+
+You don't have to buy a special printer, but you need a special extruder (such as http://www.structur3d.io/). Most of these systems can print anything with the consistency of Nutella. However, many parts of the printer may not be food safe.
+
+Another option (if you simply want 2d designs) is something like the PancakeBot. It can probably also ""print"" with anything that has the same consistency of pancake batter.
+",2.620387387103937,0.0
+171,3dprinting.stackexchange.com,kenorb,3.9045305118418514,5.298134376100513,0.0,4.022883302450398,3.320478682445624,3.535506697183007,How to print edible food?,"I would like to print edible cookies or ornamentation for a cake.
+
+Is printing with edible materials achievable by standard thermoplastic-like 3D desktop printer? Or you need to buy a special printer to do that?
+",Tormod Haugene,"You cannot print edible models using a ""standard"" consumer 3D printer without first installing an ""hot end"" capable of depositing edible - normally thicker - substances as well as a suitable extruder mechanism. 
+
+However, there are not necessarily any technical limitations in the electronics, software, slicers etc. in a typical printer that wouldn't allow you to install such an upgrade. For instance, you could calibrate your extrusion rate and nozzle width to suit batter and similar.
+
+Some commercial printers, such as the DeltaWASP allow for upgrades that print clay, which wouldn't be very different from printing liquid food.
+",2.845827522384412,2.0769199823829045
+181,3dprinting.stackexchange.com,kenorb,2.528907649931287,5.095079242096823,0.0,4.022883302450398,3.320478682445624,2.9505769891325135,Can you use PLA material with food and drinks?,"I would like to print fancy plastic cutlery sets or plastic glasses.
+
+Is it safe to do it? Or bad for your health, if so, why?
+",Adam Davis,"Having performed a quick search through all the resources at the FDA Food Contact Substance resource, I cannot find PLA in any list except an occasional notification that a specific manufacturer has obtained approval for use in specific circumstances, with the notice that such notifications are only valid for that manufacturer and cannot be used to validate another use of a substance.
+
+There are companies that have received approval for their specific formulation and use of PLA as a food contact substance.  You may wish to discuss this further with your material supplier to find out if they have approved PLA product available.
+
+Without specific product approval, though, PLA is not on the lists of generally recognized as safe, nor approved for food contact use.
+
+Regulations in other countries may differ, so you may want to search the EU directives, for instance, to find out their opinion on PLA as an FCS.
+",1.6066831703607938,0.0
+181,3dprinting.stackexchange.com,kenorb,2.528907649931287,5.095079242096823,0.0,4.022883302450398,3.320478682445624,2.9505769891325135,Can you use PLA material with food and drinks?,"I would like to print fancy plastic cutlery sets or plastic glasses.
+
+Is it safe to do it? Or bad for your health, if so, why?
+",Daniel M.,"As others have pointed out, PLA isn't specifically not food safe, but materials that have been printed previously can contaminate the PLA.
+
+Additionally, anything 3D printed is extremely porous. Once a part is used for food, moisture and bacteria will accumulate in the pores, and can never be completely cleaned out, contaminating any food that contacts it. It can't be sterilized either, because the temperatures needed for sterilization would deform or melt the plastic.
+",2.845827522384412,2.0769199823829045
+2608,3dprinting.stackexchange.com,kenorb,2.1782824847157594,4.44624912006446,0.0,2.011441651225199,2.3655567426522146,2.6553159206313057,Possible ways to print soft skin for human robot?,"Are there any 3D printing filaments or specially designed desktop systems which can print soft artificial skin for human-robot? For example made of soft silicone or something similar?
+",StarWind0,"Oh that is a tricky tricky question!
+
+First you will probably need a good scan of the robot. You will have the cad of the robot but chances are scanning will make life easier.
+
+http://www.3ders.org/articles/20151201-kinect-easy-3d-printing-tool-with-release-of-3d-scan-app-for-windows.html
+
+Also see Reprap for other options
+
+http://reprap.org/wiki/3D_scanning
+
+Following... it is not going to be that simple. If it was my project I would
+Print a mold out of ABS. ABS reacts to acetone and you can vapor treat it.
+
+http://www.logarithmic.net/pfh/blog/01366106156
+
+
+
+That said you might burn your house down. Also it is inconsistent. But would give you a smooth finish. 
+
+Next you can do just normal mold printing and be okay with the ribbing. Then you pour your silicon material
+
+
+
+Next you can well just print with silicon. The ninjaflex guys have a ton of different types of flexible materials and new ones coming out. 
+
+https://ninjatek.com/products/filaments/ninjaflex/
+
+
+
+On that topic I will mention a local company that I have no direct affiliation with. I just see them at the hacker space. They make a extruder just for flexibles. 
+
+https://flexionextruder.com/
+
+Other areas to look at. More for making metal but it may be of use.
+
+http://www.instructables.com/id/From-3d-printed-part-to-metal-the-lost-plaabs-me/
+
+Last is again the mold but you make the molds on a expensive form 1. Or you make the skin on the form1 as they can do flexibles. Small build area. Material is around 100 a ltr or more
+
+http://formlabs.com/products/3d-printers/form-1-plus/
+
+Good luck!
+
+Also check out this facebook group (no affiliation) 
+
+https://www.facebook.com/groups/3DPrintProps/
+
+If anyone has done this it is those guys. Oh Wait No I take that back Look into these fellows. They have a very active group. (google group) not to mention that they are also directly doing what you are.
+
+http://inmoov.fr/
+
+
+
+
+Just don't be like this guy and make it look like a movie star... 
+http://www.mirror.co.uk/news/weird-news/man-builds-scarlet-johansson-robot-7667715
+",2.0274084334862867,2.0769199823829045
+3,3dprinting.stackexchange.com,CJK,4.626593049438165,5.2127529102227,2.7799718631987322,4.022883302450398,3.929104701733314,3.6337541582048245,How important is the minimum layer height on a 3d printer?,"I know the minimum layer height will effect how detailed of an item you can print and the amount of time it takes to print something, but is it necessary to have an extremely low minimum layer height if you plan to print only larger objects?
+",tbm0115,"As with any manufacturing process, you'll need to learn to ""use the right tool for the job"". It depends on the requirements of the part. To answer your question, I would suggest using a larger layer height for the sheer fact of reducing print time on larger objects.
+
+However, it depends on the part and how small the details are on the part. If your part has sharp edges that are required for the proper functionality of the part, then you'll want to use a smaller layer height. Or if your part fits into another part, you'll probably want to use a smaller layer height.
+
+Another variable might be whether or not post-processing is necessary. Is this part going to be purposefully printed larger/rougher with the idea to use a Dremel later to smooth everything out? If yes, then use a larger layer height.
+",3.0411126502294303,0.0
+3,3dprinting.stackexchange.com,CJK,4.626593049438165,5.2127529102227,2.7799718631987322,4.022883302450398,3.929104701733314,3.6337541582048245,How important is the minimum layer height on a 3d printer?,"I know the minimum layer height will effect how detailed of an item you can print and the amount of time it takes to print something, but is it necessary to have an extremely low minimum layer height if you plan to print only larger objects?
+",Tormod Haugene,"I believe the Slic3r Manual summarizes this quite nicely:
+
+
+  A thicker layer height will provide more flow, and consequently more heat, making the extrusion adhere to the bed more. It also gives the benefit of giving more tolerance for the levelness of the bed. It is recommended to raise the first layer height to match the diameter of the nozzle, e.g. a first layer height of 0.35mm for a 0.35mm nozzle.
+
+
+In other words, larger layer heights for the first layer typically gives better adhesion, and makes inaccurate bed leveling (and auto leveling) still work.
+",3.367452517504837,2.0769199823829045
+5,3dprinting.stackexchange.com,CJK,5.673830510646552,5.334604574391176,4.533938825782293,5.199501240805782,5.745914849350172,4.291867786752632,How is PLA different from ABS material?,"What are the main differences when using ABS over PLA and vice versa?
+",Kevin Morse,"Paraphrasing this site. Feel free to add suggestions in the form of comments and I will try to incorporate them.
+
+Summary
+
+
+ABS: Stronger, machinable, more flexible, and more temperature
+resistant than PLA. Typically printed on a heated bed. Warping is a common problem when printing ABS.
+PLA: Wider range of filaments available, easier and in some cases faster to print. Not as strong as ABS and the fact that its biodegradable could be seen as both a benefit and a drawback.
+
+
+Material Properties:
+
+
+ABS: Strong plastic with mild flexibility. Naturally beige in color. Can be filled and sanded. Higher temperature. Easy to recycle.
+PLA: Not as strong as ABS but more rigid. Naturally transparent. More difficult to fill and sand. Can sag in hot temperatures. Sourced from organic matter so it can be broken down in commercial compost facilities.
+
+
+Part Accuracy:
+
+
+ABS: Part warping is a significant issue. Sharp corners will often be rounded.
+PLA: Less heat required contributes to less warping. Becomes more liquid at common extruder temperatures so finer details can be printed.
+
+
+Safety and Handling:
+
+
+ABS: Strong burning/melting plastic smell is present when printing ABS. Health concerns have been raised regarding airborne ultrafine particles generated while printing with ABS (ref). ABS will absorb moisture causing popping when the moisture enters the hot end. This leads to discontinuities in the print job.
+PLA: Doesn't smell as strongly when printing due to its organic nature. Moisture can also be absorbed into PLA and can irreversibly damage it.
+
+",4.924555819618872,2.0769199823829045
+5,3dprinting.stackexchange.com,CJK,5.673830510646552,5.334604574391176,4.533938825782293,5.199501240805782,5.745914849350172,4.291867786752632,How is PLA different from ABS material?,"What are the main differences when using ABS over PLA and vice versa?
+",3dsolutech_plafilament,"Basic facts and tips for using and choosing ABS and PLA materials:
+
+Made from:
+
+ABS: Petroleum based
+
+PLA: Corn or other plants
+
+
+Smell: 
+
+ABS: smell of hot plastic, 
+
+PLA: gives off a smell similar to a semi-sweet cooking oil. Less intense smell than ABS. 
+
+
+Part Accuracy: 
+
+Both PLA and ABS are capable of building dimensionally accurate parts. However, there are characteristics that we need to memorized.
+ABS: will be curling upwards of the surface in direct contact with the 3D printer’s print bed.  for fine and delicate features on parts involving sharp corners, such as gears, there will often be a slight rounding of the corner. 
+PLA: much less part warping. but it undergoes more of a phase-change when heated and becomes much more liquid. The increased flow can also lead to stronger binding between layer.
+
+Recycling:
+
+
+ABS: Recycling number 7, most local recycling programs do not accept ABS. It generally being recycled into plastic lumber. 
+PLA: it biodegrades, however the process takes a long time when outside of an industrial composting facility
+Why we provide a vacuum sealed package for ABS and PLA products? 
+long term exposure to a humid environment without sealed package may result in detrimental effects, both to the printing process and to the quality of finished parts. 
+
+ABS: will tend to bubble and spurt from the tip of the nozzle when printing, part accuracy, strength are reduced. Raises the risk of clogging the nozzle. ABS can be easily dried by using dry or hot air.
+PLA: bubbles or sporting at the nozzle, also discoloration and a reduction in 3D printed part are found when in long term moisture environment. 
+Improving the printing outcomes （Blue tape and Kapton tape pictures)
+PLA: printing temperature approximately: 190°C - 240°C
+ABS: printing temperature approximately: 225°C - 250°C (recommend to use a heated print bed)
+
+A good first layer adhesion is of the utmost importance in obtaining the best results for the prints. 
+
+Using Blue Tape or Kapton Tape.
+Hairspray the print bed.
+To attain optimal result for the prints, you need to consider variables such as nozzel diameter, printing speed, and layer height.
+Summary: 
+ABS: 
+A preferred filament for the prints with engineering and professional purposes with its strength, machinability, flexibility, and higher temperature resistance. 
+The bad plastic smell is due to the petroleum based origin. 
+Required a heated print bed to attain ABS printing reliability. 
+PLA:
+Wide range of available colors, provide translucencies and glossy feel of the prints. 
+Plant based and semi-sweet corn like smelling are appreciated over ABS.
+When properly cooled, PLA seems to perform higher maximum printing speeds, and sharper printed corners. Combining this with low warping on parts make it a popular plastic for household uses, toys, hobbyists, and educational purposes. 
+to know more please visit  abs vs pla
+",1.6066831703607938,0.0
+10,3dprinting.stackexchange.com,1337joe,4.146747269907207,6.065578424358489,1.7539669625835614,5.199501240805782,3.548335113978322,2.2279055228048463,3d printing for outdoor use: what types of filament are most weather resistant?,"I'd like to print modifications for my birdfeeder, both to patch over the hail damage from last summer and to try to deter the neighborhood squirrels.  I have an FDM printer (and experience with nylon, ABS, and PLA, though don't restrict answers to those if there's something else that's better), what kind of filament would stand up best to daily exposure to sun, rain, snow, etc?
+",Markus Appel,"I think ABS would be your best bet. It's not biodegradable and realtivley easy to print.
+
+But you can use more or less any material if you use some form of coating on it. I would always go for coated PLA instead of other materials just because PLA is the easiest to print and it's nontoxic.
+",1.0137042167431434,0.0
+10,3dprinting.stackexchange.com,1337joe,4.146747269907207,6.065578424358489,1.7539669625835614,5.199501240805782,3.548335113978322,2.2279055228048463,3d printing for outdoor use: what types of filament are most weather resistant?,"I'd like to print modifications for my birdfeeder, both to patch over the hail damage from last summer and to try to deter the neighborhood squirrels.  I have an FDM printer (and experience with nylon, ABS, and PLA, though don't restrict answers to those if there's something else that's better), what kind of filament would stand up best to daily exposure to sun, rain, snow, etc?
+",ON5MF Jurgen,"I have several items printed in PLA that have been outdoors for about a year now. Apart from some discoloration I don't see any structural damage (yet?). Some of them are at the south side of a building so they get maximum sunlight.
+
+Of course Belgian summers can not be compared to Arizona summers!
+",1.0137042167431434,0.0
+13,3dprinting.stackexchange.com,kaine,4.541637296610063,3.742219428517731,1.7539669625835614,4.670422881206417,4.731113485304429,3.922162247820266,Resolution Drawbacks,"With an ABS or PLA extrusion 3D printer, are there any potentially negative quality differences that could occur if I try to print at a higher resolution?
+
+I am not concerned about print time as the equipment is not under high demand.  I am, however, worried the device may be more prone to fracture, likely to have defects, or have other issues I cannot currently imagine.
+",Adam Davis,"The biggest effect I've see on resolution is due to plastic stress due to thermal gradients.
+
+The higher resolution prints build up more layers of material, and each layer has a cumulative effect on thermal stress.  The upper layers pulling up more as they cool, and the lower layers curling up more strongly as the layer count is increased.
+
+To counteract this, a heated (or even just a draft free) enclosure makes a big difference.  Having a heated print bed helps significantly, as long as the bed itself resists deformation (a sheet metal or PCB bed will bend more than glass under the same tension, for instance).
+
+The actual plastic strength, however, appears increased.  Laying down thinner layers of material appears to increase the bond strength between layers.
+",4.0548168669725735,2.0769199823829045
+13,3dprinting.stackexchange.com,kaine,4.541637296610063,3.742219428517731,1.7539669625835614,4.670422881206417,4.731113485304429,3.922162247820266,Resolution Drawbacks,"With an ABS or PLA extrusion 3D printer, are there any potentially negative quality differences that could occur if I try to print at a higher resolution?
+
+I am not concerned about print time as the equipment is not under high demand.  I am, however, worried the device may be more prone to fracture, likely to have defects, or have other issues I cannot currently imagine.
+",TextGeek,"It's also worth noting that the ratio of nozzle diameter to layer height affects strength. The layer height is typically set slightly smaller than the nozzle diameter, so the nozzle ""squeezes"" the new plastic onto the previous layer. This is especially important for the first layer, because it affects how well the object sticks to the bed; but it also affects inter-layer strength.
+",2.353748300761693,0.0
+16,3dprinting.stackexchange.com,kaine,4.78385405467542,5.763682032868019,1.7539669625835614,4.022883302450398,4.091740895605862,4.345449058359031,Are there any ways to make a 3D print transparent?,"I am aware of several ""clear"" filaments for a ABS or PLA printer.  They, however, have a cloudy or frosted glass appearance. I do not believe this is possible to eliminate but I believe it can be reduced.
+
+Are there effective ways to make a print have a more transparent appearance?
+",the third dimension,"You can make a mold from the print and then get a cast from that mold with a clear casting material.
+",3.0411126502294303,0.0
+16,3dprinting.stackexchange.com,kaine,4.78385405467542,5.763682032868019,1.7539669625835614,4.022883302450398,4.091740895605862,4.345449058359031,Are there any ways to make a 3D print transparent?,"I am aware of several ""clear"" filaments for a ABS or PLA printer.  They, however, have a cloudy or frosted glass appearance. I do not believe this is possible to eliminate but I believe it can be reduced.
+
+Are there effective ways to make a print have a more transparent appearance?
+",walter,"It depends on a lot of factors, type of plastic, whether the parts need to be strong, can you use a vase print, etc.  Here's a few thoughts.
+
+PLA - The brand of PLA makes a big difference, some can be printed very clear, some can't.  Most of the transparent PLAs I've used print much more clear at around 240°C.
+
+ABS - I've seen some pretty impressive clear parts printed as a single layer shell in ABS and then vapor smoothed. I tend to find ABS more translucent and less transparent though.
+
+PETG - Again the specific PETG you use matters, but I haven't seen nearly as much variation as with PLA.  I'm not sure how much temperature matters, but if it's too hot you get bubbles which will decrease clarity.
+
+Thin Wall Prints - I don't have much experience here, but the Smooth On XTC-3D or vapor smoothing seem to be effective.
+
+Solid Prints
+If I want transparency, I usually print it at 100% infill (should be a real 100%, too much overextrusion or underextrusion will decrease transparency).  Printing slower and with less cooling sometimes helps.  It's easier to get the infill solid with a direct drive extruder, I couldn't get decent results with a long bowden tube (a short bowden tube works fine).
+
+Here's a page where I tested 10 transparent filaments, the printed samples are 2mm thick, 100% infill - http://thrinter.com/10-transparent-filaments.  Those samples are all overextruded a bit, you can get better results if you dial in the extrusion precisely, but that's hard to get right, and the optimal settings may change slightly depending on the part geometry.  Larger nozzles and thicker layers may help to, but I haven't experimented much with that as there are significant downsides to that approach.
+",3.5068404193471867,2.0769199823829045
+38,3dprinting.stackexchange.com,kaine,3.618048892289167,5.189806893897094,0.0,4.022883302450398,3.320478682445624,3.082726318457765,Conversion of 3 mm ABS filament to 1.75 mm,"I have a few kg of 3&nbsp;mm filament when I only have use for 1.75&nbsp;mm.
+
+How can I make 1.75&nbsp;mm from 3&nbsp;mm filament?
+",Adam Davis,"In theory, making filament is easy.  You take a 3&nbsp;mm hotend with a 1.75&nbsp;mm hole, and extrude the 3&nbsp;mm (sometimes actually 2.85&nbsp;mm) filament, let it cool, and then reel it up.
+
+In reality there are a lot of pitfalls to making filament - if the pressure isn't even, the hole not perfect, the temperature uneven, you can end up with oval filament, filament with bubbles, or worse.  If you are over temperature you may damage the filament and it could look good, but not melt correctly when used.  If you reel it too fast you may thin it out more than the intended diameter, or too slow and you may thicken it. A lot of hotends use steppers, which may result in ripples in the filament, so you may end up building a nearly custom filament machine.
+
+Resolving all these problems is probably not worth simply selling or giving away the filament to someone that can use it, and buying the right size for your machine.
+
+If you are still interested, though, you might as well go all the way and build a full filament extruder that accepts raw plastic feedstock (usually pellets) as well as your filament, and convert it that way, then continue using it to create your own filament.
+",2.845827522384412,2.0769199823829045
+38,3dprinting.stackexchange.com,kaine,3.618048892289167,5.189806893897094,0.0,4.022883302450398,3.320478682445624,3.082726318457765,Conversion of 3 mm ABS filament to 1.75 mm,"I have a few kg of 3&nbsp;mm filament when I only have use for 1.75&nbsp;mm.
+
+How can I make 1.75&nbsp;mm from 3&nbsp;mm filament?
+",Tom van der Zanden,"The best option is to find somebody in need of 3&nbsp;mm filament and trade them for it (either in exchange for 1.75&nbsp;mm filament or in exchange for legal tender with which to buy said filament).
+
+The next best option would be to cut it into small pieces, and feed those into a filament extrusion system such as the filastruder.
+",2.0274084334862867,0.0
+401,3dprinting.stackexchange.com,kaine,3.618048892289167,5.054288711362341,0.0,2.011441651225199,3.320478682445624,3.7272071097011072,Can general purpose polystryene (not HIPS) be used for 3D printing?,"High Impact PolyStyrene (HIPS) is a frequently used filament in 3D printing.  It has been touted to have simular properties when printed to ABS and is especially useful for support structures (if the user has a multi-nozzle 3d Printer) as it is soluble in Limonene.
+
+General Purpose PolyStyrene (GPPS) is frequently used in disposible cups, cutlery, etc.  I don't believe I have seen it as a 3D printing filament.  This is not styrofoam for the purpose of this question despite the identical chemical properties as the incorperated air makes it difficult to recycle.
+
+Would filament produced from GPPS, be usable on most FFF 3D printers that are capable of using ABS, PLA, and HIPS? Are that any particular issues observed with such filaments that would not be observed with HIPS (besides the implied decrease in impact resistance)?
+
+Note: For the purpose of this question, I am assuming that the filament can be produced and am concerned about whether the filament would be usable for support structures and infill.
+",Ryan Carlyle,"In principle, it should work fine as a filament, since it's used extensively in the plastic extrusion industry, but I don't think you'd get great material properties out of it. ABS and HIPS incorporate polybutadiene into a graft polymer structure for a very good reason: the butadiene sections in the long molecular chains kind of ""stick together"" as a distinct solid phase to produce what amounts to micro-bubbles of rubber inside a matrix of hard styrene or acrylonitrile-styrene plastic. This compound microstructure is what gives HIPS and ABS favorable impact toughness and some minor flexibility.
+
+The flexibility is important -- the stiffer a filament is, the more it will tend to warp while printing. Based on chemistry alone, I would expect styrene to be somewhat more prone to warping than ABS. And it would certainly be more brittle. So there doesn't seem to be much reason to use it as filament.
+
+Interesting sidenote: PLA/PHA has very favorable mechanical properties because the PHA forms a very similar flexible microstructure inside the hard PLA matrix. PLA/PHA is good stuff because it mimics ABS and HIPS!
+",2.845827522384412,2.0769199823829045
+2822,3dprinting.stackexchange.com,kaine,3.618048892289167,5.964955580878797,2.7799718631987322,3.1880595895805834,3.0574377365420307,2.880918201452841,What type filament should I use to produce stamps?,"My wife wants me to use an FFM 3d printer to make custom stamps for her to use on paper (scrap books, letters, etc.). She is convinced, however, that they will be too rigid to make good stamps.  A quick google search showed ones made from PLA and ABS. Logically, though, a TPU or similar would address her concerns.  A good quality stamp needs to hold ink and make good, even contact with the paper. It would probably need to be able to be sanded or smoothed in some way.
+
+I am supposed to receive my printer next week or so and am trying to get some filaments, STL files, and accessories I will need ready in advance so I can rapidly learn how to use it.
+",emackey,"Recently I've experimented with printing some Nylon 618 filament after reading stuff online about it.  I'm using a Craftbot original with the stock hotend, keeping the Nylon dry in a ziploc bag.  It prints really well, just tricky to get it to stick to the bed (I'm still working on that), but otherwise it's great.
+
+Once printed, the main difference from PLA prints is the nylon remains more flexible.  If you bend a thin nylon print, it tends to just spring back to the shape that came off the printer.  That's very different from my PLA prints, which will either stay bent or break apart.
+
+I believe that nylon would be a good material for you to try for stamps, because of this flexibility and shape-preserving quality.  The comments show some other materials to try, but I'm limiting my answer here to my own personal experience.
+",1.6066831703607938,0.0
+2822,3dprinting.stackexchange.com,kaine,3.618048892289167,5.964955580878797,2.7799718631987322,3.1880595895805834,3.0574377365420307,2.880918201452841,What type filament should I use to produce stamps?,"My wife wants me to use an FFM 3d printer to make custom stamps for her to use on paper (scrap books, letters, etc.). She is convinced, however, that they will be too rigid to make good stamps.  A quick google search showed ones made from PLA and ABS. Logically, though, a TPU or similar would address her concerns.  A good quality stamp needs to hold ink and make good, even contact with the paper. It would probably need to be able to be sanded or smoothed in some way.
+
+I am supposed to receive my printer next week or so and am trying to get some filaments, STL files, and accessories I will need ready in advance so I can rapidly learn how to use it.
+",Chris Thompson,"I see three options...
+
+1. Print with a flexible filament:
+
+
+Many options: TPU as you pointed out, the flexible PLA that Tom mentioned, and others.  Here's an article with a few options from Matter Hackers
+I'd suggest printing the stamp side down so you get a nice flat stamp with no post processing.  For any wide gaps, mind your bridging...use fillets or chamfers so the ""roof"" of the gap is an upside down V or U shape.
+
+
+2. Print with any hard filament, but use a rubber mat under the paper.
+
+
+The idea here is to use a semi-flexible surface under the paper to help get uniform contact pressure between the paper and the hard stamp.  As long as your stamp holds ink, this should work okay.
+
+
+3. Print your stamp shape, then use it to make a rubber stamp.
+
+
+Making a model and then copying it with your desired non-printable material is a common manufacturing technique that can be used in many situations.  Use of molds for casting and related processes can really expand your possibilities.  Check out Smooth On.  They have several rubber and flexible compounds that you could use for stamps.
+
+",2.620387387103937,2.0769199823829045
+2843,3dprinting.stackexchange.com,kaine,2.8153892694839717,3.947711316851944,0.0,3.1880595895805834,3.548335113978322,3.4319460411998994,3D printing related safety precautions for a baby rattle,"I've a friend who is expecting.  There are several adorable weapon themed rattles on thingiverse.  I am, however, concerned about safety associated with such a product in the hands of a baby who will gnaw on it.  To me the safety concerns here are much larger than for most food handling applications.
+
+What steps should be taken to ensure such a print is safe for use?
+
+This includes: filament selection, pea material selection, wall thickness, smoothing, construction, etc.
+
+My current thoughts are as follows: ""food grade PLA"", dried peas, sanding, and single piece construction
+",Chris Thompson,"You're on the right track.  Since you asked for ""steps"" here you go:
+
+Step 1. Choose a safe material: 
+
+Consider chemical safety and physical safety. Food grade PLA should be chemically safe, but could be too brittle depending on the design you choose.  PETG, T-Glase, or similar filaments (depending on dye) are normally also chemically safe and are less brittle than PLA so may be a better alternative.  ABS is NOT typically considered safe for food contact.
+
+Step 2. Choose a safe design: 
+
+If using PLA, be sure the design is robust enough to ensure it won't break.  Broken rattles with sharp edges make baby...sad.  Even less brittle filaments can still break with jagged edges if the design is fragile.
+
+Step 2a. Choose a single piece design:  
+
+Choose a design that requires you to add the peas (or other safe filler) during the print such that the finished rattle is fully enclosed.  This will minimize parts becoming loose or peas spilling and minimize choke hazards.
+
+Step 3. Consider post processing to improve safety:
+
+Sanding could reduce ridges and minimize crevices that could harbor bacteria, but sealing it with a food-safe sealant may be more effective.  There are many sealants that the FDA considers safe, but polyurethane or food-safe epoxy finishes will work well with PLA. (If you use a different material, test to verify good adhesion.)
+
+Step 4. Test:
+
+Make a test rattle and run it through the paces.  I guess you could chew on it, but since babies don't have teeth, this might invalidate your data...
+
+Step 5. Consider alternatives such as professional printing services:
+
+If your tests don't inspire confidence, professional services can offer additional materials (metals, ceramics, etc.) that could be safer than a typical fused filament printer.
+",3.0411126502294303,2.0769199823829045
+2843,3dprinting.stackexchange.com,kaine,2.8153892694839717,3.947711316851944,0.0,3.1880595895805834,3.548335113978322,3.4319460411998994,3D printing related safety precautions for a baby rattle,"I've a friend who is expecting.  There are several adorable weapon themed rattles on thingiverse.  I am, however, concerned about safety associated with such a product in the hands of a baby who will gnaw on it.  To me the safety concerns here are much larger than for most food handling applications.
+
+What steps should be taken to ensure such a print is safe for use?
+
+This includes: filament selection, pea material selection, wall thickness, smoothing, construction, etc.
+
+My current thoughts are as follows: ""food grade PLA"", dried peas, sanding, and single piece construction
+",Jeff Standen,"Also consider the nozzle on your printer. Most nozzles are made of brass, which is not considered food safe due to the presence of small amounts of lead. Stainless steel nozzles are available which will not perform quite as well as brass but are food safe.
+",2.0274084334862867,0.0
+22,3dprinting.stackexchange.com,André Teixeira,3.767809650974757,4.80139842049913,0.0,3.1880595895805834,3.320478682445624,3.585260288142579,Is the weather a problem for MDF frames?,"I've acquired all the parts to build a Reprap Prusa i3 rework, the only missing part is the frame. 
+
+I'm in doubt between a MDF cut (cheaper) or acrylic (more expensive), of course a cheaper one is my preferred option until I see any disadvantage on making it of wood. 
+
+I thought about variables like heat and humidity and the possibility of expansion/contraction of the frame, is this a valid concern? Will I have more precision buying the acrylic one or is it irrelevant?
+",Dani Epstein,"Generally speaking, MDF will weather OK. In areas of high humidity you might experience warpage, but you can mitigate that by sealing the surface with paint or varnish.  However you will probably find that of the two materials, acrylic will be more stable over a few years.
+",2.620387387103937,2.0769199823829045
