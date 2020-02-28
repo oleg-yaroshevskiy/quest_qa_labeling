@@ -439,7 +439,7 @@ watermark==1.7.0
 wcwidth==0.1.7
 webencodings==0.5.1
 websocket-client==0.56.0
-Werkzeug==0.15.1
+Werkzeug==0.15.3
 wget==3.2
 widgetsnbextension==3.4.2
 word2number==1.1
