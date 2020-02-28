@@ -13,7 +13,6 @@ from fairseq import utils
 
 
 class lightconvFunction(Function):
-
     @staticmethod
     def forward(ctx, x, weights, padding_l):
         ctx.padding_l = padding_l
@@ -25,23 +24,23 @@ class lightconvFunction(Function):
     @staticmethod
     def backward(ctx, grad_output):
         outputs = lightconv_cuda.backward(
-                grad_output.contiguous(),
-                ctx.padding_l,
-                *ctx.saved_variables)
+            grad_output.contiguous(), ctx.padding_l, *ctx.saved_variables
+        )
         grad_input, grad_weights = outputs
         return grad_input, grad_weights, None
 
 
 class LightconvLayer(nn.Module):
     def __init__(
-            self,
-            input_size,
-            kernel_size=1,
-            padding_l=None,
-            weight_softmax=False,
-            num_heads=1,
-            weight_dropout=0.,
-            bias=False):
+        self,
+        input_size,
+        kernel_size=1,
+        padding_l=None,
+        weight_softmax=False,
+        num_heads=1,
+        weight_dropout=0.0,
+        bias=False,
+    ):
         super(LightconvLayer, self).__init__()
         self.input_size = input_size
         self.kernel_size = kernel_size
@@ -60,7 +59,7 @@ class LightconvLayer(nn.Module):
     def reset_parameters(self):
         nn.init.xavier_uniform_(self.weight)
         if self.bias is not None:
-            nn.init.constant_(self.bias, 0.)
+            nn.init.constant_(self.bias, 0.0)
 
     def forward(self, x, incremental_state=None):
 
@@ -74,18 +73,25 @@ class LightconvLayer(nn.Module):
                 input_buffer = x.new()
             x_unfold = torch.cat([input_buffer, x.unsqueeze(3)], dim=3)
             if self.kernel_size > 1:
-                self._set_input_buffer(incremental_state, x_unfold[:, :, :, -self.kernel_size+1:])
-            x_unfold = x_unfold.view(T*B*H, R, -1)
+                self._set_input_buffer(
+                    incremental_state, x_unfold[:, :, :, -self.kernel_size + 1 :]
+                )
+            x_unfold = x_unfold.view(T * B * H, R, -1)
 
             weight = self.weight
             if self.weight_softmax:
                 weight = F.softmax(weight.float(), dim=1).type_as(weight)
 
-            weight = weight[:, -x_unfold.size(2):]
+            weight = weight[:, -x_unfold.size(2) :]
 
             K = weight.size(1)
 
-            weight = weight.view(1, H, K).expand(T*B, H, K).contiguous().view(T*B*H, K, 1)
+            weight = (
+                weight.view(1, H, K)
+                .expand(T * B, H, K)
+                .contiguous()
+                .view(T * B * H, K, 1)
+            )
 
             weight = F.dropout(weight, self.weight_dropout, training=self.training)
             output = torch.bmm(x_unfold, weight)  # T*B*H x R x 1
@@ -109,10 +115,12 @@ class LightconvLayer(nn.Module):
             self._set_input_buffer(incremental_state, input_buffer)
 
     def _get_input_buffer(self, incremental_state):
-        return utils.get_incremental_state(self, incremental_state, 'input_buffer')
+        return utils.get_incremental_state(self, incremental_state, "input_buffer")
 
     def _set_input_buffer(self, incremental_state, new_buffer):
-        return utils.set_incremental_state(self, incremental_state, 'input_buffer', new_buffer)
+        return utils.set_incremental_state(
+            self, incremental_state, "input_buffer", new_buffer
+        )
 
     def half(self):
         print("HALF")

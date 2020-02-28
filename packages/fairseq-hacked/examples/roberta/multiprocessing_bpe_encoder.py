@@ -25,46 +25,38 @@ def main():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--encoder-json",
-        help='path to encoder.json',
+        "--encoder-json", help="path to encoder.json",
     )
     parser.add_argument(
-        "--vocab-bpe",
-        type=str,
-        help='path to vocab.bpe',
+        "--vocab-bpe", type=str, help="path to vocab.bpe",
     )
     parser.add_argument(
-        "--inputs",
-        nargs="+",
-        default=['-'],
-        help="input files to filter/encode",
+        "--inputs", nargs="+", default=["-"], help="input files to filter/encode",
     )
     parser.add_argument(
-        "--outputs",
-        nargs="+",
-        default=['-'],
-        help="path to save encoded outputs",
+        "--outputs", nargs="+", default=["-"], help="path to save encoded outputs",
     )
     parser.add_argument(
-        "--keep-empty",
-        action="store_true",
-        help="keep empty lines",
+        "--keep-empty", action="store_true", help="keep empty lines",
     )
     parser.add_argument("--workers", type=int, default=20)
     args = parser.parse_args()
 
-    assert len(args.inputs) == len(args.outputs), \
-        "number of input and output paths should match"
+    assert len(args.inputs) == len(
+        args.outputs
+    ), "number of input and output paths should match"
 
     with contextlib.ExitStack() as stack:
         inputs = [
             stack.enter_context(open(input, "r", encoding="utf-8"))
-            if input != "-" else sys.stdin
+            if input != "-"
+            else sys.stdin
             for input in args.inputs
         ]
         outputs = [
             stack.enter_context(open(output, "w", encoding="utf-8"))
-            if output != "-" else sys.stdout
+            if output != "-"
+            else sys.stdout
             for output in args.outputs
         ]
 
@@ -87,7 +79,6 @@ def main():
 
 
 class MultiprocessingEncoder(object):
-
     def __init__(self, args):
         self.args = args
 

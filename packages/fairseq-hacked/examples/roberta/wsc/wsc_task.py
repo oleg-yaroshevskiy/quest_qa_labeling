@@ -29,28 +29,33 @@ from fairseq.tasks import FairseqTask, register_task
 from . import wsc_utils
 
 
-@register_task('wsc')
+@register_task("wsc")
 class WSCTask(FairseqTask):
     """Task to finetune RoBERTa for Winograd Schemas."""
 
     @staticmethod
     def add_args(parser):
         """Add task-specific arguments to the parser."""
-        parser.add_argument('data', metavar='DIR',
-                            help='path to data directory; we load <split>.jsonl')
-        parser.add_argument('--init-token', type=int, default=None,
-                            help='add token at the beginning of each batch item')
+        parser.add_argument(
+            "data", metavar="DIR", help="path to data directory; we load <split>.jsonl"
+        )
+        parser.add_argument(
+            "--init-token",
+            type=int,
+            default=None,
+            help="add token at the beginning of each batch item",
+        )
 
     def __init__(self, args, vocab):
         super().__init__(args)
         self.vocab = vocab
-        self.mask = vocab.add_symbol('<mask>')
+        self.mask = vocab.add_symbol("<mask>")
 
         self.bpe = encoders.build_bpe(args)
         self.tokenizer = encoders.build_tokenizer(args)
 
         # hack to handle GPT-2 BPE, which includes leading spaces
-        if args.bpe == 'gpt2':
+        if args.bpe == "gpt2":
             self.leading_space = True
             self.trailing_space = False
         else:
@@ -65,16 +70,16 @@ class WSCTask(FairseqTask):
             filename (str): the filename
         """
         dictionary = Dictionary.load(filename)
-        dictionary.add_symbol('<mask>')
+        dictionary.add_symbol("<mask>")
         return dictionary
 
     @classmethod
     def setup_task(cls, args, **kwargs):
-        assert args.criterion == 'wsc', 'Must set --criterion=wsc'
+        assert args.criterion == "wsc", "Must set --criterion=wsc"
 
         # load data and label dictionaries
-        vocab = cls.load_dictionary(os.path.join(args.data, 'dict.txt'))
-        print('| dictionary: {} types'.format(len(vocab)))
+        vocab = cls.load_dictionary(os.path.join(args.data, "dict.txt"))
+        print("| dictionary: {} types".format(len(vocab)))
 
         return cls(args, vocab)
 
@@ -92,25 +97,26 @@ class WSCTask(FairseqTask):
 
     def binarize_with_mask(self, txt, prefix, suffix, leading_space, trailing_space):
         toks = self.binarize(
-            prefix + leading_space + txt + trailing_space + suffix,
-            append_eos=True,
+            prefix + leading_space + txt + trailing_space + suffix, append_eos=True,
         )
         mask = torch.zeros_like(toks, dtype=torch.uint8)
         mask_start = len(self.binarize(prefix))
         mask_size = len(self.binarize(leading_space + txt))
-        mask[mask_start:mask_start + mask_size] = 1
+        mask[mask_start : mask_start + mask_size] = 1
         return toks, mask
 
-    def load_dataset(self, split, epoch=0, combine=False, data_path=None, return_only=False, **kwargs):
+    def load_dataset(
+        self, split, epoch=0, combine=False, data_path=None, return_only=False, **kwargs
+    ):
         """Load a given dataset split.
 
         Args:
             split (str): name of the split (e.g., train, valid, test)
         """
         if data_path is None:
-            data_path = os.path.join(self.args.data, split + '.jsonl')
+            data_path = os.path.join(self.args.data, split + ".jsonl")
         if not os.path.exists(data_path):
-            raise FileNotFoundError('Cannot find data: {}'.format(data_path))
+            raise FileNotFoundError("Cannot find data: {}".format(data_path))
 
         query_tokens = []
         query_masks = []
@@ -121,13 +127,15 @@ class WSCTask(FairseqTask):
         labels = []
 
         for sentence, pronoun_span, query, label in wsc_utils.jsonl_iterator(data_path):
-            prefix = sentence[:pronoun_span.start].text
-            suffix = sentence[pronoun_span.end:].text_with_ws
+            prefix = sentence[: pronoun_span.start].text
+            suffix = sentence[pronoun_span.end :].text_with_ws
 
             # spaCy spans include trailing spaces, but we need to know about
             # leading spaces for the GPT-2 BPE
-            leading_space = ' ' if sentence[:pronoun_span.start].text_with_ws.endswith(' ') else ''
-            trailing_space = ' ' if pronoun_span.text_with_ws.endswith(' ') else ''
+            leading_space = (
+                " " if sentence[: pronoun_span.start].text_with_ws.endswith(" ") else ""
+            )
+            trailing_space = " " if pronoun_span.text_with_ws.endswith(" ") else ""
 
             # get noun phrases, excluding pronouns and anything overlapping with the query
             cand_spans = wsc_utils.filter_noun_chunks(
@@ -176,23 +184,20 @@ class WSCTask(FairseqTask):
         candidate_tokens = ListDataset(candidate_tokens, candidate_lengths)
         candidate_masks = ListDataset(candidate_masks, candidate_lengths)
 
-        labels = ListDataset(labels, [1]*len(labels))
+        labels = ListDataset(labels, [1] * len(labels))
 
         dataset = {
-            'id': IdDataset(),
-            'query_tokens': query_tokens,
-            'query_masks': query_masks,
-            'candidate_tokens': candidate_tokens,
-            'candidate_masks': candidate_masks,
-            'labels': labels,
-            'nsentences': NumSamplesDataset(),
-            'ntokens': NumelDataset(query_tokens, reduce=True),
+            "id": IdDataset(),
+            "query_tokens": query_tokens,
+            "query_masks": query_masks,
+            "candidate_tokens": candidate_tokens,
+            "candidate_masks": candidate_masks,
+            "labels": labels,
+            "nsentences": NumSamplesDataset(),
+            "ntokens": NumelDataset(query_tokens, reduce=True),
         }
 
-        nested_dataset = NestedDictionaryDataset(
-            dataset,
-            sizes=[query_lengths],
-        )
+        nested_dataset = NestedDictionaryDataset(dataset, sizes=[query_lengths],)
 
         with data_utils.numpy_seed(self.args.seed):
             shuffle = np.random.permutation(len(query_tokens))
@@ -210,11 +215,9 @@ class WSCTask(FairseqTask):
 
     def build_dataset_for_inference(self, sample_json):
         with tempfile.NamedTemporaryFile(buffering=0) as h:
-            h.write((json.dumps(sample_json) + '\n').encode('utf-8'))
+            h.write((json.dumps(sample_json) + "\n").encode("utf-8"))
             dataset = self.load_dataset(
-                'disambiguate_pronoun',
-                data_path=h.name,
-                return_only=True,
+                "disambiguate_pronoun", data_path=h.name, return_only=True,
             )
         return dataset
 
@@ -239,19 +242,18 @@ class WSCTask(FairseqTask):
             return scores
 
         cand_lprobs = get_lprobs(
-            sample['candidate_tokens'][0],
-            sample['candidate_masks'][0],
+            sample["candidate_tokens"][0], sample["candidate_masks"][0],
         )
-        if sample['query_tokens'][0] is not None:
+        if sample["query_tokens"][0] is not None:
             query_lprobs = get_lprobs(
-                sample['query_tokens'][0].unsqueeze(0),
-                sample['query_masks'][0].unsqueeze(0),
+                sample["query_tokens"][0].unsqueeze(0),
+                sample["query_masks"][0].unsqueeze(0),
             )
             return (query_lprobs >= cand_lprobs).all().item() == 1
         else:
             best_idx = cand_lprobs.argmax().item()
-            full_cand = sample['candidate_tokens'][0][best_idx]
-            mask = sample['candidate_masks'][0][best_idx]
+            full_cand = sample["candidate_tokens"][0][best_idx]
+            mask = sample["candidate_masks"][0][best_idx]
             toks = full_cand[mask.bool()]
             return self.bpe.decode(self.source_dictionary.string(toks)).strip()
 
@@ -264,7 +266,7 @@ class WSCTask(FairseqTask):
         return self.vocab
 
 
-@register_task('winogrande')
+@register_task("winogrande")
 class WinograndeTask(WSCTask):
     """
     Task for WinoGrande dataset. Efficient implementation for Winograd schema
@@ -273,24 +275,26 @@ class WinograndeTask(WSCTask):
 
     @classmethod
     def setup_task(cls, args, **kwargs):
-        assert args.criterion == 'winogrande', 'Must set --criterion=winogrande'
+        assert args.criterion == "winogrande", "Must set --criterion=winogrande"
 
         # load data and label dictionaries
-        vocab = cls.load_dictionary(os.path.join(args.data, 'dict.txt'))
-        print('| dictionary: {} types'.format(len(vocab)))
+        vocab = cls.load_dictionary(os.path.join(args.data, "dict.txt"))
+        print("| dictionary: {} types".format(len(vocab)))
 
         return cls(args, vocab)
 
-    def load_dataset(self, split, epoch=0, combine=False, data_path=None, return_only=False, **kwargs):
+    def load_dataset(
+        self, split, epoch=0, combine=False, data_path=None, return_only=False, **kwargs
+    ):
         """Load a given dataset split.
 
         Args:
             split (str): name of the split (e.g., train, valid, test)
         """
         if data_path is None:
-            data_path = os.path.join(self.args.data, split + '.jsonl')
+            data_path = os.path.join(self.args.data, split + ".jsonl")
         if not os.path.exists(data_path):
-            raise FileNotFoundError('Cannot find data: {}'.format(data_path))
+            raise FileNotFoundError("Cannot find data: {}".format(data_path))
 
         query_tokens = []
         query_masks = []
@@ -299,15 +303,15 @@ class WinograndeTask(WSCTask):
         candidate_masks = []
         candidate_lengths = []
 
-        itr = wsc_utils.winogrande_jsonl_iterator(data_path, eval=(split == 'test'))
+        itr = wsc_utils.winogrande_jsonl_iterator(data_path, eval=(split == "test"))
 
         for sample in itr:
             sentence, pronoun_span, query, cand_text = sample
-            prefix = sentence[:pronoun_span[0]].rstrip()
-            suffix = sentence[pronoun_span[1]:]
+            prefix = sentence[: pronoun_span[0]].rstrip()
+            suffix = sentence[pronoun_span[1] :]
 
-            leading_space = ' ' if sentence[:pronoun_span[0]].endswith(' ') else ''
-            trailing_space = ''
+            leading_space = " " if sentence[: pronoun_span[0]].endswith(" ") else ""
+            trailing_space = ""
 
             if query is not None:
                 query_toks, query_mask = self.binarize_with_mask(
@@ -333,32 +337,29 @@ class WinograndeTask(WSCTask):
 
         def get_pad_dataset_fn(tokens, length, pad_idx):
             return PadDataset(
-                ListDataset(tokens, length),
-                pad_idx=pad_idx,
-                left_pad=False,
+                ListDataset(tokens, length), pad_idx=pad_idx, left_pad=False,
             )
 
         query_tokens = get_pad_dataset_fn(query_tokens, query_lengths, self.vocab.pad())
         query_masks = get_pad_dataset_fn(query_masks, query_lengths, 0)
 
         candidate_lengths = np.array(candidate_lengths)
-        candidate_tokens = get_pad_dataset_fn(candidate_tokens, candidate_lengths, self.vocab.pad())
+        candidate_tokens = get_pad_dataset_fn(
+            candidate_tokens, candidate_lengths, self.vocab.pad()
+        )
         candidate_masks = get_pad_dataset_fn(candidate_masks, candidate_lengths, 0)
 
         dataset = {
-            'id': IdDataset(),
-            'query_tokens': query_tokens,
-            'query_masks': query_masks,
-            'candidate_tokens': candidate_tokens,
-            'candidate_masks': candidate_masks,
-            'nsentences': NumSamplesDataset(),
-            'ntokens': NumelDataset(query_tokens, reduce=True),
+            "id": IdDataset(),
+            "query_tokens": query_tokens,
+            "query_masks": query_masks,
+            "candidate_tokens": candidate_tokens,
+            "candidate_masks": candidate_masks,
+            "nsentences": NumSamplesDataset(),
+            "ntokens": NumelDataset(query_tokens, reduce=True),
         }
 
-        nested_dataset = NestedDictionaryDataset(
-            dataset,
-            sizes=[query_lengths],
-        )
+        nested_dataset = NestedDictionaryDataset(dataset, sizes=[query_lengths],)
 
         with data_utils.numpy_seed(self.args.seed):
             shuffle = np.random.permutation(len(query_tokens))

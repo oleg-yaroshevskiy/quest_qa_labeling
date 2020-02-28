@@ -31,7 +31,9 @@ class FairseqIncrementalDecoder(FairseqDecoder):
     def __init__(self, dictionary):
         super().__init__(dictionary)
 
-    def forward(self, prev_output_tokens, encoder_out=None, incremental_state=None, **kwargs):
+    def forward(
+        self, prev_output_tokens, encoder_out=None, incremental_state=None, **kwargs
+    ):
         """
         Args:
             prev_output_tokens (LongTensor): shifted output tokens of shape
@@ -48,7 +50,9 @@ class FairseqIncrementalDecoder(FairseqDecoder):
         """
         raise NotImplementedError
 
-    def extract_features(self, prev_output_tokens, encoder_out=None, incremental_state=None, **kwargs):
+    def extract_features(
+        self, prev_output_tokens, encoder_out=None, incremental_state=None, **kwargs
+    ):
         """
         Returns:
             tuple:
@@ -67,8 +71,11 @@ class FairseqIncrementalDecoder(FairseqDecoder):
         seen = set()
 
         def apply_reorder_incremental_state(module):
-            if module != self and hasattr(module, 'reorder_incremental_state') \
-                    and module not in seen:
+            if (
+                module != self
+                and hasattr(module, "reorder_incremental_state")
+                and module not in seen
+            ):
                 seen.add(module)
                 module.reorder_incremental_state(incremental_state, new_order)
 
@@ -76,12 +83,15 @@ class FairseqIncrementalDecoder(FairseqDecoder):
 
     def set_beam_size(self, beam_size):
         """Sets the beam size in the decoder and all children."""
-        if getattr(self, '_beam_size', -1) != beam_size:
+        if getattr(self, "_beam_size", -1) != beam_size:
             seen = set()
 
             def apply_set_beam_size(module):
-                if module != self and hasattr(module, 'set_beam_size') \
-                        and module not in seen:
+                if (
+                    module != self
+                    and hasattr(module, "set_beam_size")
+                    and module not in seen
+                ):
                     seen.add(module)
                     module.set_beam_size(beam_size)
 

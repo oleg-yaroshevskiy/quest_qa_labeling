@@ -41,7 +41,9 @@ class FairseqTask(object):
         return Dictionary.load(filename)
 
     @classmethod
-    def build_dictionary(cls, filenames, workers=1, threshold=-1, nwords=-1, padding_factor=8):
+    def build_dictionary(
+        cls, filenames, workers=1, threshold=-1, nwords=-1, padding_factor=8
+    ):
         """Build the dictionary
 
         Args:
@@ -56,7 +58,9 @@ class FairseqTask(object):
         """
         d = Dictionary()
         for filename in filenames:
-            Dictionary.add_file_to_dictionary(filename, d, tokenizer.tokenize_line, workers)
+            Dictionary.add_file_to_dictionary(
+                filename, d, tokenizer.tokenize_line, workers
+            )
         d.finalize(threshold=threshold, nwords=nwords, padding_factor=padding_factor)
         return d
 
@@ -88,16 +92,26 @@ class FairseqTask(object):
             a :class:`~fairseq.data.FairseqDataset` corresponding to *split*
         """
         from fairseq.data import FairseqDataset
+
         if split not in self.datasets:
-            raise KeyError('Dataset not loaded: ' + split)
+            raise KeyError("Dataset not loaded: " + split)
         if not isinstance(self.datasets[split], FairseqDataset):
-            raise TypeError('Datasets are expected to be of type FairseqDataset')
+            raise TypeError("Datasets are expected to be of type FairseqDataset")
         return self.datasets[split]
 
     def get_batch_iterator(
-        self, dataset, max_tokens=None, max_sentences=None, max_positions=None,
-        ignore_invalid_inputs=False, required_batch_size_multiple=1,
-        seed=1, num_shards=1, shard_id=0, num_workers=0, epoch=0,
+        self,
+        dataset,
+        max_tokens=None,
+        max_sentences=None,
+        max_positions=None,
+        ignore_invalid_inputs=False,
+        required_batch_size_multiple=1,
+        seed=1,
+        num_shards=1,
+        shard_id=0,
+        num_workers=0,
+        epoch=0,
     ):
         """
         Get an iterator that yields batches of data from the given dataset.
@@ -147,12 +161,18 @@ class FairseqTask(object):
         # filter examples that are too large
         if max_positions is not None:
             indices = data_utils.filter_by_size(
-                indices, dataset, max_positions, raise_exception=(not ignore_invalid_inputs),
+                indices,
+                dataset,
+                max_positions,
+                raise_exception=(not ignore_invalid_inputs),
             )
 
         # create mini-batches with given size constraints
         batch_sampler = data_utils.batch_by_size(
-            indices, dataset.num_tokens, max_tokens=max_tokens, max_sentences=max_sentences,
+            indices,
+            dataset.num_tokens,
+            max_tokens=max_tokens,
+            max_sentences=max_sentences,
             required_batch_size_multiple=required_batch_size_multiple,
         )
 
@@ -182,6 +202,7 @@ class FairseqTask(object):
             a :class:`~fairseq.models.BaseFairseqModel` instance
         """
         from fairseq import models
+
         return models.build_model(args, self)
 
     def build_criterion(self, args):
@@ -196,35 +217,41 @@ class FairseqTask(object):
             a :class:`~fairseq.criterions.FairseqCriterion` instance
         """
         from fairseq import criterions
+
         return criterions.build_criterion(args, self)
 
     def build_generator(self, args):
-        if getattr(args, 'score_reference', False):
+        if getattr(args, "score_reference", False):
             from fairseq.sequence_scorer import SequenceScorer
+
             return SequenceScorer(self.target_dictionary)
         else:
-            from fairseq.sequence_generator import SequenceGenerator, SequenceGeneratorWithAlignment
-            if getattr(args, 'print_alignment', False):
+            from fairseq.sequence_generator import (
+                SequenceGenerator,
+                SequenceGeneratorWithAlignment,
+            )
+
+            if getattr(args, "print_alignment", False):
                 seq_gen_cls = SequenceGeneratorWithAlignment
             else:
                 seq_gen_cls = SequenceGenerator
             return seq_gen_cls(
                 self.target_dictionary,
-                beam_size=getattr(args, 'beam', 5),
-                max_len_a=getattr(args, 'max_len_a', 0),
-                max_len_b=getattr(args, 'max_len_b', 200),
-                min_len=getattr(args, 'min_len', 1),
-                normalize_scores=(not getattr(args, 'unnormalized', False)),
-                len_penalty=getattr(args, 'lenpen', 1),
-                unk_penalty=getattr(args, 'unkpen', 0),
-                sampling=getattr(args, 'sampling', False),
-                sampling_topk=getattr(args, 'sampling_topk', -1),
-                sampling_topp=getattr(args, 'sampling_topp', -1.0),
-                temperature=getattr(args, 'temperature', 1.),
-                diverse_beam_groups=getattr(args, 'diverse_beam_groups', -1),
-                diverse_beam_strength=getattr(args, 'diverse_beam_strength', 0.5),
-                match_source_len=getattr(args, 'match_source_len', False),
-                no_repeat_ngram_size=getattr(args, 'no_repeat_ngram_size', 0),
+                beam_size=getattr(args, "beam", 5),
+                max_len_a=getattr(args, "max_len_a", 0),
+                max_len_b=getattr(args, "max_len_b", 200),
+                min_len=getattr(args, "min_len", 1),
+                normalize_scores=(not getattr(args, "unnormalized", False)),
+                len_penalty=getattr(args, "lenpen", 1),
+                unk_penalty=getattr(args, "unkpen", 0),
+                sampling=getattr(args, "sampling", False),
+                sampling_topk=getattr(args, "sampling_topk", -1),
+                sampling_topp=getattr(args, "sampling_topp", -1.0),
+                temperature=getattr(args, "temperature", 1.0),
+                diverse_beam_groups=getattr(args, "diverse_beam_groups", -1),
+                diverse_beam_strength=getattr(args, "diverse_beam_strength", 0.5),
+                match_source_len=getattr(args, "match_source_len", False),
+                no_repeat_ngram_size=getattr(args, "no_repeat_ngram_size", 0),
             )
 
     def train_step(self, sample, model, criterion, optimizer, ignore_grad=False):

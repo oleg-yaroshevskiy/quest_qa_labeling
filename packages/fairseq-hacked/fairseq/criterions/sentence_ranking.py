@@ -13,13 +13,12 @@ from fairseq import utils
 from . import FairseqCriterion, register_criterion
 
 
-@register_criterion('sentence_ranking')
+@register_criterion("sentence_ranking")
 class SentenceRankingCriterion(FairseqCriterion):
-
     def __init__(self, args, task):
         super().__init__(args, task)
         if self.args.save_predictions is not None:
-            self.prediction_h = open(self.args.save_predictions, 'w')
+            self.prediction_h = open(self.args.save_predictions, "w")
         else:
             self.prediction_h = None
 
@@ -45,20 +44,20 @@ class SentenceRankingCriterion(FairseqCriterion):
         scores = []
         for idx in range(self.args.num_classes):
             score, _ = model(
-                **sample['net_input{idx}'.format(idx=idx+1)],
-                classification_head_name='sentence_classification_head',
+                **sample["net_input{idx}".format(idx=idx + 1)],
+                classification_head_name="sentence_classification_head",
             )
             scores.append(score)
 
         logits = torch.cat(scores, dim=1)
         sample_size = logits.size(0)
 
-        if 'target' in sample:
+        if "target" in sample:
             targets = model.get_targets(sample, [logits]).view(-1)
             loss = F.nll_loss(
                 F.log_softmax(logits, dim=-1, dtype=torch.float32),
                 targets,
-                reduction='sum',
+                reduction="sum",
             )
         else:
             targets = None
@@ -66,18 +65,18 @@ class SentenceRankingCriterion(FairseqCriterion):
 
         if self.prediction_h is not None:
             preds = logits.argmax(dim=1)
-            for i, (id, pred) in enumerate(zip(sample['id'].tolist(), preds.tolist())):
+            for i, (id, pred) in enumerate(zip(sample["id"].tolist(), preds.tolist())):
                 if targets is not None:
                     label = targets[i].item()
-                    print('{}\t{}\t{}'.format(id, pred, label), file=self.prediction_h)
+                    print("{}\t{}\t{}".format(id, pred, label), file=self.prediction_h)
                 else:
-                    print('{}\t{}'.format(id, pred), file=self.prediction_h)
+                    print("{}\t{}".format(id, pred), file=self.prediction_h)
 
         logging_output = {
-            'loss': utils.item(loss.data) if reduce else loss.data,
-            'ntokens': sample['ntokens'],
-            'nsentences': sample_size,
-            'sample_size': sample_size,
+            "loss": utils.item(loss.data) if reduce else loss.data,
+            "ntokens": sample["ntokens"],
+            "nsentences": sample_size,
+            "sample_size": sample_size,
         }
         if targets is not None:
             logging_output.update(
@@ -88,22 +87,22 @@ class SentenceRankingCriterion(FairseqCriterion):
     @staticmethod
     def aggregate_logging_outputs(logging_outputs):
         """Aggregate logging outputs from data parallel training."""
-        loss_sum = sum(log.get('loss', 0) for log in logging_outputs)
-        ntokens = sum(log.get('ntokens', 0) for log in logging_outputs)
-        nsentences = sum(log.get('nsentences', 0) for log in logging_outputs)
-        sample_size = sum(log.get('sample_size', 0) for log in logging_outputs)
+        loss_sum = sum(log.get("loss", 0) for log in logging_outputs)
+        ntokens = sum(log.get("ntokens", 0) for log in logging_outputs)
+        nsentences = sum(log.get("nsentences", 0) for log in logging_outputs)
+        sample_size = sum(log.get("sample_size", 0) for log in logging_outputs)
 
         agg_output = {
-            'loss': loss_sum / sample_size / math.log(2),
-            'ntokens': ntokens,
-            'nsentences': nsentences,
-            'sample_size': sample_size,
+            "loss": loss_sum / sample_size / math.log(2),
+            "ntokens": ntokens,
+            "nsentences": nsentences,
+            "sample_size": sample_size,
         }
 
-        if len(logging_outputs) > 0 and 'ncorrect' in logging_outputs[0]:
-            ncorrect = sum(log.get('ncorrect', 0) for log in logging_outputs)
-            agg_output.update(accuracy=ncorrect/nsentences)
+        if len(logging_outputs) > 0 and "ncorrect" in logging_outputs[0]:
+            ncorrect = sum(log.get("ncorrect", 0) for log in logging_outputs)
+            agg_output.update(accuracy=ncorrect / nsentences)
 
         if sample_size != ntokens:
-            agg_output['nll_loss'] = loss_sum / ntokens / math.log(2)
+            agg_output["nll_loss"] = loss_sum / ntokens / math.log(2)
         return agg_output

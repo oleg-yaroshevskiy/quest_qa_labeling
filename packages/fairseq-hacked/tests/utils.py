@@ -17,7 +17,7 @@ from fairseq.models import (
 from fairseq.tasks import FairseqTask
 
 
-def dummy_dictionary(vocab_size, prefix='token_'):
+def dummy_dictionary(vocab_size, prefix="token_"):
     d = Dictionary()
     for i in range(vocab_size):
         token = prefix + str(i)
@@ -27,18 +27,15 @@ def dummy_dictionary(vocab_size, prefix='token_'):
 
 
 def dummy_dataloader(
-    samples,
-    padding_idx=1,
-    eos_idx=2,
-    batch_size=None,
+    samples, padding_idx=1, eos_idx=2, batch_size=None,
 ):
     if batch_size is None:
         batch_size = len(samples)
 
     # add any missing data to samples
     for i, sample in enumerate(samples):
-        if 'id' not in sample:
-            sample['id'] = i
+        if "id" not in sample:
+            sample["id"] = i
 
     # create dataloader
     dataset = TestDataset(samples)
@@ -63,48 +60,86 @@ def sequence_generator_setup():
     src_lengths = torch.LongTensor([2, 2])
 
     args = argparse.Namespace()
-    unk = 0.
+    unk = 0.0
     args.beam_probs = [
         # step 0:
-        torch.FloatTensor([
-            # eos      w1   w2
-            # sentence 1:
-            [0.0, unk, 0.9, 0.1],  # beam 1
-            [0.0, unk, 0.9, 0.1],  # beam 2
-            # sentence 2:
-            [0.0, unk, 0.7, 0.3],
-            [0.0, unk, 0.7, 0.3],
-        ]),
+        torch.FloatTensor(
+            [
+                # eos      w1   w2
+                # sentence 1:
+                [0.0, unk, 0.9, 0.1],  # beam 1
+                [0.0, unk, 0.9, 0.1],  # beam 2
+                # sentence 2:
+                [0.0, unk, 0.7, 0.3],
+                [0.0, unk, 0.7, 0.3],
+            ]
+        ),
         # step 1:
-        torch.FloatTensor([
-            # eos      w1   w2       prefix
-            # sentence 1:
-            [1.0, unk, 0.0, 0.0],  # w1: 0.9  (emit: w1 <eos>: 0.9*1.0)
-            [0.0, unk, 0.9, 0.1],  # w2: 0.1
-            # sentence 2:
-            [0.25, unk, 0.35, 0.4],  # w1: 0.7  (don't emit: w1 <eos>: 0.7*0.25)
-            [0.00, unk, 0.10, 0.9],  # w2: 0.3
-        ]),
+        torch.FloatTensor(
+            [
+                # eos      w1   w2       prefix
+                # sentence 1:
+                [1.0, unk, 0.0, 0.0],  # w1: 0.9  (emit: w1 <eos>: 0.9*1.0)
+                [0.0, unk, 0.9, 0.1],  # w2: 0.1
+                # sentence 2:
+                [0.25, unk, 0.35, 0.4],  # w1: 0.7  (don't emit: w1 <eos>: 0.7*0.25)
+                [0.00, unk, 0.10, 0.9],  # w2: 0.3
+            ]
+        ),
         # step 2:
-        torch.FloatTensor([
-            # eos      w1   w2       prefix
-            # sentence 1:
-            [0.0, unk, 0.1, 0.9],  # w2 w1: 0.1*0.9
-            [0.6, unk, 0.2, 0.2],  # w2 w2: 0.1*0.1  (emit: w2 w2 <eos>: 0.1*0.1*0.6)
-            # sentence 2:
-            [0.60, unk, 0.4, 0.00],  # w1 w2: 0.7*0.4  (emit: w1 w2 <eos>: 0.7*0.4*0.6)
-            [0.01, unk, 0.0, 0.99],  # w2 w2: 0.3*0.9
-        ]),
+        torch.FloatTensor(
+            [
+                # eos      w1   w2       prefix
+                # sentence 1:
+                [0.0, unk, 0.1, 0.9],  # w2 w1: 0.1*0.9
+                [
+                    0.6,
+                    unk,
+                    0.2,
+                    0.2,
+                ],  # w2 w2: 0.1*0.1  (emit: w2 w2 <eos>: 0.1*0.1*0.6)
+                # sentence 2:
+                [
+                    0.60,
+                    unk,
+                    0.4,
+                    0.00,
+                ],  # w1 w2: 0.7*0.4  (emit: w1 w2 <eos>: 0.7*0.4*0.6)
+                [0.01, unk, 0.0, 0.99],  # w2 w2: 0.3*0.9
+            ]
+        ),
         # step 3:
-        torch.FloatTensor([
-            # eos      w1   w2       prefix
-            # sentence 1:
-            [1.0, unk, 0.0, 0.0],  # w2 w1 w2: 0.1*0.9*0.9  (emit: w2 w1 w2 <eos>: 0.1*0.9*0.9*1.0)
-            [1.0, unk, 0.0, 0.0],  # w2 w1 w1: 0.1*0.9*0.1  (emit: w2 w1 w1 <eos>: 0.1*0.9*0.1*1.0)
-            # sentence 2:
-            [0.1, unk, 0.5, 0.4],  # w2 w2 w2: 0.3*0.9*0.99  (emit: w2 w2 w2 <eos>: 0.3*0.9*0.99*0.1)
-            [1.0, unk, 0.0, 0.0],  # w1 w2 w1: 0.7*0.4*0.4  (emit: w1 w2 w1 <eos>: 0.7*0.4*0.4*1.0)
-        ]),
+        torch.FloatTensor(
+            [
+                # eos      w1   w2       prefix
+                # sentence 1:
+                [
+                    1.0,
+                    unk,
+                    0.0,
+                    0.0,
+                ],  # w2 w1 w2: 0.1*0.9*0.9  (emit: w2 w1 w2 <eos>: 0.1*0.9*0.9*1.0)
+                [
+                    1.0,
+                    unk,
+                    0.0,
+                    0.0,
+                ],  # w2 w1 w1: 0.1*0.9*0.1  (emit: w2 w1 w1 <eos>: 0.1*0.9*0.1*1.0)
+                # sentence 2:
+                [
+                    0.1,
+                    unk,
+                    0.5,
+                    0.4,
+                ],  # w2 w2 w2: 0.3*0.9*0.99  (emit: w2 w2 w2 <eos>: 0.3*0.9*0.99*0.1)
+                [
+                    1.0,
+                    unk,
+                    0.0,
+                    0.0,
+                ],  # w1 w2 w1: 0.7*0.4*0.4  (emit: w1 w2 w1 <eos>: 0.7*0.4*0.4*1.0)
+            ]
+        ),
     ]
 
     task = TestTranslationTask.setup_task(args, d, d)
@@ -115,7 +150,6 @@ def sequence_generator_setup():
 
 
 class TestDataset(torch.utils.data.Dataset):
-
     def __init__(self, data):
         super().__init__()
         self.data = data
@@ -129,7 +163,6 @@ class TestDataset(torch.utils.data.Dataset):
 
 
 class TestTranslationTask(FairseqTask):
-
     def __init__(self, args, src_dict, tgt_dict, model):
         super().__init__(args)
         self.src_dict = src_dict
@@ -178,8 +211,8 @@ class TestEncoder(FairseqEncoder):
 class TestIncrementalDecoder(FairseqIncrementalDecoder):
     def __init__(self, args, dictionary):
         super().__init__(dictionary)
-        assert hasattr(args, 'beam_probs') or hasattr(args, 'probs')
-        args.max_decoder_positions = getattr(args, 'max_decoder_positions', 100)
+        assert hasattr(args, "beam_probs") or hasattr(args, "probs")
+        args.max_decoder_positions = getattr(args, "max_decoder_positions", 100)
         self.args = args
 
     def forward(self, prev_output_tokens, encoder_out=None, incremental_state=None):
@@ -193,18 +226,19 @@ class TestIncrementalDecoder(FairseqIncrementalDecoder):
         # determine number of steps
         if incremental_state is not None:
             # cache step number
-            step = utils.get_incremental_state(self, incremental_state, 'step')
+            step = utils.get_incremental_state(self, incremental_state, "step")
             if step is None:
                 step = 0
-            utils.set_incremental_state(self, incremental_state, 'step', step + 1)
+            utils.set_incremental_state(self, incremental_state, "step", step + 1)
             steps = [step]
         else:
             steps = list(range(tgt_len))
 
         # define output in terms of raw probs
-        if hasattr(self.args, 'probs'):
-            assert self.args.probs.dim() == 3, \
-                'expected probs to have size bsz*steps*vocab'
+        if hasattr(self.args, "probs"):
+            assert (
+                self.args.probs.dim() == 3
+            ), "expected probs to have size bsz*steps*vocab"
             probs = self.args.probs.index_select(1, torch.LongTensor(steps))
         else:
             probs = torch.FloatTensor(bbsz, len(steps), vocab).zero_()
@@ -212,7 +246,7 @@ class TestIncrementalDecoder(FairseqIncrementalDecoder):
                 # args.beam_probs gives the probability for every vocab element,
                 # starting with eos, then unknown, and then the rest of the vocab
                 if step < len(self.args.beam_probs):
-                    probs[:, i, self.dictionary.eos():] = self.args.beam_probs[step]
+                    probs[:, i, self.dictionary.eos() :] = self.args.beam_probs[step]
                 else:
                     probs[:, i, self.dictionary.eos()] = 1.0
 

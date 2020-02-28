@@ -3,14 +3,13 @@ import sys
 import numpy as np
 import pandas as pd
 
-if len(sys.argv) == 1 or sys.argv[1] != 'toy':
+if len(sys.argv) == 1 or sys.argv[1] != "toy":
     original_df = pd.read_csv("input/sampled_sx_so.csv.gz")
 else:
     original_df = pd.read_csv("input/qa_stackexchange_cleaned_toy.csv")
 
 bert_base_dfs = [
-    pd.read_csv("pseudo-predictions/base/fold-{}.csv".format(fold))
-    for fold in range(5)
+    pd.read_csv("pseudo-predictions/base/fold-{}.csv".format(fold)) for fold in range(5)
 ]
 bert_large_dfs = [
     pd.read_csv("pseudo-predictions/large/fold-{}.csv".format(fold))
@@ -55,11 +54,7 @@ target_columns = [
 ]
 
 os.makedirs(
-    os.path.join(
-        "pseudo-predictions",
-        "pseudo-100k-3x-blend-no-leak"
-    ),
-    exist_ok=True
+    os.path.join("pseudo-predictions", "pseudo-100k-3x-blend-no-leak"), exist_ok=True
 )
 
 for fold in range(5):
@@ -68,9 +63,9 @@ for fold in range(5):
 
     for col in target_columns:
         blended = (
-                bert_base_dfs[fold][col] * 0.2 +
-                bert_large_dfs[fold][col] * 0.4 +
-                bert_base_pretrained_dfs[fold][col] * 0.4
+            bert_base_dfs[fold][col] * 0.2
+            + bert_large_dfs[fold][col] * 0.4
+            + bert_base_pretrained_dfs[fold][col] * 0.4
         ).astype(np.float16)
 
         pseudo_df[col] = blended
@@ -81,7 +76,7 @@ for fold in range(5):
         os.path.join(
             "pseudo-predictions",
             "pseudo-100k-3x-blend-no-leak",
-            "fold-{}.csv.gz".format(fold)
+            "fold-{}.csv.gz".format(fold),
         ),
-        index=False
+        index=False,
     )

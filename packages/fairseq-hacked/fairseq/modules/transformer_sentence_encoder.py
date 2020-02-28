@@ -80,7 +80,7 @@ class TransformerSentenceEncoder(nn.Module):
         dropout: float = 0.1,
         attention_dropout: float = 0.1,
         activation_dropout: float = 0.1,
-        layerdrop : float = 0.0,
+        layerdrop: float = 0.0,
         max_seq_len: int = 256,
         num_segments: int = 2,
         use_position_embeddings: bool = True,
@@ -221,7 +221,6 @@ class TransformerSentenceEncoder(nn.Module):
                 x, _ = layer(x, self_attn_padding_mask=padding_mask)
                 if not last_state_only:
                     inner_states.append(x)
-
 
         # T x B x C -> B x T x C
         x = x.transpose(0, 1)

@@ -47,14 +47,17 @@ class CMLMNATransformerModel(NATransformerModel):
 
         return {
             "word_ins": {
-                "out": word_ins_out, "tgt": word_ins_tgt,
-                "mask": word_ins_mask, "ls": self.args.label_smoothing,
-                "nll_loss": True
+                "out": word_ins_out,
+                "tgt": word_ins_tgt,
+                "mask": word_ins_mask,
+                "ls": self.args.label_smoothing,
+                "nll_loss": True,
             },
             "length": {
-                "out": length_out, "tgt": length_tgt,
-                "factor": self.decoder.length_loss_factor
-            }
+                "out": length_out,
+                "tgt": length_tgt,
+                "factor": self.decoder.length_loss_factor,
+            },
         }
 
     def forward_decoder(self, decoder_out, encoder_out, decoding_format=None, **kwargs):
@@ -93,7 +96,7 @@ class CMLMNATransformerModel(NATransformerModel):
             output_tokens=output_tokens,
             output_scores=output_scores,
             attn=None,
-            history=history
+            history=history,
         )
 
 

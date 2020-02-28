@@ -12,7 +12,12 @@ import torch.nn.functional as F
 
 from model import get_model_optimizer
 from loops import train_loop, evaluate, infer
-from dataset import cross_validation_split, get_test_set, BucketingSampler, make_collate_fn
+from dataset import (
+    cross_validation_split,
+    get_test_set,
+    BucketingSampler,
+    make_collate_fn,
+)
 from transformers import BertTokenizer, AlbertTokenizer
 from torch.utils.data import DataLoader, Dataset
 from evaluation import target_metric
@@ -51,7 +56,7 @@ original_args = argparse.Namespace(
     max_question_length=getattr(config, "max_question_length", 260),
     max_answer_length=getattr(config, "max_answer_length", 210),
     head_tail=getattr(config, "head_tail", True),
-    use_folds=None
+    use_folds=None,
 )
 
 tokenizer = BertTokenizer.from_pretrained(
@@ -64,7 +69,7 @@ test_loader = DataLoader(
     batch_sampler=BucketingSampler(
         test_set.lengths,
         batch_size=original_args.batch_size,
-        maxlen=original_args.max_sequence_length
+        maxlen=original_args.max_sequence_length,
     ),
     collate_fn=make_collate_fn(),
 )
@@ -77,9 +82,7 @@ for fold in range(config.folds):
     print("Fold:", fold)
     print()
 
-    fold_checkpoints = os.path.join(
-        experiment.checkpoints, "fold{}".format(fold)
-    )
+    fold_checkpoints = os.path.join(experiment.checkpoints, "fold{}".format(fold))
 
     model, optimizer = get_model_optimizer(original_args)
 
@@ -90,9 +93,7 @@ for fold in range(config.folds):
     del state_dict
     torch.cuda.empty_cache()
 
-    test_preds = infer(
-        original_args, model, test_loader, test_shape=len(test_set)
-    )
+    test_preds = infer(original_args, model, test_loader, test_shape=len(test_set))
 
     del model, optimizer
     torch.cuda.empty_cache()
@@ -101,7 +102,5 @@ for fold in range(config.folds):
     for k, col in enumerate(target_columns):
         test_preds_df[col] = test_preds[:, k].astype(np.float32)
     test_preds_df.to_csv(
-        os.path.join(args.output_dir, "fold-{}.csv".format(fold)),
-        index=False,
+        os.path.join(args.output_dir, "fold-{}.csv".format(fold)), index=False,
     )
-

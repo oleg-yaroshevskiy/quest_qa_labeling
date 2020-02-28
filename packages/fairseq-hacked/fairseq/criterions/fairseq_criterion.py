@@ -7,12 +7,13 @@ from torch.nn.modules.loss import _Loss
 
 
 class FairseqCriterion(_Loss):
-
     def __init__(self, args, task):
         super().__init__()
         self.args = args
         self.task = task
-        self.padding_idx = task.target_dictionary.pad() if task.target_dictionary is not None else -100
+        self.padding_idx = (
+            task.target_dictionary.pad() if task.target_dictionary is not None else -100
+        )
 
     @staticmethod
     def add_args(parser):

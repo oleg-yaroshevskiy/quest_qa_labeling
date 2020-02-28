@@ -10,10 +10,7 @@ from .sinusoidal_positional_embedding import SinusoidalPositionalEmbedding
 
 
 def PositionalEmbedding(
-        num_embeddings: int,
-        embedding_dim: int,
-        padding_idx: int,
-        learned: bool = False,
+    num_embeddings: int, embedding_dim: int, padding_idx: int, learned: bool = False,
 ):
     if learned:
         # if padding_idx is specified then offset the embedding ids by

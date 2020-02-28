@@ -13,7 +13,6 @@ from fairseq.optim.fp16_optimizer import MemoryEfficientFP16Optimizer
 
 
 class TestMemoryEfficientFP16(unittest.TestCase):
-
     def test_load_state_dict(self):
         # define simple FP16 model
         model = torch.nn.Linear(5, 5).cuda().half()
@@ -23,7 +22,7 @@ class TestMemoryEfficientFP16(unittest.TestCase):
         optimizer = FairseqAdam(
             argparse.Namespace(
                 lr=[0.00001],
-                adam_betas='(0.9, 0.999)',
+                adam_betas="(0.9, 0.999)",
                 adam_eps=1e-8,
                 weight_decay=0.0,
             ),
@@ -56,5 +55,5 @@ class TestMemoryEfficientFP16(unittest.TestCase):
                     self.assertTrue(v_i.dtype == torch.float32)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

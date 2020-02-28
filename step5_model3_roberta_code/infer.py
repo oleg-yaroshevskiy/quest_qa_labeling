@@ -48,20 +48,18 @@ original_args = argparse.Namespace(
     max_answer_length=getattr(config, "max_answer_length", 210),
     head_tail=getattr(config, "head_tail", True),
     use_folds=None,
-    model_type=config.model_type
-
+    model_type=config.model_type,
 )
 
-if original_args.model_type == 'bert':
-    tokenizer = BertTokenizer.from_pretrained(original_args.bert_model,
-                                              do_lower_case=("uncased" in args.bert_model))
-elif original_args.model_type == 'roberta':
+if original_args.model_type == "bert":
+    tokenizer = BertTokenizer.from_pretrained(
+        original_args.bert_model, do_lower_case=("uncased" in args.bert_model)
+    )
+elif original_args.model_type == "roberta":
     tokenizer = RobertaTokenizer.from_pretrained(original_args.bert_model)
 
 test_set = get_test_set(original_args, test_df, tokenizer)
-test_loader = DataLoader(
-    test_set, batch_size=original_args.batch_size, shuffle=False
-)
+test_loader = DataLoader(test_set, batch_size=original_args.batch_size, shuffle=False)
 
 if not os.path.exists(args.output_dir):
     os.makedirs(args.output_dir)
@@ -72,9 +70,7 @@ for fold in range(config.folds):
     print("Fold:", fold)
     print()
 
-    fold_checkpoints = os.path.join(
-        experiment.checkpoints, "fold{}".format(fold)
-    )
+    fold_checkpoints = os.path.join(experiment.checkpoints, "fold{}".format(fold))
 
     model, optimizer = get_model_optimizer(original_args)
 
@@ -85,16 +81,13 @@ for fold in range(config.folds):
     del state_dict
     torch.cuda.empty_cache()
 
-    test_preds = infer(
-        original_args, model, test_loader, test_shape=len(test_set)
-    )
+    test_preds = infer(original_args, model, test_loader, test_shape=len(test_set))
 
     test_preds_df = test_df[["qa_id"]].copy()
     for k, col in enumerate(target_columns):
         test_preds_df[col] = test_preds[:, k].astype(np.float32)
     test_preds_df.to_csv(
-        os.path.join(args.output_dir, "fold-{}.csv".format(fold)),
-        index=False,
+        os.path.join(args.output_dir, "fold-{}.csv".format(fold)), index=False,
     )
 
     torch.cuda.empty_cache()

@@ -14,7 +14,7 @@ from fairseq.models.transformer import (
     TransformerDecoder,
     TransformerEncoder,
     TransformerModel,
-    TransformerDecoderLayer
+    TransformerDecoderLayer,
 )
 from fairseq.modules.transformer_sentence_encoder import init_bert_params
 from fairseq.utils import new_arange
@@ -75,9 +75,9 @@ def _fill(x, mask, y, padding_idx):
     elif x.size(1) > y.size(1):
         x[mask] = padding_idx
         if x.dim() == 2:
-            x[mask, :y.size(1)] = y
+            x[mask, : y.size(1)] = y
         else:
-            x[mask, :y.size(1), :] = y
+            x[mask, : y.size(1), :] = y
     else:
         x[mask] = y
     return x
@@ -88,6 +88,7 @@ def load_libnat():
         from fairseq import libnat
     except ImportError as e:
         import sys
+
         sys.stderr.write("ERROR: missing libnat. run `pip install --editable .`\n")
         raise e
     return libnat
@@ -102,8 +103,7 @@ def _get_ins_targets(in_tokens, out_tokens, padding_idx, unk_idx):
         [t for t in s if t != padding_idx] for i, s in enumerate(in_tokens.tolist())
     ]
     out_tokens_list = [
-        [t for t in s if t != padding_idx]
-        for i, s in enumerate(out_tokens.tolist())
+        [t for t in s if t != padding_idx] for i, s in enumerate(out_tokens.tolist())
     ]
 
     full_labels = libnat.suggested_ed2_path(
@@ -128,9 +128,7 @@ def _get_ins_targets(in_tokens, out_tokens, padding_idx, unk_idx):
     ]
 
     # transform to tensor
-    masked_tgt_masks = torch.tensor(
-        masked_tgt_masks, device=out_tokens.device
-    ).bool()
+    masked_tgt_masks = torch.tensor(masked_tgt_masks, device=out_tokens.device).bool()
     mask_ins_targets = torch.tensor(mask_ins_targets, device=in_tokens.device)
     masked_tgt_tokens = out_tokens.masked_fill(masked_tgt_masks, unk_idx)
     return masked_tgt_masks, masked_tgt_tokens, mask_ins_targets
@@ -215,10 +213,7 @@ def _apply_ins_masks(
 
     out_lengths = in_lengths + mask_ins_pred.sum(1)
     out_max_len = out_lengths.max()
-    out_masks = (
-        new_arange(out_lengths, out_max_len)[None, :]
-        < out_lengths[:, None]
-    )
+    out_masks = new_arange(out_lengths, out_max_len)[None, :] < out_lengths[:, None]
 
     reordering = (mask_ins_pred + in_masks[:, 1:].long()).cumsum(1)
     out_tokens = (
@@ -239,9 +234,7 @@ def _apply_ins_masks(
     return out_tokens, out_scores
 
 
-def _apply_ins_words(
-    in_tokens, in_scores, word_ins_pred, word_ins_scores, unk_idx
-):
+def _apply_ins_words(in_tokens, in_scores, word_ins_pred, word_ins_scores, unk_idx):
     word_ins_masks = in_tokens.eq(unk_idx)
     out_tokens = in_tokens.masked_scatter(word_ins_masks, word_ins_pred[word_ins_masks])
 
@@ -266,11 +259,7 @@ def _apply_del_words(
     word_del_pred.masked_fill_(~in_masks, 1)
     word_del_pred.masked_fill_(bos_eos_masks, 0)
 
-    reordering = (
-        new_arange(in_tokens)
-        .masked_fill_(word_del_pred, max_len)
-        .sort(1)[1]
-    )
+    reordering = new_arange(in_tokens).masked_fill_(word_del_pred, max_len).sort(1)[1]
 
     out_tokens = in_tokens.masked_fill(word_del_pred, padding_idx).gather(1, reordering)
 
@@ -282,11 +271,13 @@ def _apply_del_words(
     if in_attn is not None:
         _mask = word_del_pred[:, :, None].expand_as(in_attn)
         _reordering = reordering[:, :, None].expand_as(in_attn)
-        out_attn = in_attn.masked_fill(_mask, 0.).gather(1, _reordering)
+        out_attn = in_attn.masked_fill(_mask, 0.0).gather(1, _reordering)
 
     return out_tokens, out_scores, out_attn
 
+
 # ------------------------------------------------------------------------------------- #
+
 
 @register_model("levenshtein_transformer")
 class LevenshteinTransformerModel(TransformerModel):
@@ -329,8 +320,8 @@ class LevenshteinTransformerModel(TransformerModel):
         )
         parser.add_argument(
             "--sampling-for-deletion",
-            action='store_true',
-            help='instead of argmax, use sampling to predict the tokens'
+            action="store_true",
+            help="instead of argmax, use sampling to predict the tokens",
         )
 
     @classmethod
@@ -373,8 +364,8 @@ class LevenshteinTransformerModel(TransformerModel):
         # make online prediction
         if self.decoder.sampling_for_deletion:
             word_predictions = torch.multinomial(
-                F.softmax(word_ins_out, -1).view(-1, word_ins_out.size(-1)), 1).view(
-                    word_ins_out.size(0), -1)
+                F.softmax(word_ins_out, -1).view(-1, word_ins_out.size(-1)), 1
+            ).view(word_ins_out.size(0), -1)
         else:
             word_predictions = F.log_softmax(word_ins_out, dim=-1).max(2)[1]
 
@@ -384,24 +375,28 @@ class LevenshteinTransformerModel(TransformerModel):
 
         # generate training labels for deletion
         word_del_targets = _get_del_targets(word_predictions, tgt_tokens, self.pad)
-        word_del_out, _ = self.decoder.forward_word_del(
-            word_predictions, encoder_out)
+        word_del_out, _ = self.decoder.forward_word_del(word_predictions, encoder_out)
         word_del_masks = word_predictions.ne(self.pad)
 
         return {
             "mask_ins": {
-                "out": mask_ins_out, "tgt": mask_ins_targets, 
-                "mask": mask_ins_masks, "ls": 0.01,
+                "out": mask_ins_out,
+                "tgt": mask_ins_targets,
+                "mask": mask_ins_masks,
+                "ls": 0.01,
             },
             "word_ins": {
-                "out": word_ins_out, "tgt": tgt_tokens,
-                "mask": masked_tgt_masks, "ls": self.args.label_smoothing,
-                "nll_loss": True
+                "out": word_ins_out,
+                "tgt": tgt_tokens,
+                "mask": masked_tgt_masks,
+                "ls": self.args.label_smoothing,
+                "nll_loss": True,
             },
             "word_del": {
-                "out": word_del_out, "tgt": word_del_targets,
-                "mask": word_del_masks
-            }
+                "out": word_del_out,
+                "tgt": word_del_targets,
+                "mask": word_del_masks,
+            },
         }
 
     def forward_encoder(self, encoder_inputs):
@@ -433,7 +428,7 @@ class LevenshteinTransformerModel(TransformerModel):
         if can_del_word.sum() != 0:  # we cannot delete, skip
             word_del_out, word_del_attn = self.decoder.forward_word_del(
                 _skip(output_tokens, can_del_word),
-                _skip_encoder_out(self.encoder, encoder_out, can_del_word)
+                _skip_encoder_out(self.encoder, encoder_out, can_del_word),
             )
             word_del_score = F.log_softmax(word_del_out, 2)
             word_del_pred = word_del_score.max(-1)[1].bool()
@@ -449,7 +444,7 @@ class LevenshteinTransformerModel(TransformerModel):
             )
             output_tokens = _fill(output_tokens, can_del_word, _tokens, self.pad)
             output_scores = _fill(output_scores, can_del_word, _scores, 0)
-            attn = _fill(attn, can_del_word, _attn, 0.)
+            attn = _fill(attn, can_del_word, _attn, 0.0)
 
             if history is not None:
                 history.append(output_tokens.clone())
@@ -459,7 +454,7 @@ class LevenshteinTransformerModel(TransformerModel):
         if can_ins_mask.sum() != 0:
             mask_ins_out, _ = self.decoder.forward_mask_ins(
                 _skip(output_tokens, can_ins_mask),
-                _skip_encoder_out(self.encoder, encoder_out, can_ins_mask)
+                _skip_encoder_out(self.encoder, encoder_out, can_ins_mask),
             )
             mask_ins_score = F.log_softmax(mask_ins_out, 2)
             if eos_penalty > 0.0:
@@ -488,7 +483,7 @@ class LevenshteinTransformerModel(TransformerModel):
         if can_ins_word.sum() != 0:
             word_ins_out, word_ins_attn = self.decoder.forward_word_ins(
                 _skip(output_tokens, can_ins_word),
-                _skip_encoder_out(self.encoder, encoder_out, can_ins_word)
+                _skip_encoder_out(self.encoder, encoder_out, can_ins_word),
             )
             word_ins_score, word_ins_pred = F.log_softmax(word_ins_out, 2).max(-1)
             _tokens, _scores = _apply_ins_words(
@@ -501,7 +496,7 @@ class LevenshteinTransformerModel(TransformerModel):
 
             output_tokens = _fill(output_tokens, can_ins_word, _tokens, self.pad)
             output_scores = _fill(output_scores, can_ins_word, _scores, 0)
-            attn = _fill(attn, can_ins_word, word_ins_attn, 0.)
+            attn = _fill(attn, can_ins_word, word_ins_attn, 0.0)
 
             if history is not None:
                 history.append(output_tokens.clone())
@@ -516,7 +511,7 @@ class LevenshteinTransformerModel(TransformerModel):
             output_tokens=output_tokens,
             output_scores=output_scores,
             attn=attn,
-            history=history
+            history=history,
         )
 
     def initialize_output_tokens(self, encoder_out, src_tokens):
@@ -533,7 +528,7 @@ class LevenshteinTransformerModel(TransformerModel):
             attn=None,
             step=0,
             max_step=0,
-            history=None
+            history=None,
         )
 
 
@@ -551,29 +546,40 @@ class LevenshteinTransformerDecoder(TransformerDecoder):
         self.embed_word_del = Embedding(2, self.output_embed_dim, None)
 
         # del_word, ins_mask, ins_word
-        self.early_exit = [int(i) for i in args.early_exit.split(',')]
+        self.early_exit = [int(i) for i in args.early_exit.split(",")]
         assert len(self.early_exit) == 3
 
         # copy layers for mask-predict/deletion
         self.layers_msk = None
         if getattr(args, "no_share_maskpredictor", False):
-            self.layers_msk = nn.ModuleList([
-                                    TransformerDecoderLayer(args, no_encoder_attn)
-                                    for _ in range(self.early_exit[1])
-                                ])
+            self.layers_msk = nn.ModuleList(
+                [
+                    TransformerDecoderLayer(args, no_encoder_attn)
+                    for _ in range(self.early_exit[1])
+                ]
+            )
         self.layers_del = None
         if getattr(args, "no_share_discriminator", False):
-            self.layers_del = nn.ModuleList([
-                                    TransformerDecoderLayer(args, no_encoder_attn)
-                                    for _ in range(self.early_exit[0])
-                                ])
+            self.layers_del = nn.ModuleList(
+                [
+                    TransformerDecoderLayer(args, no_encoder_attn)
+                    for _ in range(self.early_exit[0])
+                ]
+            )
 
         if getattr(args, "share_discriminator_maskpredictor", False):
-            assert getattr(args, "no_share_discriminator", False), "must set saperate discriminator"
+            assert getattr(
+                args, "no_share_discriminator", False
+            ), "must set saperate discriminator"
             self.layers_msk = self.layers_del
 
     def extract_features(
-        self, prev_output_tokens, encoder_out=None, early_exit=None, layers=None, **unused
+        self,
+        prev_output_tokens,
+        encoder_out=None,
+        early_exit=None,
+        layers=None,
+        **unused
     ):
         """
         Similar to *forward* but only return features.
@@ -612,7 +618,7 @@ class LevenshteinTransformerDecoder(TransformerDecoder):
         decoder_padding_mask = prev_output_tokens.eq(self.padding_idx)
         layers = self.layers if layers is None else layers
         early_exit = len(layers) if early_exit is None else early_exit
-        for _, layer in enumerate(layers[: early_exit]):
+        for _, layer in enumerate(layers[:early_exit]):
             x, attn = layer(
                 x,
                 encoder_out.encoder_out if encoder_out is not None else None,
@@ -635,22 +641,34 @@ class LevenshteinTransformerDecoder(TransformerDecoder):
 
     def forward_mask_ins(self, prev_output_tokens, encoder_out=None, **unused):
         features, extra = self.extract_features(
-            prev_output_tokens, encoder_out=encoder_out, early_exit=self.early_exit[1], layers=self.layers_msk, **unused
+            prev_output_tokens,
+            encoder_out=encoder_out,
+            early_exit=self.early_exit[1],
+            layers=self.layers_msk,
+            **unused
         )
         features_cat = torch.cat([features[:, :-1, :], features[:, 1:, :]], 2)
-        return F.linear(features_cat, self.embed_mask_ins.weight), extra['attn']
+        return F.linear(features_cat, self.embed_mask_ins.weight), extra["attn"]
 
     def forward_word_ins(self, prev_output_tokens, encoder_out=None, **unused):
         features, extra = self.extract_features(
-            prev_output_tokens, encoder_out=encoder_out, early_exit=self.early_exit[2], layers=self.layers, **unused
+            prev_output_tokens,
+            encoder_out=encoder_out,
+            early_exit=self.early_exit[2],
+            layers=self.layers,
+            **unused
         )
-        return self.output_layer(features), extra['attn']
+        return self.output_layer(features), extra["attn"]
 
     def forward_word_del(self, prev_output_tokens, encoder_out=None, **unused):
         features, extra = self.extract_features(
-            prev_output_tokens, encoder_out=encoder_out, early_exit=self.early_exit[0], layers=self.layers_del, **unused
+            prev_output_tokens,
+            encoder_out=encoder_out,
+            early_exit=self.early_exit[0],
+            layers=self.layers_del,
+            **unused
         )
-        return F.linear(features, self.embed_word_del.weight), extra['attn']
+        return F.linear(features, self.embed_word_del.weight), extra["attn"]
 
 
 @register_model_architecture("levenshtein_transformer", "levenshtein_transformer")
@@ -695,7 +713,9 @@ def base_architecture(args):
     args.early_exit = getattr(args, "early_exit", "6,6,6")
     args.no_share_discriminator = getattr(args, "no_share_discriminator", False)
     args.no_share_maskpredictor = getattr(args, "no_share_maskpredictor", False)
-    args.share_discriminator_maskpredictor = getattr(args, "share_discriminator_maskpredictor", False)
+    args.share_discriminator_maskpredictor = getattr(
+        args, "share_discriminator_maskpredictor", False
+    )
     args.no_share_last_layer = getattr(args, "no_share_last_layer", False)
 
 

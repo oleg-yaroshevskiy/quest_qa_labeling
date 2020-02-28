@@ -16,7 +16,7 @@ def train_loop(model, train_loader, optimizer, criterion, scheduler, args, itera
             batch["input_ids"],
             batch["input_masks"],
             batch["input_segments"],
-            batch["labels"]
+            batch["labels"],
         )
         input_ids, input_masks, input_segments, labels = (
             input_ids.cuda(),
@@ -43,10 +43,7 @@ def train_loop(model, train_loader, optimizer, criterion, scheduler, args, itera
 
     torch.cuda.empty_cache()
     gc.collect()
-    return (
-        avg_loss,
-        iteration
-    )
+    return (avg_loss, iteration)
 
 
 def evaluate(args, model, val_loader, criterion, val_shape):
@@ -64,7 +61,7 @@ def evaluate(args, model, val_loader, criterion, val_shape):
                 batch["input_ids"],
                 batch["input_masks"],
                 batch["input_segments"],
-                batch["labels"]
+                batch["labels"],
             )
             ids.extend(id.cpu().numpy())
             input_ids, input_masks, input_segments, labels = (

@@ -44,8 +44,16 @@ def _sequential_poisoning(s, V, beta=0.33, bos=2, eos=3, pad=1):
 
 
 def gumbel_noise(input, TINY=1e-8):
-    return input.new_zeros(*input.size()).uniform_().add_(
-        TINY).log_().neg_().add_(TINY).log_().neg_()
+    return (
+        input.new_zeros(*input.size())
+        .uniform_()
+        .add_(TINY)
+        .log_()
+        .neg_()
+        .add_(TINY)
+        .log_()
+        .neg_()
+    )
 
 
 @register_model("iterative_nonautoregressive_transformer")
@@ -53,12 +61,21 @@ class IterNATransformerModel(NATransformerModel):
     @staticmethod
     def add_args(parser):
         NATransformerModel.add_args(parser)
-        parser.add_argument("--train-step", type=int,
-                            help="number of refinement iterations during training")
-        parser.add_argument("--dae-ratio", type=float,
-                            help="the probability of switching to the denoising auto-encoder loss")
-        parser.add_argument("--stochastic-approx", action="store_true",
-                            help="sampling from the decoder as the inputs for next iteration")
+        parser.add_argument(
+            "--train-step",
+            type=int,
+            help="number of refinement iterations during training",
+        )
+        parser.add_argument(
+            "--dae-ratio",
+            type=float,
+            help="the probability of switching to the denoising auto-encoder loss",
+        )
+        parser.add_argument(
+            "--stochastic-approx",
+            action="store_true",
+            help="sampling from the decoder as the inputs for next iteration",
+        )
 
     @classmethod
     def build_model(cls, args, task):
@@ -128,14 +145,17 @@ class IterNATransformerModel(NATransformerModel):
 
         return {
             "word_ins": {
-                "out": word_ins_out, "tgt": word_ins_tgt,
-                "mask": word_ins_mask, "ls": self.args.label_smoothing,
-                "nll_loss": True
+                "out": word_ins_out,
+                "tgt": word_ins_tgt,
+                "mask": word_ins_mask,
+                "ls": self.args.label_smoothing,
+                "nll_loss": True,
             },
             "length": {
-                "out": length_out, "tgt": length_tgt,
-                "factor": self.decoder.length_loss_factor
-            }
+                "out": length_out,
+                "tgt": length_tgt,
+                "factor": self.decoder.length_loss_factor,
+            },
         }
 
 

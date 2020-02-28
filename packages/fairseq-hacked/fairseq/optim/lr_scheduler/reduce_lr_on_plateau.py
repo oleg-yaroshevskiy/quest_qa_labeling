@@ -8,7 +8,7 @@ import torch.optim.lr_scheduler
 from . import FairseqLRScheduler, register_lr_scheduler
 
 
-@register_lr_scheduler('reduce_lr_on_plateau')
+@register_lr_scheduler("reduce_lr_on_plateau")
 class ReduceLROnPlateau(FairseqLRScheduler):
     """
     Decay the LR by a factor every time the validation loss plateaus.
@@ -26,12 +26,15 @@ class ReduceLROnPlateau(FairseqLRScheduler):
         super().__init__(args, optimizer)
         if len(args.lr) > 1:
             raise ValueError(
-                'Cannot use a fixed learning rate schedule with reduce_lr_on_plateau.'
-                ' Consider --lr-scheduler=fixed instead.'
+                "Cannot use a fixed learning rate schedule with reduce_lr_on_plateau."
+                " Consider --lr-scheduler=fixed instead."
             )
         self.lr_scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-            self.optimizer.optimizer, patience=0, factor=args.lr_shrink,
-            threshold=args.lr_threshold)
+            self.optimizer.optimizer,
+            patience=0,
+            factor=args.lr_shrink,
+            threshold=args.lr_threshold,
+        )
         warmup_end_lr = args.lr[0]
         """if no warm up, sets initial lr to be args.lr[0]"""
         if args.warmup_init_lr < 0:
@@ -65,15 +68,15 @@ class ReduceLROnPlateau(FairseqLRScheduler):
     def state_dict(self):
         """Return the LR scheduler state dict."""
         return {
-            'best': self.lr_scheduler.best,
-            'last_epoch': self.lr_scheduler.last_epoch,
+            "best": self.lr_scheduler.best,
+            "last_epoch": self.lr_scheduler.last_epoch,
         }
 
     def load_state_dict(self, state_dict):
         """Load an LR scheduler state dict."""
-        self.lr_scheduler.best = state_dict['best']
-        if 'last_epoch' in state_dict:
-            self.lr_scheduler.last_epoch = state_dict['last_epoch']
+        self.lr_scheduler.best = state_dict["best"]
+        if "last_epoch" in state_dict:
+            self.lr_scheduler.last_epoch = state_dict["last_epoch"]
 
     def step(self, epoch, val_loss=None):
         """Update the learning rate at the end of the given epoch if warmup finishes"""
@@ -89,7 +92,7 @@ class ReduceLROnPlateau(FairseqLRScheduler):
         """ if there is warmup"""
         if self.args.warmup_updates > 0:
             if num_updates <= self.args.warmup_updates:
-                self.lr = self.args.warmup_init_lr + num_updates*self.lr_step
+                self.lr = self.args.warmup_init_lr + num_updates * self.lr_step
                 self.optimizer.set_lr(self.lr)
             else:
                 if self.warmup_end is False:

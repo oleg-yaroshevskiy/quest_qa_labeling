@@ -10,14 +10,10 @@ import torch
 from fairseq import utils
 
 
-DecoderOut = namedtuple('IterativeRefinementDecoderOut', [
-    'output_tokens',
-    'output_scores',
-    'attn',
-    'step',
-    'max_step',
-    'history'
-])
+DecoderOut = namedtuple(
+    "IterativeRefinementDecoderOut",
+    ["output_tokens", "output_scores", "attn", "step", "max_step", "history"],
+)
 
 
 class IterativeRefinementGenerator(object):
@@ -173,8 +169,7 @@ class IterativeRefinementGenerator(object):
                 "decoding_format": self.decoding_format,
             }
             prev_decoder_out = prev_decoder_out._replace(
-                step=step,
-                max_step=self.max_iter + 1,
+                step=step, max_step=self.max_iter + 1,
             )
 
             decoder_out = model.forward_decoder(
@@ -184,16 +179,19 @@ class IterativeRefinementGenerator(object):
             if self.adaptive:
                 # terminate if there is a loop
                 terminated, out_tokens, out_scores, out_attn = is_a_loop(
-                    prev_output_tokens, decoder_out.output_tokens, decoder_out.output_scores, decoder_out.attn
+                    prev_output_tokens,
+                    decoder_out.output_tokens,
+                    decoder_out.output_scores,
+                    decoder_out.attn,
                 )
                 decoder_out = decoder_out._replace(
-                    output_tokens=out_tokens,
-                    output_scores=out_scores,
-                    attn=out_attn,
+                    output_tokens=out_tokens, output_scores=out_scores, attn=out_attn,
                 )
 
             else:
-                terminated = decoder_out.output_tokens.new_zeros(decoder_out.output_tokens.size(0)).bool()
+                terminated = decoder_out.output_tokens.new_zeros(
+                    decoder_out.output_tokens.size(0)
+                ).bool()
 
             if step == self.max_iter:  # reach last iteration, terminate
                 terminated.fill_(1)
@@ -220,13 +218,11 @@ class IterativeRefinementGenerator(object):
                 ]
 
                 if self.retain_history:
-                    finalized[finalized_idxs[i]][0]['history'] = []
+                    finalized[finalized_idxs[i]][0]["history"] = []
                     for j in range(len(finalized_history_tokens)):
-                        finalized[finalized_idxs[i]][0]['history'].append(
+                        finalized[finalized_idxs[i]][0]["history"].append(
                             finalized_hypos(
-                                step,
-                                finalized_history_tokens[j][i],
-                                None, None
+                                step, finalized_history_tokens[j][i], None, None
                             )
                         )
 
@@ -239,10 +235,16 @@ class IterativeRefinementGenerator(object):
             prev_decoder_out = decoder_out._replace(
                 output_tokens=decoder_out.output_tokens[not_terminated],
                 output_scores=decoder_out.output_scores[not_terminated],
-                attn=decoder_out.attn[not_terminated] if decoder_out.attn is not None else None,
-                history=[h[not_terminated] for h in decoder_out.history] if decoder_out.history is not None else None
+                attn=decoder_out.attn[not_terminated]
+                if decoder_out.attn is not None
+                else None,
+                history=[h[not_terminated] for h in decoder_out.history]
+                if decoder_out.history is not None
+                else None,
             )
-            encoder_out = model.encoder.reorder_encoder_out(encoder_out, not_terminated.nonzero().squeeze())
+            encoder_out = model.encoder.reorder_encoder_out(
+                encoder_out, not_terminated.nonzero().squeeze()
+            )
             sent_idxs = sent_idxs[not_terminated]
 
             prev_output_tokens = prev_decoder_out.output_tokens.clone()

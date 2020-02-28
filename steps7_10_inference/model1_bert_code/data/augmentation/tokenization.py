@@ -4,10 +4,21 @@ from transformers import BertTokenizer
 
 
 class BertRandomTokenizer(BertTokenizer):
-    def __init__(self, vocab_file, lower_case_prob=1., basic_tokenize_prob=1., piece_split_prob=0., recursive=False,
-                 **kwargs):
-        super(BertRandomTokenizer, self).__init__(vocab_file, do_lower_case=lower_case_prob > 0,
-                                                  do_basic_tokenize=True, **kwargs)
+    def __init__(
+        self,
+        vocab_file,
+        lower_case_prob=1.0,
+        basic_tokenize_prob=1.0,
+        piece_split_prob=0.0,
+        recursive=False,
+        **kwargs
+    ):
+        super(BertRandomTokenizer, self).__init__(
+            vocab_file,
+            do_lower_case=lower_case_prob > 0,
+            do_basic_tokenize=True,
+            **kwargs
+        )
         self.lower_case_prob = lower_case_prob
         self.basic_tokenize_prob = basic_tokenize_prob
         self.piece_split_prob = piece_split_prob
@@ -27,7 +38,9 @@ class BertRandomTokenizer(BertTokenizer):
             return [token]
 
     def _tokenize(self, text):
-        self.basic_tokenizer.do_lower_case = np.random.uniform(0, 1) <= self.lower_case_prob
+        self.basic_tokenizer.do_lower_case = (
+            np.random.uniform(0, 1) <= self.lower_case_prob
+        )
         self.do_basic_tokenize = np.random.uniform(0, 1) <= self.basic_tokenize_prob
 
         def unroll(token_list):

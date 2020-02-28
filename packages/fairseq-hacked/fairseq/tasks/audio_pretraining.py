@@ -9,7 +9,7 @@ from fairseq.data import FileAudioDataset
 from . import FairseqTask, register_task
 
 
-@register_task('audio_pretraining')
+@register_task("audio_pretraining")
 class AudioPretrainingTask(FairseqTask):
     """
 
@@ -18,13 +18,25 @@ class AudioPretrainingTask(FairseqTask):
     @staticmethod
     def add_args(parser):
         """Add task-specific arguments to the parser."""
-        parser.add_argument('data', help='path to data directory')
-        parser.add_argument('--sample-rate', default=16000, type=int,
-                            help='target sample rate. audio files will be up/down sampled to this rate')
-        parser.add_argument('--max-sample-size', default=None, type=int,
-                            help='max sample size to crop to for batching. default = min sample length')
-        parser.add_argument('--min-sample-size', default=None, type=int,
-                            help='min sample size to crop to for batching. default = same as --max-sample-size')
+        parser.add_argument("data", help="path to data directory")
+        parser.add_argument(
+            "--sample-rate",
+            default=16000,
+            type=int,
+            help="target sample rate. audio files will be up/down sampled to this rate",
+        )
+        parser.add_argument(
+            "--max-sample-size",
+            default=None,
+            type=int,
+            help="max sample size to crop to for batching. default = min sample length",
+        )
+        parser.add_argument(
+            "--min-sample-size",
+            default=None,
+            type=int,
+            help="min sample size to crop to for batching. default = same as --max-sample-size",
+        )
 
     def __init__(self, args):
         super().__init__(args)
@@ -45,11 +57,13 @@ class AudioPretrainingTask(FairseqTask):
             split (str): name of the split (e.g., train, valid, test)
         """
 
-        manifest = os.path.join(self.args.data, '{}.tsv'.format(split))
-        self.datasets[split] = FileAudioDataset(manifest,
-                                                 sample_rate=self.args.sample_rate,
-                                                 max_sample_size=self.args.max_sample_size,
-                                                 min_sample_size=self.args.min_sample_size)
+        manifest = os.path.join(self.args.data, "{}.tsv".format(split))
+        self.datasets[split] = FileAudioDataset(
+            manifest,
+            sample_rate=self.args.sample_rate,
+            max_sample_size=self.args.max_sample_size,
+            min_sample_size=self.args.min_sample_size,
+        )
 
     @property
     def target_dictionary(self):

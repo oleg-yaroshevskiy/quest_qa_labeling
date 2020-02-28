@@ -3,11 +3,11 @@ from transformers import BertModel
 from transformers.modeling_bert import BertPreTrainedModel
 import torch
 from torch import nn
+
 logging.getLogger("transformers").setLevel(logging.ERROR)
 
 
 class Squeeze(nn.Module):
-
     def __init__(self, dim):
         super().__init__()
         self.dim = dim
@@ -30,19 +30,18 @@ class CustomBert(BertPreTrainedModel):
         weights_init.data[:-1] = -3
         self.layer_weights = torch.nn.Parameter(weights_init)
 
-        self.classifier = nn.Linear(config.hidden_size,
-                                    self.config.num_labels)
+        self.classifier = nn.Linear(config.hidden_size, self.config.num_labels)
 
         self.init_weights()
 
     def forward(
-            self,
-            input_ids=None,
-            attention_mask=None,
-            token_type_ids=None,
-            position_ids=None,
-            head_mask=None,
-            inputs_embeds=None,
+        self,
+        input_ids=None,
+        attention_mask=None,
+        token_type_ids=None,
+        position_ids=None,
+        head_mask=None,
+        inputs_embeds=None,
     ):
         outputs = self.bert(
             input_ids,
@@ -57,18 +56,18 @@ class CustomBert(BertPreTrainedModel):
         last_hidden = outputs[0]
 
         cls_outputs = torch.stack(
-            [self.dropout(layer[:, 0, :]) for layer in hidden_layers],
-            dim=2
+            [self.dropout(layer[:, 0, :]) for layer in hidden_layers], dim=2
         )
-        cls_output = (
-                torch.softmax(self.layer_weights, dim=0) * cls_outputs
-        ).sum(-1)
+        cls_output = (torch.softmax(self.layer_weights, dim=0) * cls_outputs).sum(-1)
 
         # multisample dropout (wut): https://arxiv.org/abs/1905.09788
-        logits = torch.mean(torch.stack([
-            self.classifier(self.high_dropout(cls_output))
-            for _ in range(5)
-        ], dim=0), dim=0)
+        logits = torch.mean(
+            torch.stack(
+                [self.classifier(self.high_dropout(cls_output)) for _ in range(5)],
+                dim=0,
+            ),
+            dim=0,
+        )
 
         outputs = logits
         # add hidden states and attention if they are here

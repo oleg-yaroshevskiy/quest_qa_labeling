@@ -433,8 +433,7 @@ class TestDataNoising(unittest.TestCase):
             src=noising_dataset, tgt=tgt, src_sizes=None, src_dict=src_dict
         )
         language_pair_dataset = TransformEosDataset(
-            language_pair_dataset, src_dict.eos(),
-            append_eos_to_tgt=append_eos_to_tgt,
+            language_pair_dataset, src_dict.eos(), append_eos_to_tgt=append_eos_to_tgt,
         )
 
         dataloader = torch.utils.data.DataLoader(

@@ -15,7 +15,13 @@ from torch.utils.data import ConcatDataset
 from transformers import get_linear_schedule_with_warmup
 from model import get_model_optimizer
 from loops import train_loop, evaluate, infer
-from dataset import cross_validation_split, get_test_set, get_pseudo_set, make_collate_fn, BucketingSampler
+from dataset import (
+    cross_validation_split,
+    get_test_set,
+    get_pseudo_set,
+    make_collate_fn,
+    BucketingSampler,
+)
 from args import args
 from transformers import BertTokenizer, AlbertTokenizer
 from torch.utils.data import DataLoader, Dataset
@@ -59,21 +65,24 @@ logging.getLogger("transformers").setLevel(logging.ERROR)
 seed_everything(args.seed)
 
 ## load the data
-train_df = pd.read_csv(os.path.join(args.data_path,
-                                    "train_toy.csv" if args.toy in ["True", "toy"]
-                                    else "train.csv"
-                                    )
-                       )
-test_df = pd.read_csv(os.path.join(args.data_path,
-                                   "test_toy.csv" if args.toy in ["True", "toy"]
-                                   else "test.csv"
-                                   )
-                      )
-submission = pd.read_csv(os.path.join(args.data_path,
-                                      "sample_submission_toy.csv" if args.toy in ["True", "toy"]
-                                      else "sample_submission.csv"
-                                      )
-                         )
+train_df = pd.read_csv(
+    os.path.join(
+        args.data_path, "train_toy.csv" if args.toy in ["True", "toy"] else "train.csv"
+    )
+)
+test_df = pd.read_csv(
+    os.path.join(
+        args.data_path, "test_toy.csv" if args.toy in ["True", "toy"] else "test.csv"
+    )
+)
+submission = pd.read_csv(
+    os.path.join(
+        args.data_path,
+        "sample_submission_toy.csv"
+        if args.toy in ["True", "toy"]
+        else "sample_submission.csv",
+    )
+)
 
 tokenizer = BertTokenizer.from_pretrained(
     args.bert_model, do_lower_case=("uncased" in args.bert_model)
@@ -83,20 +92,14 @@ test_set = get_test_set(args, test_df, tokenizer)
 test_loader = DataLoader(
     test_set,
     batch_sampler=BucketingSampler(
-        test_set.lengths,
-        batch_size=args.batch_size,
-        maxlen=args.max_sequence_length
+        test_set.lengths, batch_size=args.batch_size, maxlen=args.max_sequence_length
     ),
     collate_fn=make_collate_fn(),
 )
 
 
-for fold, train_set, valid_set, train_fold_df, val_fold_df in (
-    cross_validation_split(
-        args,
-        train_df,
-        tokenizer
-    )
+for fold, train_set, valid_set, train_fold_df, val_fold_df in cross_validation_split(
+    args, train_df, tokenizer
 ):
 
     print()
@@ -108,17 +111,13 @@ for fold, train_set, valid_set, train_fold_df, val_fold_df in (
         batch_sampler=BucketingSampler(
             valid_set.lengths,
             batch_size=args.batch_size,
-            maxlen=args.max_sequence_length
+            maxlen=args.max_sequence_length,
         ),
         collate_fn=make_collate_fn(),
     )
 
-    fold_checkpoints = os.path.join(
-        experiment.checkpoints, "fold{}".format(fold)
-    )
-    fold_predictions = os.path.join(
-        experiment.predictions, "fold{}".format(fold)
-    )
+    fold_checkpoints = os.path.join(experiment.checkpoints, "fold{}".format(fold))
+    fold_predictions = os.path.join(experiment.predictions, "fold{}".format(fold))
 
     os.makedirs(fold_checkpoints, exist_ok=True)
     os.makedirs(fold_predictions, exist_ok=True)
@@ -138,9 +137,7 @@ for fold, train_set, valid_set, train_fold_df, val_fold_df in (
             pseudo_df = pd.read_csv(args.pseudo_file.format(fold))
 
             pseudo_set = get_pseudo_set(
-                args,
-                pseudo_df.sample(args.n_pseudo),
-                tokenizer
+                args, pseudo_df.sample(args.n_pseudo), tokenizer
             )
 
             epoch_train_set = ConcatDataset([epoch_train_set, pseudo_set])
@@ -163,13 +160,7 @@ for fold, train_set, valid_set, train_fold_df, val_fold_df in (
         )
 
         avg_loss, iteration = train_loop(
-            model,
-            train_loader,
-            optimizer,
-            criterion,
-            scheduler,
-            args,
-            iteration,
+            model, train_loader, optimizer, criterion, scheduler, args, iteration,
         )
 
         avg_val_loss, score, val_preds = evaluate(
@@ -184,9 +175,7 @@ for fold, train_set, valid_set, train_fold_df, val_fold_df in (
 
         torch.save(
             model.state_dict(),
-            os.path.join(
-                fold_checkpoints, "model_on_epoch_{}.pth".format(epoch)
-            ),
+            os.path.join(fold_checkpoints, "model_on_epoch_{}.pth".format(epoch)),
         )
         val_preds_df = val_fold_df.copy()[["qa_id"] + args.target_columns]
         val_preds_df[args.target_columns] = val_preds
@@ -199,17 +188,14 @@ for fold, train_set, valid_set, train_fold_df, val_fold_df in (
         test_preds_df = submission.copy()
         test_preds_df[args.target_columns] = test_preds
         test_preds_df.to_csv(
-            os.path.join(
-                fold_predictions, "test_on_epoch_{}.csv".format(epoch)
-            ),
+            os.path.join(fold_predictions, "test_on_epoch_{}.csv".format(epoch)),
             index=False,
         )
 
         if score > best_score:
             best_score = score
             torch.save(
-                model.state_dict(),
-                os.path.join(fold_checkpoints, "best_model.pth"),
+                model.state_dict(), os.path.join(fold_checkpoints, "best_model.pth"),
             )
             val_preds_df.to_csv(
                 os.path.join(fold_predictions, "best_val.csv"), index=False

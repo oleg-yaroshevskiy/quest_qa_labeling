@@ -151,5 +151,5 @@ class TestBMUF(unittest.TestCase):
         self.assertLess((t1 - t2).abs().max(), 1e-4)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -10,13 +10,14 @@ import unittest
 import torch
 
 from fairseq.criterions.cross_entropy import CrossEntropyCriterion
-from fairseq.criterions.label_smoothed_cross_entropy import LabelSmoothedCrossEntropyCriterion
+from fairseq.criterions.label_smoothed_cross_entropy import (
+    LabelSmoothedCrossEntropyCriterion,
+)
 
 import tests.utils as test_utils
 
 
 class TestLabelSmoothing(unittest.TestCase):
-
     def setUp(self):
         # build dictionary
         self.d = test_utils.dummy_dictionary(3)
@@ -30,20 +31,32 @@ class TestLabelSmoothing(unittest.TestCase):
         # build dataset
         self.data = [
             # the first batch item has padding
-            {'source': torch.LongTensor([w1, eos]), 'target': torch.LongTensor([w1, eos])},
-            {'source': torch.LongTensor([w1, eos]), 'target': torch.LongTensor([w1, w1, eos])},
+            {
+                "source": torch.LongTensor([w1, eos]),
+                "target": torch.LongTensor([w1, eos]),
+            },
+            {
+                "source": torch.LongTensor([w1, eos]),
+                "target": torch.LongTensor([w1, w1, eos]),
+            },
         ]
         self.sample = next(test_utils.dummy_dataloader(self.data))
 
         # build model
         self.args = argparse.Namespace()
         self.args.sentence_avg = False
-        self.args.probs = torch.FloatTensor([
-            #      pad   eos  unk   w1   w2   w3
-            [0.05, 0.05, 0.1, 0.05, 0.3, 0.4, 0.05],
-            [0.05, 0.10, 0.2, 0.05, 0.2, 0.3, 0.10],
-            [0.05, 0.15, 0.3, 0.05, 0.1, 0.2, 0.15],
-        ]).unsqueeze(0).expand(2, 3, 7)  # add batch dimension
+        self.args.probs = (
+            torch.FloatTensor(
+                [
+                    #      pad   eos  unk   w1   w2   w3
+                    [0.05, 0.05, 0.1, 0.05, 0.3, 0.4, 0.05],
+                    [0.05, 0.10, 0.2, 0.05, 0.2, 0.3, 0.10],
+                    [0.05, 0.15, 0.3, 0.05, 0.1, 0.2, 0.15],
+                ]
+            )
+            .unsqueeze(0)
+            .expand(2, 3, 7)
+        )  # add batch dimension
         self.task = test_utils.TestTranslationTask.setup_task(self.args, self.d, self.d)
         self.model = self.task.build_model(self.args)
 
@@ -51,10 +64,14 @@ class TestLabelSmoothing(unittest.TestCase):
         self.args.label_smoothing = 0.1
         nll_crit = CrossEntropyCriterion(self.args, self.task)
         smooth_crit = LabelSmoothedCrossEntropyCriterion(self.args, self.task)
-        nll_loss, nll_sample_size, nll_logging_output = nll_crit(self.model, self.sample)
-        smooth_loss, smooth_sample_size, smooth_logging_output = smooth_crit(self.model, self.sample)
-        self.assertLess(abs(nll_loss - nll_logging_output['loss']), 1e-6)
-        self.assertLess(abs(nll_loss - smooth_logging_output['nll_loss']), 1e-6)
+        nll_loss, nll_sample_size, nll_logging_output = nll_crit(
+            self.model, self.sample
+        )
+        smooth_loss, smooth_sample_size, smooth_logging_output = smooth_crit(
+            self.model, self.sample
+        )
+        self.assertLess(abs(nll_loss - nll_logging_output["loss"]), 1e-6)
+        self.assertLess(abs(nll_loss - smooth_logging_output["nll_loss"]), 1e-6)
 
     def test_padding(self):
         self.args.label_smoothing = 0.1
@@ -86,8 +103,12 @@ class TestLabelSmoothing(unittest.TestCase):
         self.args.label_smoothing = 0.0
         nll_crit = CrossEntropyCriterion(self.args, self.task)
         smooth_crit = LabelSmoothedCrossEntropyCriterion(self.args, self.task)
-        nll_loss, nll_sample_size, nll_logging_output = nll_crit(self.model, self.sample)
-        smooth_loss, smooth_sample_size, smooth_logging_output = smooth_crit(self.model, self.sample)
+        nll_loss, nll_sample_size, nll_logging_output = nll_crit(
+            self.model, self.sample
+        )
+        smooth_loss, smooth_sample_size, smooth_logging_output = smooth_crit(
+            self.model, self.sample
+        )
         self.assertAlmostEqual(nll_loss, smooth_loss)
 
     def assertAlmostEqual(self, t1, t2):
@@ -95,5 +116,5 @@ class TestLabelSmoothing(unittest.TestCase):
         self.assertLess((t1 - t2).abs().max(), 1e-6)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

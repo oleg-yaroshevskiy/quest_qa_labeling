@@ -56,7 +56,8 @@ def _get_ins_targets(in_tokens, out_tokens, padding_idx, unk_idx, vocab_size, ta
         from fairseq import libnat
     except ImportError as e:
         import sys
-        sys.stderr.write('ERROR: missing libnat. run `pip install --editable .`\n')
+
+        sys.stderr.write("ERROR: missing libnat. run `pip install --editable .`\n")
         raise e
 
     B = in_tokens.size(0)
@@ -162,9 +163,11 @@ class InsertionTransformerModel(LevenshteinTransformerModel):
 
         return {
             "word_ins": {
-                "out": word_ins_out, "tgt": word_ins_tgt,
-                "mask": word_ins_masks, "ls": self.args.label_smoothing,
-                "nll_loss": True
+                "out": word_ins_out,
+                "tgt": word_ins_tgt,
+                "mask": word_ins_masks,
+                "ls": self.args.label_smoothing,
+                "nll_loss": True,
             }
         }
 
@@ -200,7 +203,7 @@ class InsertionTransformerModel(LevenshteinTransformerModel):
             output_tokens=output_tokens,
             output_scores=output_scores,
             attn=None,
-            history=history
+            history=history,
         )
 
 

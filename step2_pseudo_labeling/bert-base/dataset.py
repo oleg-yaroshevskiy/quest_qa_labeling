@@ -43,15 +43,15 @@ def _get_ids(tokens, tokenizer, max_seq_length):
 
 
 def _trim_input(
-        args,
-        tokenizer,
-        title,
-        question,
-        answer,
-        max_sequence_length=290,
-        t_max_len=30,
-        q_max_len=128,
-        a_max_len=128,
+    args,
+    tokenizer,
+    title,
+    question,
+    answer,
+    max_sequence_length=290,
+    t_max_len=30,
+    q_max_len=128,
+    a_max_len=128,
 ):
     # SICK THIS IS ALL SEEMS TO BE SICK
 
@@ -102,20 +102,10 @@ def _trim_input(
     return t, q, a
 
 
-def _convert_to_bert_inputs(
-        title, question, answer, tokenizer, max_sequence_length
-):
+def _convert_to_bert_inputs(title, question, answer, tokenizer, max_sequence_length):
     """Converts tokenized input to ids, masks and segments for BERT"""
 
-    stoken = (
-            ["[CLS]"]
-            + title
-            + ["[SEP]"]
-            + question
-            + ["[SEP]"]
-            + answer
-            + ["[SEP]"]
-    )
+    stoken = ["[CLS]"] + title + ["[SEP]"] + question + ["[SEP]"] + answer + ["[SEP]"]
 
     input_ids = _get_ids(stoken, tokenizer, max_sequence_length)
     input_masks = _get_masks(stoken, max_sequence_length)
@@ -127,34 +117,23 @@ def _convert_to_bert_inputs(
 def _get_stoken_output(title, question, answer, tokenizer, max_sequence_length):
     """Converts tokenized input to ids, masks and segments for BERT"""
 
-    stoken = (
-            ["[CLS]"]
-            + title
-            + ["[SEP]"]
-            + question
-            + ["[SEP]"]
-            + answer
-            + ["[SEP]"]
-    )
+    stoken = ["[CLS]"] + title + ["[SEP]"] + question + ["[SEP]"] + answer + ["[SEP]"]
     return stoken
 
 
 def compute_input_arays(
-        args,
-        df,
-        columns,
-        tokenizer,
-        max_sequence_length,
-        t_max_len=30,
-        q_max_len=128,
-        a_max_len=128,
+    args,
+    df,
+    columns,
+    tokenizer,
+    max_sequence_length,
+    t_max_len=30,
+    q_max_len=128,
+    a_max_len=128,
 ):
     input_ids, input_masks, input_segments = [], [], []
     for _, instance in tqdm(
-            df[columns].iterrows(),
-            desc="Preparing dataset",
-            total=len(df),
-            ncols=80,
+        df[columns].iterrows(), desc="Preparing dataset", total=len(df), ncols=80,
     ):
         t, q, a = (
             instance.question_title,
@@ -180,11 +159,7 @@ def compute_input_arays(
         input_masks.append(np.array(masks, dtype=np.int64))
         input_segments.append(np.array(segments, dtype=np.int64))
 
-    return (
-        input_ids,
-        input_masks,
-        input_segments
-    )
+    return (input_ids, input_masks, input_segments)
 
 
 def compute_output_arrays(df, columns):
@@ -192,7 +167,6 @@ def compute_output_arrays(df, columns):
 
 
 class BucketingSampler:
-
     def __init__(self, lengths, batch_size, maxlen=500):
 
         self.lengths = lengths
@@ -236,7 +210,9 @@ class BucketingSampler:
         return iter(self.batches)
 
 
-def make_collate_fn(padding_values={"input_ids": 0, "input_masks": 0, "input_segments": 0}):
+def make_collate_fn(
+    padding_values={"input_ids": 0, "input_masks": 0, "input_segments": 0}
+):
     def _collate_fn(batch):
 
         for name, padding_value in padding_values.items():
@@ -249,13 +225,14 @@ def make_collate_fn(padding_values={"input_ids": 0, "input_masks": 0, "input_seg
                 if p:
                     pad_width = [(0, p)] + [(0, 0)] * (batch[n][name].ndim - 1)
                     if padding_value == "edge":
-                        batch[n][name] = np.pad(
-                            batch[n][name], pad_width,
-                            mode="edge")
+                        batch[n][name] = np.pad(batch[n][name], pad_width, mode="edge")
                     else:
                         batch[n][name] = np.pad(
-                            batch[n][name], pad_width,
-                            mode="constant", constant_values=padding_value)
+                            batch[n][name],
+                            pad_width,
+                            mode="constant",
+                            constant_values=padding_value,
+                        )
 
         return default_collate(batch)
 
@@ -308,7 +285,7 @@ class QuestDataset(torch.utils.data.Dataset):
             input_ids=input_ids,
             input_masks=input_masks,
             input_segments=input_segments,
-            lengths=lengths
+            lengths=lengths,
         )
 
         if self.labels is not None:
@@ -318,18 +295,13 @@ class QuestDataset(torch.utils.data.Dataset):
         return sample
 
 
-def cross_validation_split(
-        args,
-        train_df,
-        tokenizer,
-        ignore_train=False
-):
+def cross_validation_split(args, train_df, tokenizer, ignore_train=False):
     kf = GroupKFold(n_splits=args.folds)
     y_train = train_df[args.target_columns].values
 
-    for fold, (train_index, val_index) in enumerate(kf.split(
-            train_df.values, groups=train_df.question_title
-    )):
+    for fold, (train_index, val_index) in enumerate(
+        kf.split(train_df.values, groups=train_df.question_title)
+    ):
 
         if args.use_folds is not None and fold not in args.use_folds:
             continue
@@ -340,9 +312,7 @@ def cross_validation_split(
         else:
             train_set = None
 
-        valid_set = QuestDataset.from_frame(
-            args, train_df.iloc[val_index], tokenizer
-        )
+        valid_set = QuestDataset.from_frame(args, train_df.iloc[val_index], tokenizer)
 
         yield (
             fold,

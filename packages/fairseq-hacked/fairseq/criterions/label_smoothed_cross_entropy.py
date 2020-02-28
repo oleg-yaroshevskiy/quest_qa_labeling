@@ -26,13 +26,12 @@ def label_smoothed_nll_loss(lprobs, target, epsilon, ignore_index=None, reduce=T
         nll_loss = nll_loss.sum()
         smooth_loss = smooth_loss.sum()
     eps_i = epsilon / lprobs.size(-1)
-    loss = (1. - epsilon) * nll_loss + eps_i * smooth_loss
+    loss = (1.0 - epsilon) * nll_loss + eps_i * smooth_loss
     return loss, nll_loss
 
 
-@register_criterion('label_smoothed_cross_entropy')
+@register_criterion("label_smoothed_cross_entropy")
 class LabelSmoothedCrossEntropyCriterion(FairseqCriterion):
-
     def __init__(self, args, task):
         super().__init__(args, task)
         self.eps = args.label_smoothing
@@ -53,15 +52,17 @@ class LabelSmoothedCrossEntropyCriterion(FairseqCriterion):
         2) the sample size, which is used as the denominator for the gradient
         3) logging outputs to display while training
         """
-        net_output = model(**sample['net_input'])
+        net_output = model(**sample["net_input"])
         loss, nll_loss = self.compute_loss(model, net_output, sample, reduce=reduce)
-        sample_size = sample['target'].size(0) if self.args.sentence_avg else sample['ntokens']
+        sample_size = (
+            sample["target"].size(0) if self.args.sentence_avg else sample["ntokens"]
+        )
         logging_output = {
-            'loss': utils.item(loss.data) if reduce else loss.data,
-            'nll_loss': utils.item(nll_loss.data) if reduce else nll_loss.data,
-            'ntokens': sample['ntokens'],
-            'nsentences': sample['target'].size(0),
-            'sample_size': sample_size,
+            "loss": utils.item(loss.data) if reduce else loss.data,
+            "nll_loss": utils.item(nll_loss.data) if reduce else nll_loss.data,
+            "ntokens": sample["ntokens"],
+            "nsentences": sample["target"].size(0),
+            "sample_size": sample_size,
         }
         return loss, sample_size, logging_output
 
@@ -77,13 +78,21 @@ class LabelSmoothedCrossEntropyCriterion(FairseqCriterion):
     @staticmethod
     def aggregate_logging_outputs(logging_outputs):
         """Aggregate logging outputs from data parallel training."""
-        ntokens = sum(log.get('ntokens', 0) for log in logging_outputs)
-        nsentences = sum(log.get('nsentences', 0) for log in logging_outputs)
-        sample_size = sum(log.get('sample_size', 0) for log in logging_outputs)
+        ntokens = sum(log.get("ntokens", 0) for log in logging_outputs)
+        nsentences = sum(log.get("nsentences", 0) for log in logging_outputs)
+        sample_size = sum(log.get("sample_size", 0) for log in logging_outputs)
         return {
-            'loss': sum(log.get('loss', 0) for log in logging_outputs) / sample_size / math.log(2) if sample_size > 0 else 0.,
-            'nll_loss': sum(log.get('nll_loss', 0) for log in logging_outputs) / ntokens / math.log(2) if ntokens > 0 else 0.,
-            'ntokens': ntokens,
-            'nsentences': nsentences,
-            'sample_size': sample_size,
+            "loss": sum(log.get("loss", 0) for log in logging_outputs)
+            / sample_size
+            / math.log(2)
+            if sample_size > 0
+            else 0.0,
+            "nll_loss": sum(log.get("nll_loss", 0) for log in logging_outputs)
+            / ntokens
+            / math.log(2)
+            if ntokens > 0
+            else 0.0,
+            "ntokens": ntokens,
+            "nsentences": nsentences,
+            "sample_size": sample_size,
         }

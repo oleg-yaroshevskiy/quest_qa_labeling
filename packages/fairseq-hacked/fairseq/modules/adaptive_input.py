@@ -11,7 +11,6 @@ from typing import List
 
 
 class AdaptiveInput(nn.Module):
-
     def __init__(
         self,
         vocab_size: int,
@@ -26,8 +25,9 @@ class AdaptiveInput(nn.Module):
         if vocab_size > cutoff[-1]:
             cutoff = cutoff + [vocab_size]
         else:
-            assert vocab_size == cutoff[
-                -1], 'cannot specify cutoff larger than vocab size'
+            assert (
+                vocab_size == cutoff[-1]
+            ), "cannot specify cutoff larger than vocab size"
 
         self.cutoff = cutoff
         self.embedding_dim = output_dim
@@ -40,7 +40,7 @@ class AdaptiveInput(nn.Module):
             dim = int(initial_dim // (factor ** i))
             seq = nn.Sequential(
                 nn.Embedding(size, dim, padding_idx),
-                nn.Linear(dim, output_dim, bias=False)
+                nn.Linear(dim, output_dim, bias=False),
             )
             self.embeddings.append(seq)
 
@@ -48,12 +48,12 @@ class AdaptiveInput(nn.Module):
             if isinstance(m, nn.Embedding):
                 nn.init.normal_(m.weight, mean=0, std=m.weight.shape[1] ** -0.5)
                 nn.init.constant_(m.weight[padding_idx], 0)
-            elif hasattr(m, 'weight'):
+            elif hasattr(m, "weight"):
                 nn.init.xavier_uniform_(m.weight)
 
         self.apply(init_weights)
 
-        self.register_buffer('_float_tensor', torch.FloatTensor(1))
+        self.register_buffer("_float_tensor", torch.FloatTensor(1))
 
     def weights_for_band(self, band: int):
         return self.embeddings[band][0].weight, self.embeddings[band][1].weight

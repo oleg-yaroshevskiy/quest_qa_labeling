@@ -8,6 +8,7 @@ import time
 
 class AverageMeter(object):
     """Computes and stores the average and current value"""
+
     def __init__(self):
         self.reset()
 
@@ -26,6 +27,7 @@ class AverageMeter(object):
 
 class TimeMeter(object):
     """Computes the average occurrence of some event per second"""
+
     def __init__(self, init=0):
         self.reset(init)
 
@@ -48,6 +50,7 @@ class TimeMeter(object):
 
 class StopwatchMeter(object):
     """Computes the sum/avg duration of some event in seconds"""
+
     def __init__(self):
         self.reset()
 

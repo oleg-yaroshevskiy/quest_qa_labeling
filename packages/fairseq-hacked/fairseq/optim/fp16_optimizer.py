@@ -11,10 +11,13 @@ from fairseq import optim, utils
 
 
 class DynamicLossScaler(object):
-
     def __init__(
-        self, init_scale=2.**15, scale_factor=2., scale_window=2000,
-        tolerance=0.05, threshold=None,
+        self,
+        init_scale=2.0 ** 15,
+        scale_factor=2.0,
+        scale_window=2000,
+        tolerance=0.05,
+        threshold=None,
     ):
         self.loss_scale = init_scale
         self.scale_factor = scale_factor
@@ -49,13 +52,12 @@ class DynamicLossScaler(object):
     @staticmethod
     def has_overflow(grad_norm):
         # detect inf and nan
-        if grad_norm == float('inf') or grad_norm != grad_norm:
+        if grad_norm == float("inf") or grad_norm != grad_norm:
             return True
         return False
 
 
 class _FP16OptimizerMixin(object):
-
     def __init__(self, *args, **kwargs):
         # forward __init__ call to the next class in mro(method resolution order)
         super().__init__(*args, **kwargs)
@@ -68,7 +70,7 @@ class _FP16OptimizerMixin(object):
         offset = 0
         for p in params:
             numel = p.data.numel()
-            fp32_params[offset:offset+numel].copy_(p.data.view(-1))
+            fp32_params[offset : offset + numel].copy_(p.data.view(-1))
             offset += numel
         fp32_params = torch.nn.Parameter(fp32_params)
         fp32_params.grad = fp32_params.data.new(total_param_size)
@@ -77,7 +79,7 @@ class _FP16OptimizerMixin(object):
     def state_dict(self):
         """Return the optimizer's state dict."""
         state_dict = self.fp32_optimizer.state_dict()
-        state_dict['loss_scale'] = self.scaler.loss_scale
+        state_dict["loss_scale"] = self.scaler.loss_scale
         return state_dict
 
     def load_state_dict(self, state_dict, optimizer_overrides=None):
@@ -88,8 +90,8 @@ class _FP16OptimizerMixin(object):
         allows us to resume training from a checkpoint using a new set of
         optimizer args.
         """
-        if 'loss_scale' in state_dict:
-            self.scaler.loss_scale = state_dict['loss_scale']
+        if "loss_scale" in state_dict:
+            self.scaler.loss_scale = state_dict["loss_scale"]
         self.fp32_optimizer.load_state_dict(state_dict, optimizer_overrides)
 
     def backward(self, loss):
@@ -103,16 +105,22 @@ class _FP16OptimizerMixin(object):
         loss.backward()
         self._needs_sync = True
 
-    def _sync_fp16_grads_to_fp32(self, multiply_grads=1.):
+    def _sync_fp16_grads_to_fp32(self, multiply_grads=1.0):
         if self._needs_sync:
             # copy FP16 grads to FP32
             offset = 0
             for p in self.fp16_params:
                 if not p.requires_grad:
                     continue
-                grad_data = p.grad.data if p.grad is not None else p.data.new_zeros(p.data.shape)
+                grad_data = (
+                    p.grad.data
+                    if p.grad is not None
+                    else p.data.new_zeros(p.data.shape)
+                )
                 numel = grad_data.numel()
-                self.fp32_params.grad.data[offset:offset+numel].copy_(grad_data.view(-1))
+                self.fp32_params.grad.data[offset : offset + numel].copy_(
+                    grad_data.view(-1)
+                )
                 offset += numel
 
             # correct for dynamic loss scaler
@@ -139,12 +147,14 @@ class _FP16OptimizerMixin(object):
             if self.scaler.loss_scale <= self.min_loss_scale:
                 # Use FloatingPointError as an uncommon error that parent
                 # functions can safely catch to stop training.
-                raise FloatingPointError((
-                    'Minimum loss scale reached ({}). Your loss is probably exploding. '
-                    'Try lowering the learning rate, using gradient clipping or '
-                    'increasing the batch size.'
-                ).format(self.min_loss_scale))
-            raise OverflowError('setting loss scale to: ' + str(self.scaler.loss_scale))
+                raise FloatingPointError(
+                    (
+                        "Minimum loss scale reached ({}). Your loss is probably exploding. "
+                        "Try lowering the learning rate, using gradient clipping or "
+                        "increasing the batch size."
+                    ).format(self.min_loss_scale)
+                )
+            raise OverflowError("setting loss scale to: " + str(self.scaler.loss_scale))
         return grad_norm
 
     def step(self, closure=None):
@@ -158,7 +168,7 @@ class _FP16OptimizerMixin(object):
             if not p.requires_grad:
                 continue
             numel = p.data.numel()
-            p.data.copy_(self.fp32_params.data[offset:offset+numel].view_as(p.data))
+            p.data.copy_(self.fp32_params.data[offset : offset + numel].view_as(p.data))
             offset += numel
 
     def zero_grad(self):
@@ -179,13 +189,13 @@ class FP16Optimizer(_FP16OptimizerMixin, optim.FairseqOptimizer):
         self.fp32_optimizer = fp32_optimizer
         self.fp32_params = fp32_params
 
-        if getattr(args, 'fp16_scale_window', None) is None:
+        if getattr(args, "fp16_scale_window", None) is None:
             if len(args.update_freq) > 1:
                 raise ValueError(
-                    '--fp16-scale-window must be given explicitly when using a '
-                    'custom --update-freq schedule'
+                    "--fp16-scale-window must be given explicitly when using a "
+                    "custom --update-freq schedule"
                 )
-            scale_window = 2**14 / args.distributed_world_size / args.update_freq[0]
+            scale_window = 2 ** 14 / args.distributed_world_size / args.update_freq[0]
         else:
             scale_window = args.fp16_scale_window
 
@@ -224,7 +234,6 @@ class FP16Optimizer(_FP16OptimizerMixin, optim.FairseqOptimizer):
 
 
 class _MemoryEfficientFP16OptimizerMixin(object):
-
     def __init__(self, *args, **kwargs):
         # forward __init__ call to the next class in mro(method resolution order)
         super().__init__(*args, **kwargs)
@@ -232,7 +241,7 @@ class _MemoryEfficientFP16OptimizerMixin(object):
     def state_dict(self):
         """Return the optimizer's state dict."""
         state_dict = self.wrapped_optimizer.state_dict()
-        state_dict['loss_scale'] = self.scaler.loss_scale
+        state_dict["loss_scale"] = self.scaler.loss_scale
         return state_dict
 
     def load_state_dict(self, state_dict, optimizer_overrides=None):
@@ -243,8 +252,8 @@ class _MemoryEfficientFP16OptimizerMixin(object):
         allows us to resume training from a checkpoint using a new set of
         optimizer args.
         """
-        if 'loss_scale' in state_dict:
-            self.scaler.loss_scale = state_dict['loss_scale']
+        if "loss_scale" in state_dict:
+            self.scaler.loss_scale = state_dict["loss_scale"]
 
         self.wrapped_optimizer.load_state_dict(state_dict, optimizer_overrides)
 
@@ -254,15 +263,15 @@ class _MemoryEfficientFP16OptimizerMixin(object):
         # to cast. A workaround is to manually copy back the original state
         # after the optimizer has been loaded.
         groups = self.optimizer.param_groups
-        saved_groups = state_dict['param_groups']
+        saved_groups = state_dict["param_groups"]
         id_map = {
             old_id: p
             for old_id, p in zip(
-                chain(*(g['params'] for g in saved_groups)),
-                chain(*(g['params'] for g in groups))
+                chain(*(g["params"] for g in saved_groups)),
+                chain(*(g["params"] for g in groups)),
             )
         }
-        for k, v in state_dict['state'].items():
+        for k, v in state_dict["state"].items():
             if k in id_map:
                 param = id_map[k]
                 self.optimizer.state[param] = v
@@ -278,14 +287,16 @@ class _MemoryEfficientFP16OptimizerMixin(object):
         loss.backward()
         self._grads_are_scaled = True
 
-    def _unscale_grads(self, multiply_grads=1.):
+    def _unscale_grads(self, multiply_grads=1.0):
         if self._grads_are_scaled:
             self._grads_are_scaled = False
 
             # correct for dynamic loss scaler
-            self.wrapped_optimizer.multiply_grads(multiply_grads / self.scaler.loss_scale)
+            self.wrapped_optimizer.multiply_grads(
+                multiply_grads / self.scaler.loss_scale
+            )
         else:
-            assert multiply_grads == 1.
+            assert multiply_grads == 1.0
 
     def multiply_grads(self, c):
         """Multiplies grads by a constant *c*."""
@@ -306,12 +317,14 @@ class _MemoryEfficientFP16OptimizerMixin(object):
             if self.scaler.loss_scale <= self.min_loss_scale:
                 # Use FloatingPointError as an uncommon error that parent
                 # functions can safely catch to stop training.
-                raise FloatingPointError((
-                    'Minimum loss scale reached ({}). Your loss is probably exploding. '
-                    'Try lowering the learning rate, using gradient clipping or '
-                    'increasing the batch size.'
-                ).format(self.min_loss_scale))
-            raise OverflowError('setting loss scale to: ' + str(self.scaler.loss_scale))
+                raise FloatingPointError(
+                    (
+                        "Minimum loss scale reached ({}). Your loss is probably exploding. "
+                        "Try lowering the learning rate, using gradient clipping or "
+                        "increasing the batch size."
+                    ).format(self.min_loss_scale)
+                )
+            raise OverflowError("setting loss scale to: " + str(self.scaler.loss_scale))
 
         return grad_norm
 
@@ -326,7 +339,9 @@ class _MemoryEfficientFP16OptimizerMixin(object):
         self._grads_are_scaled = False
 
 
-class MemoryEfficientFP16Optimizer(_MemoryEfficientFP16OptimizerMixin, optim.FairseqOptimizer):
+class MemoryEfficientFP16Optimizer(
+    _MemoryEfficientFP16OptimizerMixin, optim.FairseqOptimizer
+):
     """
     Wrap an *optimizer* to support FP16 (mixed precision) training.
 
@@ -345,19 +360,19 @@ class MemoryEfficientFP16Optimizer(_MemoryEfficientFP16OptimizerMixin, optim.Fai
     def __init__(self, args, params, optimizer):
         if not optimizer.supports_memory_efficient_fp16:
             raise ValueError(
-                'Unsupported optimizer: {}'.format(optimizer.__class__.__name__)
+                "Unsupported optimizer: {}".format(optimizer.__class__.__name__)
             )
 
         super().__init__(args)
         self.wrapped_optimizer = optimizer
 
-        if getattr(args, 'fp16_scale_window', None) is None:
+        if getattr(args, "fp16_scale_window", None) is None:
             if len(args.update_freq) > 1:
                 raise ValueError(
-                    '--fp16-scale-window must be given explicitly when using a '
-                    'custom --update-freq schedule'
+                    "--fp16-scale-window must be given explicitly when using a "
+                    "custom --update-freq schedule"
                 )
-            scale_window = 2**14 / args.distributed_world_size / args.update_freq[0]
+            scale_window = 2 ** 14 / args.distributed_world_size / args.update_freq[0]
         else:
             scale_window = args.fp16_scale_window
 

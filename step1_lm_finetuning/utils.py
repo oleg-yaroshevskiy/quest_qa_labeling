@@ -8,7 +8,7 @@ from scipy.stats import rankdata
 from data.dataset import ALL_TARGETS
 
 
-def encode_labels(df, target_columns=ALL_TARGETS, method='average'):
+def encode_labels(df, target_columns=ALL_TARGETS, method="average"):
     target_columns = [t for t in target_columns if t in df]
     df = deepcopy(df)
 
@@ -19,17 +19,21 @@ def encode_labels(df, target_columns=ALL_TARGETS, method='average'):
     return df
 
 
-def transform_target_columns_to_ordinals(df, target_columns=ALL_TARGETS, return_label_groups=False):
+def transform_target_columns_to_ordinals(
+    df, target_columns=ALL_TARGETS, return_label_groups=False
+):
     target_columns = [t for t in target_columns if t in df]
-    rank_labels = encode_labels(df, target_columns, method='dense')
+    rank_labels = encode_labels(df, target_columns, method="dense")
 
     ordinal_labels = []
     for col in target_columns:
         col_labels = rank_labels[col]
 
-        new_col_names = [col + '_' + str(i) for i in sorted(np.unique(col_labels))]
+        new_col_names = [col + "_" + str(i) for i in sorted(np.unique(col_labels))]
         new_col_names = new_col_names[1:]
-        ordinals = np.array([[1] * label + [0] * (len(new_col_names) - label) for label in col_labels])
+        ordinals = np.array(
+            [[1] * label + [0] * (len(new_col_names) - label) for label in col_labels]
+        )
 
         ordinals = pd.DataFrame(ordinals, columns=new_col_names, index=df.index)
         ordinal_labels.append(ordinals)

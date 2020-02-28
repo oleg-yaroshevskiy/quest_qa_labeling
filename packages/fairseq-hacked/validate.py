@@ -18,15 +18,14 @@ def main(args, override_args=None):
 
     if override_args is not None:
         overrides = vars(override_args)
-        overrides.update(eval(getattr(override_args, 'model_overrides', '{}')))
+        overrides.update(eval(getattr(override_args, "model_overrides", "{}")))
     else:
         overrides = None
 
     # Load ensemble
-    print('| loading model(s) from {}'.format(args.path))
+    print("| loading model(s) from {}".format(args.path))
     models, model_args, task = checkpoint_utils.load_model_ensemble_and_task(
-        [args.path],
-        arg_overrides=overrides,
+        [args.path], arg_overrides=overrides,
     )
     model = models[0]
 
@@ -45,12 +44,12 @@ def main(args, override_args=None):
     criterion.eval()
 
     # Load valid dataset (we load training data below, based on the latest checkpoint)
-    for subset in args.valid_subset.split(','):
+    for subset in args.valid_subset.split(","):
         try:
             task.load_dataset(subset, combine=False, epoch=0)
             dataset = task.dataset(subset)
         except KeyError:
-            raise Exception('Cannot find dataset: ' + subset)
+            raise Exception("Cannot find dataset: " + subset)
 
         # Initialize data iterator
         itr = task.get_batch_iterator(
@@ -58,8 +57,7 @@ def main(args, override_args=None):
             max_tokens=args.max_tokens,
             max_sentences=args.max_sentences,
             max_positions=utils.resolve_max_positions(
-                task.max_positions(),
-                *[m.max_positions() for m in models],
+                task.max_positions(), *[m.max_positions() for m in models],
             ),
             ignore_invalid_inputs=args.skip_invalid_size_inputs_valid_test,
             required_batch_size_multiple=args.required_batch_size_multiple,
@@ -67,9 +65,10 @@ def main(args, override_args=None):
             num_workers=args.num_workers,
         ).next_epoch_itr(shuffle=False)
         progress = progress_bar.build_progress_bar(
-            args, itr,
-            prefix='valid on \'{}\' subset'.format(subset),
-            no_progress_bar='simple'
+            args,
+            itr,
+            prefix="valid on '{}' subset".format(subset),
+            no_progress_bar="simple",
         )
 
         log_outputs = []
@@ -95,5 +94,5 @@ def cli_main():
     main(args, override_args)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     cli_main()

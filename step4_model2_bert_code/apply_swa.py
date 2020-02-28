@@ -61,8 +61,7 @@ original_args = argparse.Namespace(
 )
 
 tokenizer = BertTokenizer.from_pretrained(
-    original_args.bert_model,
-    do_lower_case=("uncased" in original_args.bert_model),
+    original_args.bert_model, do_lower_case=("uncased" in original_args.bert_model),
 )
 
 test_set = get_test_set(original_args, test_df, tokenizer)
@@ -71,20 +70,14 @@ test_loader = DataLoader(
     batch_sampler=BucketingSampler(
         test_set.lengths,
         batch_size=original_args.batch_size,
-        maxlen=original_args.max_sequence_length
+        maxlen=original_args.max_sequence_length,
     ),
     collate_fn=make_collate_fn(),
 )
 
 val_dfs = []
 
-for (
-    fold,
-    train_set,
-    valid_set,
-    train_fold_df,
-    val_fold_df,
-) in cross_validation_split(
+for (fold, train_set, valid_set, train_fold_df, val_fold_df,) in cross_validation_split(
     original_args, train_df, tokenizer, ignore_train=True
 ):
 
@@ -95,39 +88,33 @@ for (
     valid_loader = DataLoader(
         valid_set,
         batch_sampler=BucketingSampler(
-            valid_set.lengths, batch_size=original_args.batch_size, maxlen=original_args.max_sequence_length
+            valid_set.lengths,
+            batch_size=original_args.batch_size,
+            maxlen=original_args.max_sequence_length,
         ),
         collate_fn=make_collate_fn(),
     )
 
-    fold_checkpoints = os.path.join(
-        experiment.checkpoints, "fold{}".format(fold)
-    )
-    fold_predictions = os.path.join(
-        experiment.predictions, "fold{}".format(fold)
-    )
+    fold_checkpoints = os.path.join(experiment.checkpoints, "fold{}".format(fold))
+    fold_predictions = os.path.join(experiment.predictions, "fold{}".format(fold))
 
     criterion = nn.BCEWithLogitsLoss()
     model, optimizer = get_model_optimizer(original_args)
 
     checkpoint = os.path.join(fold_checkpoints, "model_on_epoch_{}.pth")
 
-    state_dicts = [
-        torch.load(checkpoint.format(epoch)) for epoch in args.epochs
-    ]
+    state_dicts = [torch.load(checkpoint.format(epoch)) for epoch in args.epochs]
     averaged_state_dict = state_dicts[0]
     for k in averaged_state_dict:
         averaged_state_dict[k] = torch.mean(
-            torch.stack([state_dict[k] for state_dict in state_dicts], dim=0),
-            dim=0,
+            torch.stack([state_dict[k] for state_dict in state_dicts], dim=0), dim=0,
         )
 
     torch.save(
         averaged_state_dict,
         os.path.join(
-            fold_checkpoints,
-            "swa_{}.pth".format("_".join(map(str, args.epochs))),
-        )
+            fold_checkpoints, "swa_{}.pth".format("_".join(map(str, args.epochs))),
+        ),
     )
 
     model.load_state_dict(averaged_state_dict)
@@ -146,8 +133,7 @@ for (
     val_preds_df[target_columns] = val_preds
     val_preds_df.to_csv(
         os.path.join(
-            fold_predictions,
-            "val_swa_{}.csv".format("_".join(map(str, args.epochs))),
+            fold_predictions, "val_swa_{}.csv".format("_".join(map(str, args.epochs))),
         ),
         index=False,
     )
@@ -156,15 +142,12 @@ for (
 
     val_dfs.append(val_preds_df)
 
-    test_preds = infer(
-        original_args, model, test_loader, test_shape=len(test_set)
-    )
+    test_preds = infer(original_args, model, test_loader, test_shape=len(test_set))
     test_preds_df = submission.copy()
     test_preds_df[target_columns] = test_preds
     test_preds_df.to_csv(
         os.path.join(
-            fold_predictions,
-            "test_swa_{}.csv".format("_".join(map(str, args.epochs))),
+            fold_predictions, "test_swa_{}.csv".format("_".join(map(str, args.epochs))),
         ),
         index=False,
     )

@@ -15,8 +15,8 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
-class Squeeze(nn.Module):
 
+class Squeeze(nn.Module):
     def __init__(self, dim):
         super().__init__()
         self.dim = dim
@@ -66,18 +66,18 @@ class CustomBert(BertPreTrainedModel):
         last_hidden = outputs[0]
 
         cls_outputs = torch.stack(
-            [self.dropout(layer[:, 0, :]) for layer in hidden_layers],
-            dim=2
+            [self.dropout(layer[:, 0, :]) for layer in hidden_layers], dim=2
         )
-        cls_output = (
-            torch.softmax(self.layer_weights, dim=0) * cls_outputs
-        ).sum(-1)
+        cls_output = (torch.softmax(self.layer_weights, dim=0) * cls_outputs).sum(-1)
 
         # multisample dropout (wut): https://arxiv.org/abs/1905.09788
-        logits = torch.mean(torch.stack([
-            self.classifier(self.high_dropout(cls_output))
-            for _ in range(5)
-        ], dim=0), dim=0)
+        logits = torch.mean(
+            torch.stack(
+                [self.classifier(self.high_dropout(cls_output)) for _ in range(5)],
+                dim=0,
+            ),
+            dim=0,
+        )
 
         outputs = logits
         # add hidden states and attention if they are here
@@ -95,16 +95,12 @@ def get_model_optimizer(args):
         return "bert" in n
 
     optimizer_grouped_parameters = [
-        {'params': [p for n, p in params if is_backbone(n)],
-         'lr': args.lr},
-        {'params': [p for n, p in params if not is_backbone(n)],
-         'lr': args.lr * 500}
+        {"params": [p for n, p in params if is_backbone(n)], "lr": args.lr},
+        {"params": [p for n, p in params if not is_backbone(n)], "lr": args.lr * 500},
     ]
 
     optimizer = torch.optim.AdamW(
-        optimizer_grouped_parameters,
-        lr=args.lr,
-        weight_decay=0
+        optimizer_grouped_parameters, lr=args.lr, weight_decay=0
     )
 
     return model, optimizer

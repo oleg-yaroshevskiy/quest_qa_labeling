@@ -45,15 +45,15 @@ def _get_ids(tokens, tokenizer, max_seq_length):
 
 
 def _trim_input(
-        args,
-        tokenizer,
-        title,
-        question,
-        answer,
-        max_sequence_length=290,
-        t_max_len=30,
-        q_max_len=128,
-        a_max_len=128,
+    args,
+    tokenizer,
+    title,
+    question,
+    answer,
+    max_sequence_length=290,
+    t_max_len=30,
+    q_max_len=128,
+    a_max_len=128,
 ):
     # SICK THIS IS ALL SEEMS TO BE SICK
 
@@ -105,29 +105,29 @@ def _trim_input(
 
 
 def _convert_to_bert_inputs(
-        title, question, answer, tokenizer, max_sequence_length, model_type,
+    title, question, answer, tokenizer, max_sequence_length, model_type,
 ):
     """Converts tokenized input to ids, masks and segments for BERT"""
-    if model_type == 'roberta':
+    if model_type == "roberta":
         stoken = (
-                [tokenizer.cls_token]
-                + title
-                + [tokenizer.sep_token] * 2
-                + question
-                + [tokenizer.sep_token] * 2
-                + answer
-                + [tokenizer.sep_token] * 2
+            [tokenizer.cls_token]
+            + title
+            + [tokenizer.sep_token] * 2
+            + question
+            + [tokenizer.sep_token] * 2
+            + answer
+            + [tokenizer.sep_token] * 2
         )
 
     else:
         stoken = (
-                [tokenizer.cls_token]
-                + title
-                + [tokenizer.sep_token]
-                + question
-                + [tokenizer.sep_token]
-                + answer
-                + [tokenizer.sep_token]
+            [tokenizer.cls_token]
+            + title
+            + [tokenizer.sep_token]
+            + question
+            + [tokenizer.sep_token]
+            + answer
+            + [tokenizer.sep_token]
         )
 
     input_ids = _get_ids(stoken, tokenizer, max_sequence_length)
@@ -137,25 +137,22 @@ def _convert_to_bert_inputs(
     return [input_ids, input_masks, input_segments]
 
 
-def compute_input_arrays(args,
-                         df,
-                         columns,
-                         tokenizer,
-                         max_sequence_length,
-                         t_max_len=30,
-                         q_max_len=128,
-                         a_max_len=128,
-                         verbose=True):
+def compute_input_arrays(
+    args,
+    df,
+    columns,
+    tokenizer,
+    max_sequence_length,
+    t_max_len=30,
+    q_max_len=128,
+    a_max_len=128,
+    verbose=True,
+):
     input_ids, input_masks, input_segments = [], [], []
 
     iterator = df[columns].iterrows()
     if verbose:
-        iterator = tqdm(
-            iterator,
-            desc="Preparing dataset",
-            total=len(df),
-            ncols=80,
-        )
+        iterator = tqdm(iterator, desc="Preparing dataset", total=len(df), ncols=80,)
 
     for _, instance in iterator:
         t, q, a = (
@@ -194,8 +191,16 @@ def compute_output_arrays(df, columns):
 
 
 class QuestDataset(torch.utils.data.Dataset):
-    def __init__(self, args, df, tokenizer, test=False,
-                 title_transform=None, body_transform=None, answer_transform=None):
+    def __init__(
+        self,
+        args,
+        df,
+        tokenizer,
+        test=False,
+        title_transform=None,
+        body_transform=None,
+        answer_transform=None,
+    ):
         self.data = df
         self.tokenizer = tokenizer
         self.is_test = test
@@ -206,21 +211,33 @@ class QuestDataset(torch.utils.data.Dataset):
         self.answer_transform = answer_transform
 
     @classmethod
-    def from_frame(cls, args, df, tokenizer, test=False,
-                   title_transform=None, body_transform=None, answer_transform=None):
-        return cls(args,
-                   df,
-                   tokenizer,
-                   test=test,
-                   title_transform=title_transform,
-                   body_transform=body_transform,
-                   answer_transform=answer_transform)
+    def from_frame(
+        cls,
+        args,
+        df,
+        tokenizer,
+        test=False,
+        title_transform=None,
+        body_transform=None,
+        answer_transform=None,
+    ):
+        return cls(
+            args,
+            df,
+            tokenizer,
+            test=test,
+            title_transform=title_transform,
+            body_transform=body_transform,
+            answer_transform=answer_transform,
+        )
 
     def __getitem__(self, idx):
-        instance = self.data[idx:idx + 1].copy()
+        instance = self.data[idx : idx + 1].copy()
 
-        for col, transform in zip(['question_title', 'question_body', 'answer'],
-                                  [self.title_transform, self.body_transform, self.answer_transform]):
+        for col, transform in zip(
+            ["question_title", "question_body", "answer"],
+            [self.title_transform, self.body_transform, self.answer_transform],
+        ):
             if transform is not None:
                 instance[col] = transform[col]
 
@@ -236,8 +253,11 @@ class QuestDataset(torch.utils.data.Dataset):
             verbose=False,
         )
         length = torch.sum(input_masks != 0)
-        input_ids, input_masks, input_segments = torch.squeeze(input_ids, dim=0), torch.squeeze(input_masks, dim=0), \
-                                                 torch.squeeze(input_segments, dim=0)
+        input_ids, input_masks, input_segments = (
+            torch.squeeze(input_ids, dim=0),
+            torch.squeeze(input_masks, dim=0),
+            torch.squeeze(input_segments, dim=0),
+        )
 
         if not self.is_test:
             labels = compute_output_arrays(instance, self.params.target_columns)
@@ -251,18 +271,13 @@ class QuestDataset(torch.utils.data.Dataset):
         return len(self.data)
 
 
-def cross_validation_split(
-        args,
-        train_df,
-        tokenizer,
-        ignore_train=False
-):
+def cross_validation_split(args, train_df, tokenizer, ignore_train=False):
     kf = GroupKFold(n_splits=args.folds)
     y_train = train_df[args.target_columns].values
 
-    for fold, (train_index, val_index) in enumerate(kf.split(
-            train_df.values, groups=train_df.question_title
-    )):
+    for fold, (train_index, val_index) in enumerate(
+        kf.split(train_df.values, groups=train_df.question_title)
+    ):
 
         if args.use_folds is not None and fold not in args.use_folds:
             continue
@@ -273,9 +288,7 @@ def cross_validation_split(
         else:
             train_set = None
 
-        valid_set = QuestDataset.from_frame(
-            args, train_df.iloc[val_index], tokenizer
-        )
+        valid_set = QuestDataset.from_frame(args, train_df.iloc[val_index], tokenizer)
 
         yield (
             fold,

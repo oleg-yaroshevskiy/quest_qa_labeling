@@ -17,29 +17,32 @@ from fairseq import distributed_utils
 from fairseq.meters import AverageMeter, StopwatchMeter, TimeMeter
 
 
-def build_progress_bar(args, iterator, epoch=None, prefix=None, default='tqdm', no_progress_bar='none'):
+def build_progress_bar(
+    args, iterator, epoch=None, prefix=None, default="tqdm", no_progress_bar="none"
+):
     if args.log_format is None:
         args.log_format = no_progress_bar if args.no_progress_bar else default
 
-    if args.log_format == 'tqdm' and not sys.stderr.isatty():
-        args.log_format = 'simple'
+    if args.log_format == "tqdm" and not sys.stderr.isatty():
+        args.log_format = "simple"
 
-    if args.log_format == 'json':
+    if args.log_format == "json":
         bar = json_progress_bar(iterator, epoch, prefix, args.log_interval)
-    elif args.log_format == 'none':
+    elif args.log_format == "none":
         bar = noop_progress_bar(iterator, epoch, prefix)
-    elif args.log_format == 'simple':
+    elif args.log_format == "simple":
         bar = simple_progress_bar(iterator, epoch, prefix, args.log_interval)
-    elif args.log_format == 'tqdm':
+    elif args.log_format == "tqdm":
         bar = tqdm_progress_bar(iterator, epoch, prefix)
     else:
-        raise ValueError('Unknown log format: {}'.format(args.log_format))
+        raise ValueError("Unknown log format: {}".format(args.log_format))
 
     if args.tensorboard_logdir and distributed_utils.is_master(args):
         try:
             # [FB only] custom wrapper for TensorBoard
             import palaas  # noqa
             from fairseq.fb_tbmf_wrapper import fb_tbmf_wrapper
+
             bar = fb_tbmf_wrapper(bar, args, args.log_interval)
         except ImportError:
             bar = tensorboard_log_wrapper(bar, args.tensorboard_logdir, args)
@@ -49,27 +52,28 @@ def build_progress_bar(args, iterator, epoch=None, prefix=None, default='tqdm', 
 
 def format_stat(stat):
     if isinstance(stat, Number):
-        stat = '{:g}'.format(stat)
+        stat = "{:g}".format(stat)
     elif isinstance(stat, AverageMeter):
-        stat = '{:.3f}'.format(stat.avg)
+        stat = "{:.3f}".format(stat.avg)
     elif isinstance(stat, TimeMeter):
-        stat = '{:g}'.format(round(stat.avg))
+        stat = "{:g}".format(round(stat.avg))
     elif isinstance(stat, StopwatchMeter):
-        stat = '{:g}'.format(round(stat.sum))
+        stat = "{:g}".format(round(stat.sum))
     return stat
 
 
 class progress_bar(object):
     """Abstract class for progress bars."""
+
     def __init__(self, iterable, epoch=None, prefix=None):
         self.iterable = iterable
-        self.offset = getattr(iterable, 'offset', 0)
+        self.offset = getattr(iterable, "offset", 0)
         self.epoch = epoch
-        self.prefix = ''
+        self.prefix = ""
         if epoch is not None:
-            self.prefix += '| epoch {:03d}'.format(epoch)
+            self.prefix += "| epoch {:03d}".format(epoch)
         if prefix is not None:
-            self.prefix += ' | {}'.format(prefix)
+            self.prefix += " | {}".format(prefix)
 
     def __len__(self):
         return len(self.iterable)
@@ -83,21 +87,19 @@ class progress_bar(object):
     def __iter__(self):
         raise NotImplementedError
 
-    def log(self, stats, tag='', step=None):
+    def log(self, stats, tag="", step=None):
         """Log intermediate stats according to log_interval."""
         raise NotImplementedError
 
-    def print(self, stats, tag='', step=None):
+    def print(self, stats, tag="", step=None):
         """Print end-of-epoch stats."""
         raise NotImplementedError
 
     def _str_commas(self, stats):
-        return ', '.join(key + '=' + stats[key].strip()
-                         for key in stats.keys())
+        return ", ".join(key + "=" + stats[key].strip() for key in stats.keys())
 
     def _str_pipes(self, stats):
-        return ' | '.join(key + ' ' + stats[key].strip()
-                          for key in stats.keys())
+        return " | ".join(key + " " + stats[key].strip() for key in stats.keys())
 
     def _format_stats(self, stats):
         postfix = OrderedDict(stats)
@@ -119,30 +121,38 @@ class json_progress_bar(progress_bar):
         size = float(len(self.iterable))
         for i, obj in enumerate(self.iterable, start=self.offset):
             yield obj
-            if self.stats is not None and i > 0 and \
-                    self.log_interval is not None and i % self.log_interval == 0:
-                update = self.epoch - 1 + float(i / size) if self.epoch is not None else None
+            if (
+                self.stats is not None
+                and i > 0
+                and self.log_interval is not None
+                and i % self.log_interval == 0
+            ):
+                update = (
+                    self.epoch - 1 + float(i / size) if self.epoch is not None else None
+                )
                 stats = self._format_stats(self.stats, epoch=self.epoch, update=update)
                 print(json.dumps(stats), flush=True)
 
-    def log(self, stats, tag='', step=None):
+    def log(self, stats, tag="", step=None):
         """Log intermediate stats according to log_interval."""
         self.stats = stats
 
-    def print(self, stats, tag='', step=None):
+    def print(self, stats, tag="", step=None):
         """Print end-of-epoch stats."""
         self.stats = stats
-        if tag != '':
-            self.stats = OrderedDict([(tag + '_' + k, v) for k, v in self.stats.items()])
+        if tag != "":
+            self.stats = OrderedDict(
+                [(tag + "_" + k, v) for k, v in self.stats.items()]
+            )
         stats = self._format_stats(self.stats, epoch=self.epoch)
         print(json.dumps(stats), flush=True)
 
     def _format_stats(self, stats, epoch=None, update=None):
         postfix = OrderedDict()
         if epoch is not None:
-            postfix['epoch'] = epoch
+            postfix["epoch"] = epoch
         if update is not None:
-            postfix['update'] = round(update, 3)
+            postfix["update"] = round(update, 3)
         # Preprocess stats according to datatype
         for key in stats.keys():
             postfix[key] = format_stat(stats[key])
@@ -159,11 +169,11 @@ class noop_progress_bar(progress_bar):
         for obj in self.iterable:
             yield obj
 
-    def log(self, stats, tag='', step=None):
+    def log(self, stats, tag="", step=None):
         """Log intermediate stats according to log_interval."""
         pass
 
-    def print(self, stats, tag='', step=None):
+    def print(self, stats, tag="", step=None):
         """Print end-of-epoch stats."""
         pass
 
@@ -180,20 +190,26 @@ class simple_progress_bar(progress_bar):
         size = len(self.iterable)
         for i, obj in enumerate(self.iterable, start=self.offset):
             yield obj
-            if self.stats is not None and i > 0 and \
-                    self.log_interval is not None and i % self.log_interval == 0:
+            if (
+                self.stats is not None
+                and i > 0
+                and self.log_interval is not None
+                and i % self.log_interval == 0
+            ):
                 postfix = self._str_commas(self.stats)
-                print('{}:  {:5d} / {:d} {}'.format(self.prefix, i, size, postfix),
-                      flush=True)
+                print(
+                    "{}:  {:5d} / {:d} {}".format(self.prefix, i, size, postfix),
+                    flush=True,
+                )
 
-    def log(self, stats, tag='', step=None):
+    def log(self, stats, tag="", step=None):
         """Log intermediate stats according to log_interval."""
         self.stats = self._format_stats(stats)
 
-    def print(self, stats, tag='', step=None):
+    def print(self, stats, tag="", step=None):
         """Print end-of-epoch stats."""
         postfix = self._str_pipes(self._format_stats(stats))
-        print('{} | {}'.format(self.prefix, postfix), flush=True)
+        print("{} | {}".format(self.prefix, postfix), flush=True)
 
 
 class tqdm_progress_bar(progress_bar):
@@ -202,19 +218,20 @@ class tqdm_progress_bar(progress_bar):
     def __init__(self, iterable, epoch=None, prefix=None):
         super().__init__(iterable, epoch, prefix)
         from tqdm import tqdm
+
         self.tqdm = tqdm(iterable, self.prefix, leave=False)
 
     def __iter__(self):
         return iter(self.tqdm)
 
-    def log(self, stats, tag='', step=None):
+    def log(self, stats, tag="", step=None):
         """Log intermediate stats according to log_interval."""
         self.tqdm.set_postfix(self._format_stats(stats), refresh=False)
 
-    def print(self, stats, tag='', step=None):
+    def print(self, stats, tag="", step=None):
         """Print end-of-epoch stats."""
         postfix = self._str_pipes(self._format_stats(stats))
-        self.tqdm.write('{} | {}'.format(self.tqdm.desc, postfix))
+        self.tqdm.write("{} | {}".format(self.tqdm.desc, postfix))
 
 
 class tensorboard_log_wrapper(progress_bar):
@@ -227,11 +244,14 @@ class tensorboard_log_wrapper(progress_bar):
 
         try:
             from tensorboardX import SummaryWriter
+
             self.SummaryWriter = SummaryWriter
             self._writers = {}
         except ImportError:
-            print("tensorboard or required dependencies not found, "
-                  "please see README for using tensorboard. (e.g. pip install tensorboardX)")
+            print(
+                "tensorboard or required dependencies not found, "
+                "please see README for using tensorboard. (e.g. pip install tensorboardX)"
+            )
             self.SummaryWriter = None
 
     def _writer(self, key):
@@ -241,35 +261,35 @@ class tensorboard_log_wrapper(progress_bar):
             self._writers[key] = self.SummaryWriter(
                 os.path.join(self.tensorboard_logdir, key),
             )
-            self._writers[key].add_text('args', str(vars(self.args)))
-            self._writers[key].add_text('sys.argv', " ".join(sys.argv))
+            self._writers[key].add_text("args", str(vars(self.args)))
+            self._writers[key].add_text("sys.argv", " ".join(sys.argv))
         return self._writers[key]
 
     def __iter__(self):
         return iter(self.wrapped_bar)
 
-    def log(self, stats, tag='', step=None):
+    def log(self, stats, tag="", step=None):
         """Log intermediate stats to tensorboard."""
         self._log_to_tensorboard(stats, tag, step)
         self.wrapped_bar.log(stats, tag=tag, step=step)
 
-    def print(self, stats, tag='', step=None):
+    def print(self, stats, tag="", step=None):
         """Print end-of-epoch stats."""
         self._log_to_tensorboard(stats, tag, step)
         self.wrapped_bar.print(stats, tag=tag, step=step)
 
     def __exit__(self, *exc):
-        for writer in getattr(self, '_writers', {}).values():
+        for writer in getattr(self, "_writers", {}).values():
             writer.close()
         return False
 
-    def _log_to_tensorboard(self, stats, tag='', step=None):
+    def _log_to_tensorboard(self, stats, tag="", step=None):
         writer = self._writer(tag)
         if writer is None:
             return
         if step is None:
-            step = stats['num_updates']
-        for key in stats.keys() - {'num_updates'}:
+            step = stats["num_updates"]
+        for key in stats.keys() - {"num_updates"}:
             if isinstance(stats[key], AverageMeter):
                 writer.add_scalar(key, stats[key].val, step)
             elif isinstance(stats[key], Number):

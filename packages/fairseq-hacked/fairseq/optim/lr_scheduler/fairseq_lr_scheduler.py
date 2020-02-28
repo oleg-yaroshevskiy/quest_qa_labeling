@@ -7,11 +7,10 @@ from .. import FairseqOptimizer
 
 
 class FairseqLRScheduler(object):
-
     def __init__(self, args, optimizer):
         super().__init__()
         if not isinstance(optimizer, FairseqOptimizer):
-            raise ValueError('optimizer must be an instance of FairseqOptimizer')
+            raise ValueError("optimizer must be an instance of FairseqOptimizer")
         self.args = args
         self.optimizer = optimizer
         self.best = None
@@ -23,11 +22,11 @@ class FairseqLRScheduler(object):
 
     def state_dict(self):
         """Return the LR scheduler state dict."""
-        return {'best': self.best}
+        return {"best": self.best}
 
     def load_state_dict(self, state_dict):
         """Load an LR scheduler state dict."""
-        self.best = state_dict['best']
+        self.best = state_dict["best"]
 
     def step(self, epoch, val_loss=None):
         """Update the learning rate at the end of the given epoch."""

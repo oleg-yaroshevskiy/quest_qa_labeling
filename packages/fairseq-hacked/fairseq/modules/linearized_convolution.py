@@ -39,7 +39,7 @@ class LinearizedConvolution(ConvTBC):
             output = super().forward(input)
             if self.kernel_size[0] > 1 and self.padding[0] > 0:
                 # remove future timesteps added by padding
-                output = output[:-self.padding[0], :, :]
+                output = output[: -self.padding[0], :, :]
             return output
 
         # reshape weight
@@ -70,17 +70,21 @@ class LinearizedConvolution(ConvTBC):
             self._set_input_buffer(incremental_state, input_buffer)
 
     def _get_input_buffer(self, incremental_state):
-        return utils.get_incremental_state(self, incremental_state, 'input_buffer')
+        return utils.get_incremental_state(self, incremental_state, "input_buffer")
 
     def _set_input_buffer(self, incremental_state, new_buffer):
-        return utils.set_incremental_state(self, incremental_state, 'input_buffer', new_buffer)
+        return utils.set_incremental_state(
+            self, incremental_state, "input_buffer", new_buffer
+        )
 
     def _get_linearized_weight(self):
         if self._linearized_weight is None:
             kw = self.kernel_size[0]
             weight = self.weight.transpose(2, 1).transpose(1, 0).contiguous()
             assert weight.size() == (self.out_channels, kw, self.in_channels)
-            self._linearized_weight = torch.nn.Parameter(weight.view(self.out_channels, -1))
+            self._linearized_weight = torch.nn.Parameter(
+                weight.view(self.out_channels, -1)
+            )
         return self._linearized_weight
 
     def _clear_linearized_weight(self, *args):

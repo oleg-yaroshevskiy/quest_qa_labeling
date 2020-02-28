@@ -14,15 +14,12 @@ class Highway(torch.nn.Module):
     Adopted from the AllenNLP implementation.
     """
 
-    def __init__(
-            self,
-            input_dim: int,
-            num_layers: int = 1
-    ):
+    def __init__(self, input_dim: int, num_layers: int = 1):
         super(Highway, self).__init__()
         self.input_dim = input_dim
-        self.layers = nn.ModuleList([nn.Linear(input_dim, input_dim * 2)
-                                     for _ in range(num_layers)])
+        self.layers = nn.ModuleList(
+            [nn.Linear(input_dim, input_dim * 2) for _ in range(num_layers)]
+        )
         self.activation = nn.ReLU()
 
         self.reset_parameters()
@@ -34,15 +31,12 @@ class Highway(torch.nn.Module):
             # setting the bias on `B(x)` to be positive, because that means `g` will be biased to
             # be high, so we will carry the input forward.  The bias on `B(x)` is the second half
             # of the bias vector in each Linear layer.
-            nn.init.constant_(layer.bias[self.input_dim:], 1)
+            nn.init.constant_(layer.bias[self.input_dim :], 1)
 
-            nn.init.constant_(layer.bias[:self.input_dim], 0)
+            nn.init.constant_(layer.bias[: self.input_dim], 0)
             nn.init.xavier_normal_(layer.weight)
 
-    def forward(
-            self,
-            x: torch.Tensor
-    ):
+    def forward(self, x: torch.Tensor):
         for layer in self.layers:
             projection = layer(x)
             proj_x, gate = projection.chunk(2, dim=-1)

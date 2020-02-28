@@ -26,16 +26,15 @@ from fairseq.modules.transformer_sentence_encoder import init_bert_params
 from .hub_interface import RobertaHubInterface
 
 
-@register_model('roberta')
+@register_model("roberta")
 class RobertaModel(FairseqLanguageModel):
-
     @classmethod
     def hub_models(cls):
         return {
-            'roberta.base': 'http://dl.fbaipublicfiles.com/fairseq/models/roberta.base.tar.gz',
-            'roberta.large': 'http://dl.fbaipublicfiles.com/fairseq/models/roberta.large.tar.gz',
-            'roberta.large.mnli': 'http://dl.fbaipublicfiles.com/fairseq/models/roberta.large.mnli.tar.gz',
-            'roberta.large.wsc': 'http://dl.fbaipublicfiles.com/fairseq/models/roberta.large.wsc.tar.gz',
+            "roberta.base": "http://dl.fbaipublicfiles.com/fairseq/models/roberta.base.tar.gz",
+            "roberta.large": "http://dl.fbaipublicfiles.com/fairseq/models/roberta.large.tar.gz",
+            "roberta.large.mnli": "http://dl.fbaipublicfiles.com/fairseq/models/roberta.large.mnli.tar.gz",
+            "roberta.large.wsc": "http://dl.fbaipublicfiles.com/fairseq/models/roberta.large.wsc.tar.gz",
         }
 
     def __init__(self, args, encoder):
@@ -50,39 +49,84 @@ class RobertaModel(FairseqLanguageModel):
     @staticmethod
     def add_args(parser):
         """Add model-specific arguments to the parser."""
-        parser.add_argument('--encoder-layers', type=int, metavar='L',
-                            help='num encoder layers')
-        parser.add_argument('--encoder-embed-dim', type=int, metavar='H',
-                            help='encoder embedding dimension')
-        parser.add_argument('--encoder-ffn-embed-dim', type=int, metavar='F',
-                            help='encoder embedding dimension for FFN')
-        parser.add_argument('--encoder-attention-heads', type=int, metavar='A',
-                            help='num encoder attention heads')
-        parser.add_argument('--activation-fn',
-                            choices=utils.get_available_activation_fns(),
-                            help='activation function to use')
-        parser.add_argument('--pooler-activation-fn',
-                            choices=utils.get_available_activation_fns(),
-                            help='activation function to use for pooler layer')
-        parser.add_argument('--encoder-normalize-before', action='store_true',
-                            help='apply layernorm before each encoder block')
-        parser.add_argument('--dropout', type=float, metavar='D',
-                            help='dropout probability')
-        parser.add_argument('--attention-dropout', type=float, metavar='D',
-                            help='dropout probability for attention weights')
-        parser.add_argument('--activation-dropout', type=float, metavar='D',
-                            help='dropout probability after activation in FFN')
-        parser.add_argument('--pooler-dropout', type=float, metavar='D',
-                            help='dropout probability in the masked_lm pooler layers')
-        parser.add_argument('--max-positions', type=int,
-                            help='number of positional embeddings to learn')
-        parser.add_argument('--load-checkpoint-heads', action='store_true',
-                            help='(re-)register and load heads when loading checkpoints')
+        parser.add_argument(
+            "--encoder-layers", type=int, metavar="L", help="num encoder layers"
+        )
+        parser.add_argument(
+            "--encoder-embed-dim",
+            type=int,
+            metavar="H",
+            help="encoder embedding dimension",
+        )
+        parser.add_argument(
+            "--encoder-ffn-embed-dim",
+            type=int,
+            metavar="F",
+            help="encoder embedding dimension for FFN",
+        )
+        parser.add_argument(
+            "--encoder-attention-heads",
+            type=int,
+            metavar="A",
+            help="num encoder attention heads",
+        )
+        parser.add_argument(
+            "--activation-fn",
+            choices=utils.get_available_activation_fns(),
+            help="activation function to use",
+        )
+        parser.add_argument(
+            "--pooler-activation-fn",
+            choices=utils.get_available_activation_fns(),
+            help="activation function to use for pooler layer",
+        )
+        parser.add_argument(
+            "--encoder-normalize-before",
+            action="store_true",
+            help="apply layernorm before each encoder block",
+        )
+        parser.add_argument(
+            "--dropout", type=float, metavar="D", help="dropout probability"
+        )
+        parser.add_argument(
+            "--attention-dropout",
+            type=float,
+            metavar="D",
+            help="dropout probability for attention weights",
+        )
+        parser.add_argument(
+            "--activation-dropout",
+            type=float,
+            metavar="D",
+            help="dropout probability after activation in FFN",
+        )
+        parser.add_argument(
+            "--pooler-dropout",
+            type=float,
+            metavar="D",
+            help="dropout probability in the masked_lm pooler layers",
+        )
+        parser.add_argument(
+            "--max-positions", type=int, help="number of positional embeddings to learn"
+        )
+        parser.add_argument(
+            "--load-checkpoint-heads",
+            action="store_true",
+            help="(re-)register and load heads when loading checkpoints",
+        )
         # args for "Reducing Transformer Depth on Demand with Structured Dropout" (Fan et al., 2019)
-        parser.add_argument('--encoder-layerdrop', type=float, metavar='D', default=0,
-                            help='LayerDrop probability for encoder')
-        parser.add_argument('--encoder-layers-to-keep', default=None,
-                            help='which layers to *keep* when pruning as a comma-separated list')
+        parser.add_argument(
+            "--encoder-layerdrop",
+            type=float,
+            metavar="D",
+            default=0,
+            help="LayerDrop probability for encoder",
+        )
+        parser.add_argument(
+            "--encoder-layers-to-keep",
+            default=None,
+            help="which layers to *keep* when pruning as a comma-separated list",
+        )
 
     @classmethod
     def build_model(cls, args, task):
@@ -91,13 +135,20 @@ class RobertaModel(FairseqLanguageModel):
         # make sure all arguments are present
         base_architecture(args)
 
-        if not hasattr(args, 'max_positions'):
+        if not hasattr(args, "max_positions"):
             args.max_positions = args.tokens_per_sample
 
         encoder = RobertaEncoder(args, task.source_dictionary)
         return cls(args, encoder)
 
-    def forward(self, src_tokens, features_only=False, return_all_hiddens=False, classification_head_name=None, **kwargs):
+    def forward(
+        self,
+        src_tokens,
+        features_only=False,
+        return_all_hiddens=False,
+        classification_head_name=None,
+        **kwargs
+    ):
         if classification_head_name is not None:
             features_only = True
 
@@ -107,7 +158,9 @@ class RobertaModel(FairseqLanguageModel):
             x = self.classification_heads[classification_head_name](x)
         return x, extra
 
-    def register_classification_head(self, name, num_classes=None, inner_dim=None, **kwargs):
+    def register_classification_head(
+        self, name, num_classes=None, inner_dim=None, **kwargs
+    ):
         """Register a classification head."""
         if name in self.classification_heads:
             prev_num_classes = self.classification_heads[name].out_proj.out_features
@@ -115,7 +168,7 @@ class RobertaModel(FairseqLanguageModel):
             if num_classes != prev_num_classes or inner_dim != prev_inner_dim:
                 print(
                     'WARNING: re-registering head "{}" with num_classes {} (prev: {}) '
-                    'and inner_dim {} (prev: {})'.format(
+                    "and inner_dim {} (prev: {})".format(
                         name, num_classes, prev_num_classes, inner_dim, prev_inner_dim
                     )
                 )
@@ -129,11 +182,19 @@ class RobertaModel(FairseqLanguageModel):
 
     @property
     def supported_targets(self):
-        return {'self'}
+        return {"self"}
 
     @classmethod
-    def from_pretrained(cls, model_name_or_path, checkpoint_file='model.pt', data_name_or_path='.', bpe='gpt2', **kwargs):
+    def from_pretrained(
+        cls,
+        model_name_or_path,
+        checkpoint_file="model.pt",
+        data_name_or_path=".",
+        bpe="gpt2",
+        **kwargs
+    ):
         from fairseq import hub_utils
+
         x = hub_utils.from_pretrained(
             model_name_or_path,
             checkpoint_file,
@@ -143,42 +204,53 @@ class RobertaModel(FairseqLanguageModel):
             load_checkpoint_heads=True,
             **kwargs,
         )
-        return RobertaHubInterface(x['args'], x['task'], x['models'][0])
+        return RobertaHubInterface(x["args"], x["task"], x["models"][0])
 
     def upgrade_state_dict_named(self, state_dict, name):
         super().upgrade_state_dict_named(state_dict, name)
 
-        prefix = name + '.' if name != '' else ''
-        current_head_names = [] if not hasattr(self, 'classification_heads') else \
-            self.classification_heads.keys()
+        prefix = name + "." if name != "" else ""
+        current_head_names = (
+            []
+            if not hasattr(self, "classification_heads")
+            else self.classification_heads.keys()
+        )
 
         # Handle new classification heads present in the state dict.
         keys_to_delete = []
         for k in state_dict.keys():
-            if not k.startswith(prefix + 'classification_heads.'):
+            if not k.startswith(prefix + "classification_heads."):
                 continue
 
-            head_name = k[len(prefix + 'classification_heads.'):].split('.')[0]
-            num_classes = state_dict[prefix + 'classification_heads.' + head_name + '.out_proj.weight'].size(0)
-            inner_dim = state_dict[prefix + 'classification_heads.' + head_name + '.dense.weight'].size(0)
+            head_name = k[len(prefix + "classification_heads.") :].split(".")[0]
+            num_classes = state_dict[
+                prefix + "classification_heads." + head_name + ".out_proj.weight"
+            ].size(0)
+            inner_dim = state_dict[
+                prefix + "classification_heads." + head_name + ".dense.weight"
+            ].size(0)
 
-            if getattr(self.args, 'load_checkpoint_heads', False):
+            if getattr(self.args, "load_checkpoint_heads", False):
                 if head_name not in current_head_names:
                     self.register_classification_head(head_name, num_classes, inner_dim)
             else:
                 if head_name not in current_head_names:
                     print(
-                        'WARNING: deleting classification head ({}) from checkpoint '
-                        'not present in current model: {}'.format(head_name, k)
+                        "WARNING: deleting classification head ({}) from checkpoint "
+                        "not present in current model: {}".format(head_name, k)
                     )
                     keys_to_delete.append(k)
                 elif (
-                    num_classes != self.classification_heads[head_name].out_proj.out_features
-                    or inner_dim != self.classification_heads[head_name].dense.out_features
+                    num_classes
+                    != self.classification_heads[head_name].out_proj.out_features
+                    or inner_dim
+                    != self.classification_heads[head_name].dense.out_features
                 ):
                     print(
-                        'WARNING: deleting classification head ({}) from checkpoint '
-                        'with different dimensions than current model: {}'.format(head_name, k)
+                        "WARNING: deleting classification head ({}) from checkpoint "
+                        "with different dimensions than current model: {}".format(
+                            head_name, k
+                        )
                     )
                     keys_to_delete.append(k)
         for k in keys_to_delete:
@@ -186,26 +258,34 @@ class RobertaModel(FairseqLanguageModel):
 
         # Copy any newly-added classification heads into the state dict
         # with their current weights.
-        if hasattr(self, 'classification_heads'):
+        if hasattr(self, "classification_heads"):
             cur_state = self.classification_heads.state_dict()
             for k, v in cur_state.items():
-                if prefix + 'classification_heads.' + k not in state_dict:
-                    print('Overwriting', prefix + 'classification_heads.' + k)
-                    state_dict[prefix + 'classification_heads.' + k] = v
+                if prefix + "classification_heads." + k not in state_dict:
+                    print("Overwriting", prefix + "classification_heads." + k)
+                    state_dict[prefix + "classification_heads." + k] = v
 
 
-@register_model('xlmr')
+@register_model("xlmr")
 class XLMRModel(RobertaModel):
     @classmethod
     def hub_models(cls):
         return {
-            'xlmr.base.v0': 'http://dl.fbaipublicfiles.com/fairseq/models/xlmr.base.v0.tar.gz',
-            'xlmr.large.v0': 'http://dl.fbaipublicfiles.com/fairseq/models/xlmr.large.v0.tar.gz',
+            "xlmr.base.v0": "http://dl.fbaipublicfiles.com/fairseq/models/xlmr.base.v0.tar.gz",
+            "xlmr.large.v0": "http://dl.fbaipublicfiles.com/fairseq/models/xlmr.large.v0.tar.gz",
         }
 
     @classmethod
-    def from_pretrained(cls, model_name_or_path, checkpoint_file='model.pt', data_name_or_path='.', bpe='sentencepiece', **kwargs):
+    def from_pretrained(
+        cls,
+        model_name_or_path,
+        checkpoint_file="model.pt",
+        data_name_or_path=".",
+        bpe="sentencepiece",
+        **kwargs
+    ):
         from fairseq import hub_utils
+
         x = hub_utils.from_pretrained(
             model_name_or_path,
             checkpoint_file,
@@ -215,20 +295,28 @@ class XLMRModel(RobertaModel):
             load_checkpoint_heads=True,
             **kwargs,
         )
-        return RobertaHubInterface(x['args'], x['task'], x['models'][0])
+        return RobertaHubInterface(x["args"], x["task"], x["models"][0])
 
 
-@register_model('camembert')
+@register_model("camembert")
 class CamembertModel(RobertaModel):
     @classmethod
     def hub_models(cls):
         return {
-            'camembert.v0': 'http://dl.fbaipublicfiles.com/fairseq/models/camembert.v0.tar.gz',
+            "camembert.v0": "http://dl.fbaipublicfiles.com/fairseq/models/camembert.v0.tar.gz",
         }
 
     @classmethod
-    def from_pretrained(cls, model_name_or_path, checkpoint_file='model.pt', data_name_or_path='.', bpe='sentencepiece', **kwargs):
+    def from_pretrained(
+        cls,
+        model_name_or_path,
+        checkpoint_file="model.pt",
+        data_name_or_path=".",
+        bpe="sentencepiece",
+        **kwargs
+    ):
         from fairseq import hub_utils
+
         x = hub_utils.from_pretrained(
             model_name_or_path,
             checkpoint_file,
@@ -238,7 +326,7 @@ class CamembertModel(RobertaModel):
             load_checkpoint_heads=True,
             **kwargs,
         )
-        return RobertaHubInterface(x['args'], x['task'], x['models'][0])
+        return RobertaHubInterface(x["args"], x["task"], x["models"][0])
 
 
 class RobertaLMHead(nn.Module):
@@ -272,7 +360,9 @@ class RobertaLMHead(nn.Module):
 class RobertaClassificationHead(nn.Module):
     """Head for sentence-level classification tasks."""
 
-    def __init__(self, input_dim, inner_dim, num_classes, activation_fn, pooler_dropout):
+    def __init__(
+        self, input_dim, inner_dim, num_classes, activation_fn, pooler_dropout
+    ):
         super().__init__()
         self.dense = nn.Linear(input_dim, inner_dim)
         self.activation_fn = utils.get_activation_fn(activation_fn)
@@ -332,7 +422,14 @@ class RobertaEncoder(FairseqDecoder):
             weight=self.sentence_encoder.embed_tokens.weight,
         )
 
-    def forward(self, src_tokens, features_only=False, return_all_hiddens=False, masked_tokens=None, **unused):
+    def forward(
+        self,
+        src_tokens,
+        features_only=False,
+        return_all_hiddens=False,
+        masked_tokens=None,
+        **unused
+    ):
         """
         Args:
             src_tokens (LongTensor): input tokens of shape `(batch, src_len)`
@@ -348,18 +445,19 @@ class RobertaEncoder(FairseqDecoder):
                 - a dictionary of additional data, where 'inner_states'
                   is a list of hidden states.
         """
-        x, extra = self.extract_features(src_tokens, return_all_hiddens=return_all_hiddens)
+        x, extra = self.extract_features(
+            src_tokens, return_all_hiddens=return_all_hiddens
+        )
         if not features_only:
             x = self.output_layer(x, masked_tokens=masked_tokens)
         return x, extra
 
     def extract_features(self, src_tokens, return_all_hiddens=False, **unused):
         inner_states, _ = self.sentence_encoder(
-            src_tokens,
-            last_state_only=not return_all_hiddens,
+            src_tokens, last_state_only=not return_all_hiddens,
         )
         features = inner_states[-1]
-        return features, {'inner_states': inner_states if return_all_hiddens else None}
+        return features, {"inner_states": inner_states if return_all_hiddens else None}
 
     def output_layer(self, features, masked_tokens=None, **unused):
         return self.lm_head(features, masked_tokens)
@@ -369,43 +467,43 @@ class RobertaEncoder(FairseqDecoder):
         return self.args.max_positions
 
 
-@register_model_architecture('roberta', 'roberta')
+@register_model_architecture("roberta", "roberta")
 def base_architecture(args):
-    args.encoder_layers = getattr(args, 'encoder_layers', 12)
-    args.encoder_embed_dim = getattr(args, 'encoder_embed_dim', 768)
-    args.encoder_ffn_embed_dim = getattr(args, 'encoder_ffn_embed_dim', 3072)
-    args.encoder_attention_heads = getattr(args, 'encoder_attention_heads', 12)
+    args.encoder_layers = getattr(args, "encoder_layers", 12)
+    args.encoder_embed_dim = getattr(args, "encoder_embed_dim", 768)
+    args.encoder_ffn_embed_dim = getattr(args, "encoder_ffn_embed_dim", 3072)
+    args.encoder_attention_heads = getattr(args, "encoder_attention_heads", 12)
 
-    args.activation_fn = getattr(args, 'activation_fn', 'gelu')
-    args.pooler_activation_fn = getattr(args, 'pooler_activation_fn', 'tanh')
+    args.activation_fn = getattr(args, "activation_fn", "gelu")
+    args.pooler_activation_fn = getattr(args, "pooler_activation_fn", "tanh")
 
-    args.dropout = getattr(args, 'dropout', 0.1)
-    args.attention_dropout = getattr(args, 'attention_dropout', 0.1)
-    args.activation_dropout = getattr(args, 'activation_dropout', 0.0)
-    args.pooler_dropout = getattr(args, 'pooler_dropout', 0.0)
-    args.encoder_layers_to_keep = getattr(args, 'encoder_layers_to_keep', None)
-    args.encoder_layerdrop = getattr(args, 'encoder_layerdrop', 0.0)
+    args.dropout = getattr(args, "dropout", 0.1)
+    args.attention_dropout = getattr(args, "attention_dropout", 0.1)
+    args.activation_dropout = getattr(args, "activation_dropout", 0.0)
+    args.pooler_dropout = getattr(args, "pooler_dropout", 0.0)
+    args.encoder_layers_to_keep = getattr(args, "encoder_layers_to_keep", None)
+    args.encoder_layerdrop = getattr(args, "encoder_layerdrop", 0.0)
 
 
-@register_model_architecture('roberta', 'roberta_base')
+@register_model_architecture("roberta", "roberta_base")
 def roberta_base_architecture(args):
     base_architecture(args)
 
 
-@register_model_architecture('roberta', 'roberta_large')
+@register_model_architecture("roberta", "roberta_large")
 def roberta_large_architecture(args):
-    args.encoder_layers = getattr(args, 'encoder_layers', 24)
-    args.encoder_embed_dim = getattr(args, 'encoder_embed_dim', 1024)
-    args.encoder_ffn_embed_dim = getattr(args, 'encoder_ffn_embed_dim', 4096)
-    args.encoder_attention_heads = getattr(args, 'encoder_attention_heads', 16)
+    args.encoder_layers = getattr(args, "encoder_layers", 24)
+    args.encoder_embed_dim = getattr(args, "encoder_embed_dim", 1024)
+    args.encoder_ffn_embed_dim = getattr(args, "encoder_ffn_embed_dim", 4096)
+    args.encoder_attention_heads = getattr(args, "encoder_attention_heads", 16)
     base_architecture(args)
 
 
-@register_model_architecture('roberta', 'xlm')
+@register_model_architecture("roberta", "xlm")
 def xlm_architecture(args):
-    args.encoder_layers = getattr(args, 'encoder_layers', 16)
-    args.encoder_embed_dim = getattr(args, 'encoder_embed_dim', 1280)
-    args.encoder_ffn_embed_dim = getattr(args, 'encoder_ffn_embed_dim', 1280*4)
-    args.encoder_attention_heads = getattr(args, 'encoder_attention_heads', 16)
+    args.encoder_layers = getattr(args, "encoder_layers", 16)
+    args.encoder_embed_dim = getattr(args, "encoder_embed_dim", 1280)
+    args.encoder_ffn_embed_dim = getattr(args, "encoder_ffn_embed_dim", 1280 * 4)
+    args.encoder_attention_heads = getattr(args, "encoder_attention_heads", 16)
 
     base_architecture(args)

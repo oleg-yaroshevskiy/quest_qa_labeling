@@ -29,7 +29,9 @@ class FairseqDecoder(nn.Module):
                 - the decoder's output of shape `(batch, tgt_len, vocab)`
                 - a dictionary with any model-specific outputs
         """
-        x, extra = self.extract_features(prev_output_tokens, encoder_out=encoder_out, **kwargs)
+        x, extra = self.extract_features(
+            prev_output_tokens, encoder_out=encoder_out, **kwargs
+        )
         x = self.output_layer(x)
         return x, extra
 
@@ -54,10 +56,10 @@ class FairseqDecoder(nn.Module):
     def get_normalized_probs(self, net_output, log_probs, sample):
         """Get normalized probabilities (or log probs) from a net's output."""
 
-        if hasattr(self, 'adaptive_softmax') and self.adaptive_softmax is not None:
+        if hasattr(self, "adaptive_softmax") and self.adaptive_softmax is not None:
             if sample is not None:
-                assert 'target' in sample
-                target = sample['target']
+                assert "target" in sample
+                target = sample["target"]
             else:
                 target = None
             out = self.adaptive_softmax.get_log_prob(net_output[0], target=target)

@@ -16,7 +16,9 @@ from fairseq.data import dictionary
 
 
 def get_parser():
-    parser = argparse.ArgumentParser(description='Command-line script for BLEU scoring.')
+    parser = argparse.ArgumentParser(
+        description="Command-line script for BLEU scoring."
+    )
     # fmt: off
     parser.add_argument('-s', '--sys', default='-', help='system output')
     parser.add_argument('-r', '--ref', required=True, help='references')
@@ -37,10 +39,10 @@ def main():
     args = parser.parse_args()
     print(args)
 
-    assert args.sys == '-' or os.path.exists(args.sys), \
-        "System output file {} does not exist".format(args.sys)
-    assert os.path.exists(args.ref), \
-        "Reference file {} does not exist".format(args.ref)
+    assert args.sys == "-" or os.path.exists(
+        args.sys
+    ), "System output file {} does not exist".format(args.sys)
+    assert os.path.exists(args.ref), "Reference file {} does not exist".format(args.ref)
 
     dict = dictionary.Dictionary()
 
@@ -57,17 +59,23 @@ def main():
         def score(fdsys):
             with open(args.ref) as fdref:
                 print(sacrebleu.corpus_bleu(fdsys, [fdref]))
+
     elif args.sentence_bleu:
+
         def score(fdsys):
             with open(args.ref) as fdref:
                 scorer = bleu.Scorer(dict.pad(), dict.eos(), dict.unk())
-                for i, (sys_tok, ref_tok) in enumerate(zip(readlines(fdsys), readlines(fdref))):
+                for i, (sys_tok, ref_tok) in enumerate(
+                    zip(readlines(fdsys), readlines(fdref))
+                ):
                     scorer.reset(one_init=True)
                     sys_tok = dict.encode_line(sys_tok)
                     ref_tok = dict.encode_line(ref_tok)
                     scorer.add(ref_tok, sys_tok)
                     print(i, scorer.result_string(args.order))
+
     else:
+
         def score(fdsys):
             with open(args.ref) as fdref:
                 scorer = bleu.Scorer(dict.pad(), dict.eos(), dict.unk())
@@ -77,12 +85,12 @@ def main():
                     scorer.add(ref_tok, sys_tok)
                 print(scorer.result_string(args.order))
 
-    if args.sys == '-':
+    if args.sys == "-":
         score(sys.stdin)
     else:
-        with open(args.sys, 'r') as f:
+        with open(args.sys, "r") as f:
             score(f)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

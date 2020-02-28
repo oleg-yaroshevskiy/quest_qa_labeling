@@ -8,7 +8,7 @@ import torch.optim
 from . import FairseqOptimizer, register_optimizer
 
 
-@register_optimizer('adadelta')
+@register_optimizer("adadelta")
 class Adadelta(FairseqOptimizer):
     def __init__(self, args, params):
         super().__init__(args)
@@ -36,8 +36,8 @@ class Adadelta(FairseqOptimizer):
         different learning rate.
         """
         return {
-            'lr': self.args.lr[0],
-            'rho': self.args.adadelta_rho,
-            'eps': self.args.adadelta_eps,
-            'weight_decay': self.args.weight_decay,
+            "lr": self.args.lr[0],
+            "rho": self.args.adadelta_rho,
+            "eps": self.args.adadelta_eps,
+            "weight_decay": self.args.weight_decay,
         }

@@ -25,7 +25,7 @@ from fairseq.data import (
 from . import FairseqTask, register_task
 
 
-@register_task('sentence_ranking')
+@register_task("sentence_ranking")
 class SentenceRankingTask(FairseqTask):
     """
     Ranking task on multiple sentences.
@@ -37,19 +37,27 @@ class SentenceRankingTask(FairseqTask):
     @staticmethod
     def add_args(parser):
         """Add task-specific arguments to the parser."""
-        parser.add_argument('data', metavar='FILE',
-                            help='file prefix for data')
-        parser.add_argument('--num-classes', type=int,
-                            help='number of sentences to be ranked')
-        parser.add_argument('--init-token', type=int,
-                            help='add token at the beginning of each batch item')
-        parser.add_argument('--separator-token', type=int,
-                            help='add separator token between inputs')
-        parser.add_argument('--no-shuffle', action='store_true')
-        parser.add_argument('--truncate-sequence', action='store_true',
-                            help='Truncate sequence to max_positions')
-        parser.add_argument('--max-option-length', type=int,
-                            help='max length for each option')
+        parser.add_argument("data", metavar="FILE", help="file prefix for data")
+        parser.add_argument(
+            "--num-classes", type=int, help="number of sentences to be ranked"
+        )
+        parser.add_argument(
+            "--init-token",
+            type=int,
+            help="add token at the beginning of each batch item",
+        )
+        parser.add_argument(
+            "--separator-token", type=int, help="add separator token between inputs"
+        )
+        parser.add_argument("--no-shuffle", action="store_true")
+        parser.add_argument(
+            "--truncate-sequence",
+            action="store_true",
+            help="Truncate sequence to max_positions",
+        )
+        parser.add_argument(
+            "--max-option-length", type=int, help="max length for each option"
+        )
 
     def __init__(self, args, dictionary):
         super().__init__(args)
@@ -63,21 +71,20 @@ class SentenceRankingTask(FairseqTask):
             filename (str): the filename
         """
         dictionary = Dictionary.load(filename)
-        dictionary.add_symbol('<mask>')
+        dictionary.add_symbol("<mask>")
         return dictionary
 
     @classmethod
     def setup_task(cls, args, **kwargs):
-        assert args.criterion == 'sentence_ranking', \
-            'Must set --criterion=sentence_ranking'
+        assert (
+            args.criterion == "sentence_ranking"
+        ), "Must set --criterion=sentence_ranking"
 
         # load data dictionary
         data_dict = cls.load_dictionary(
-            args,
-            os.path.join(args.data, 'input0', 'dict.txt'),
-            source=True,
+            args, os.path.join(args.data, "input0", "dict.txt"), source=True,
         )
-        print('| [input] dictionary: {} types'.format(len(data_dict)))
+        print("| [input] dictionary: {} types".format(len(data_dict)))
         return SentenceRankingTask(args, data_dict)
 
     def load_dataset(self, split, combine=False, **kwargs):
@@ -97,12 +104,9 @@ class SentenceRankingTask(FairseqTask):
             )
             return dataset
 
-        input0 = make_dataset('input0', self.source_dictionary)
+        input0 = make_dataset("input0", self.source_dictionary)
         input_options = [
-            make_dataset(
-                'input{idx}'.format(idx=idx + 1),
-                self.source_dictionary
-            )
+            make_dataset("input{idx}".format(idx=idx + 1), self.source_dictionary)
             for idx in range(self.args.num_classes)
         ]
 
@@ -114,7 +118,9 @@ class SentenceRankingTask(FairseqTask):
             if self.args.init_token is not None:
                 input_option = PrependTokenDataset(input_option, self.args.init_token)
             if self.args.max_option_length is not None:
-                input_option = TruncateDataset(input_option, self.args.max_option_length)
+                input_option = TruncateDataset(
+                    input_option, self.args.max_option_length
+                )
             src_token = ConcatSentencesDataset(input_option, input0)
             if self.args.truncate_sequence:
                 src_token = TruncateDataset(src_token, self.args.max_positions)
@@ -124,31 +130,31 @@ class SentenceRankingTask(FairseqTask):
             shuffle = np.random.permutation(len(src_tokens[0]))
 
         dataset = {
-            'id': IdDataset(),
-            'nsentences': NumSamplesDataset(),
-            'ntokens': NumelDataset(src_tokens[0], reduce=True),
+            "id": IdDataset(),
+            "nsentences": NumSamplesDataset(),
+            "ntokens": NumelDataset(src_tokens[0], reduce=True),
         }
 
         for src_token_idx in range(len(src_tokens)):
             dataset.update(
                 {
-                    'net_input{idx}'.format(idx=src_token_idx+1): {
-                        'src_tokens': RightPadDataset(
+                    "net_input{idx}".format(idx=src_token_idx + 1): {
+                        "src_tokens": RightPadDataset(
                             src_tokens[src_token_idx],
                             pad_idx=self.source_dictionary.pad(),
                         ),
-                        'src_lengths': NumelDataset(src_tokens[src_token_idx], reduce=False),
+                        "src_lengths": NumelDataset(
+                            src_tokens[src_token_idx], reduce=False
+                        ),
                     }
                 }
             )
 
-        label_path = '{}.label'.format(get_path('label', split))
+        label_path = "{}.label".format(get_path("label", split))
         if os.path.exists(label_path):
             with open(label_path) as h:
                 dataset.update(
-                    target=RawLabelDataset([
-                        int(x.strip()) for x in h.readlines()
-                    ])
+                    target=RawLabelDataset([int(x.strip()) for x in h.readlines()])
                 )
 
         nested_dataset = NestedDictionaryDataset(
@@ -172,11 +178,11 @@ class SentenceRankingTask(FairseqTask):
 
     def build_model(self, args):
         from fairseq import models
+
         model = models.build_model(args, self)
 
         model.register_classification_head(
-            'sentence_classification_head',
-            num_classes=1,
+            "sentence_classification_head", num_classes=1,
         )
 
         return model

@@ -17,8 +17,8 @@ from fairseq.data import encoders
 
 def from_pretrained(
     model_name_or_path,
-    checkpoint_file='model.pt',
-    data_name_or_path='.',
+    checkpoint_file="model.pt",
+    data_name_or_path=".",
     archive_map=None,
     **kwargs
 ):
@@ -34,43 +34,43 @@ def from_pretrained(
         # for each model
         if isinstance(model_name_or_path, dict):
             for k, v in model_name_or_path.items():
-                if k == 'checkpoint_file':
+                if k == "checkpoint_file":
                     checkpoint_file = v
                 elif (
-                    k != 'path'
+                    k != "path"
                     # only set kwargs that don't already have overrides
                     and k not in kwargs
                 ):
                     kwargs[k] = v
-            model_name_or_path = model_name_or_path['path']
+            model_name_or_path = model_name_or_path["path"]
 
     model_path = model_name_or_path
     # convenience hack for loading data and BPE codes from model archive
-    if data_name_or_path.startswith('.'):
-        kwargs['data'] = os.path.abspath(os.path.join(model_path, data_name_or_path))
+    if data_name_or_path.startswith("."):
+        kwargs["data"] = os.path.abspath(os.path.join(model_path, data_name_or_path))
     else:
-        kwargs['data'] = file_utils.load_archive_file(data_name_or_path)
+        kwargs["data"] = file_utils.load_archive_file(data_name_or_path)
     for file, arg in {
-        'code': 'bpe_codes',
-        'bpecodes': 'bpe_codes',
-        'sentencepiece.bpe.model': 'sentencepiece_vocab',
+        "code": "bpe_codes",
+        "bpecodes": "bpe_codes",
+        "sentencepiece.bpe.model": "sentencepiece_vocab",
     }.items():
         path = os.path.join(model_path, file)
         if os.path.exists(path):
             kwargs[arg] = path
 
-    if 'user_dir' in kwargs:
-        utils.import_user_module(argparse.Namespace(user_dir=kwargs['user_dir']))
+    if "user_dir" in kwargs:
+        utils.import_user_module(argparse.Namespace(user_dir=kwargs["user_dir"]))
 
     models, args, task = checkpoint_utils.load_model_ensemble_and_task(
         [os.path.join(model_path, cpt) for cpt in checkpoint_file.split(os.pathsep)],
         arg_overrides=kwargs,
     )
-    
+
     return {
-        'args': args,
-        'task': task,
-        'models': models,
+        "args": args,
+        "task": task,
+        "models": models,
     }
 
 
@@ -92,35 +92,42 @@ class GeneratorHubInterface(nn.Module):
         for model in self.models:
             model.make_generation_fast_(
                 beamable_mm_beam_size=(
-                    None if getattr(args, 'no_beamable_mm', False)
-                    else getattr(args, 'beam', 5)
+                    None
+                    if getattr(args, "no_beamable_mm", False)
+                    else getattr(args, "beam", 5)
                 ),
-                need_attn=getattr(args, 'print_alignment', False),
+                need_attn=getattr(args, "print_alignment", False),
             )
 
         # Load alignment dictionary for unknown word replacement
         # (None if no unknown word replacement, empty if no path to align dictionary)
-        self.align_dict = utils.load_align_dict(getattr(args, 'replace_unk', None))
+        self.align_dict = utils.load_align_dict(getattr(args, "replace_unk", None))
 
         self.tokenizer = encoders.build_tokenizer(args)
         self.bpe = encoders.build_bpe(args)
 
         # this is useful for determining the device
-        self.register_buffer('_float_tensor', torch.tensor([0], dtype=torch.float))
+        self.register_buffer("_float_tensor", torch.tensor([0], dtype=torch.float))
 
     @property
     def device(self):
         return self._float_tensor.device
 
-    def translate(self, sentence: str, beam: int = 5, verbose: bool = False, **kwargs) -> str:
+    def translate(
+        self, sentence: str, beam: int = 5, verbose: bool = False, **kwargs
+    ) -> str:
         return self.sample(sentence, beam, verbose, **kwargs)
 
-    def sample(self, sentence: str, beam: int = 1, verbose: bool = False, **kwargs) -> str:
+    def sample(
+        self, sentence: str, beam: int = 1, verbose: bool = False, **kwargs
+    ) -> str:
         input = self.encode(sentence)
-        hypo = self.generate(input, beam, verbose, **kwargs)[0]['tokens']
+        hypo = self.generate(input, beam, verbose, **kwargs)[0]["tokens"]
         return self.decode(hypo)
 
-    def generate(self, tokens: torch.LongTensor, beam: int = 5, verbose: bool = False, **kwargs) -> torch.LongTensor:
+    def generate(
+        self, tokens: torch.LongTensor, beam: int = 5, verbose: bool = False, **kwargs
+    ) -> torch.LongTensor:
         sample = self._build_sample(tokens)
 
         # build generator using current args as well as any kwargs
@@ -134,7 +141,7 @@ class GeneratorHubInterface(nn.Module):
 
         if verbose:
             src_str_with_unk = self.string(tokens)
-            print('S\t{}'.format(src_str_with_unk))
+            print("S\t{}".format(src_str_with_unk))
 
         def getarg(name, default):
             return getattr(gen_args, name, getattr(self.args, name, default))
@@ -143,15 +150,29 @@ class GeneratorHubInterface(nn.Module):
         hypos = translations[0]
         if verbose:
             for hypo in hypos:
-                hypo_str = self.decode(hypo['tokens'])
-                print('H\t{}\t{}'.format(hypo['score'], hypo_str))
-                print('P\t{}'.format(
-                    ' '.join(map(lambda x: '{:.4f}'.format(x), hypo['positional_scores'].tolist()))
-                ))
-                if hypo['alignment'] is not None and getarg('print_alignment', False):
-                    print('A\t{}'.format(
-                        ' '.join(map(lambda x: str(utils.item(x)), hypo['alignment'].int().cpu()))
-                    ))
+                hypo_str = self.decode(hypo["tokens"])
+                print("H\t{}\t{}".format(hypo["score"], hypo_str))
+                print(
+                    "P\t{}".format(
+                        " ".join(
+                            map(
+                                lambda x: "{:.4f}".format(x),
+                                hypo["positional_scores"].tolist(),
+                            )
+                        )
+                    )
+                )
+                if hypo["alignment"] is not None and getarg("print_alignment", False):
+                    print(
+                        "A\t{}".format(
+                            " ".join(
+                                map(
+                                    lambda x: str(utils.item(x)),
+                                    hypo["alignment"].int().cpu(),
+                                )
+                            )
+                        )
+                    )
 
         return hypos
 
@@ -193,12 +214,11 @@ class GeneratorHubInterface(nn.Module):
 
     def _build_sample(self, src_tokens: torch.LongTensor):
         assert torch.is_tensor(src_tokens)
-        dataset = self.task.build_dataset_for_inference([src_tokens], [src_tokens.numel()])
-        sample = dataset.collater([dataset[0]])
-        sample = utils.apply_to_sample(
-            lambda tensor: tensor.to(self.device),
-            sample
+        dataset = self.task.build_dataset_for_inference(
+            [src_tokens], [src_tokens.numel()]
         )
+        sample = dataset.collater([dataset[0]])
+        sample = utils.apply_to_sample(lambda tensor: tensor.to(self.device), sample)
         return sample
 
 

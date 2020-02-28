@@ -27,9 +27,9 @@ class _PyTorchLRSchedulerWrapper(Callback):
 
     def load_state(self, f):
         if self.scheduler is not None:
-            self.scheduler.load_state_dict(torch.load(f, map_location='cpu'))
+            self.scheduler.load_state_dict(torch.load(f, map_location="cpu"))
         else:
-            self.loaded_state = torch.load(f, map_location='cpu')
+            self.loaded_state = torch.load(f, map_location="cpu")
 
     def save_state(self, f):
         torch.save(self.scheduler.state_dict(), f)
@@ -37,16 +37,18 @@ class _PyTorchLRSchedulerWrapper(Callback):
 
 class _TotalStepWrapper(_PyTorchLRSchedulerWrapper):
     def on_train_begin(self, logs):
-        if 't_total' not in self.kwargs or self.kwargs['t_total'] is None:
-            t_total = self.params['steps'] * self.params['epochs']
-            if self.params['accumulation_steps'] is not None:
-                t_total = t_total // self.params['accumulation_steps']
+        if "t_total" not in self.kwargs or self.kwargs["t_total"] is None:
+            t_total = self.params["steps"] * self.params["epochs"]
+            if self.params["accumulation_steps"] is not None:
+                t_total = t_total // self.params["accumulation_steps"]
         else:
-            t_total = self.kwargs['t_total']
-        if 't_total' in self.kwargs:
-            del self.kwargs['t_total']
+            t_total = self.kwargs["t_total"]
+        if "t_total" in self.kwargs:
+            del self.kwargs["t_total"]
         optimizer = self.model.optimizer
-        self.scheduler = self.torch_lr_scheduler(optimizer, *self.args, t_total=t_total, **self.kwargs)
+        self.scheduler = self.torch_lr_scheduler(
+            optimizer, *self.args, t_total=t_total, **self.kwargs
+        )
 
         # Load state if the scheduler was not initialized when the user asked
         # to load its state
@@ -70,7 +72,9 @@ class WarmupConstantSchedule(_PyTorchLRSchedulerWrapper):
     """
 
     def __init__(self, warmup_steps, last_epoch=-1):
-        super().__init__(optimization.WarmupConstantSchedule, warmup_steps, last_epoch=last_epoch)
+        super().__init__(
+            optimization.WarmupConstantSchedule, warmup_steps, last_epoch=last_epoch
+        )
 
 
 class WarmupLinearSchedule(_TotalStepWrapper):
@@ -80,7 +84,12 @@ class WarmupLinearSchedule(_TotalStepWrapper):
     """
 
     def __init__(self, warmup_steps, t_total=None, last_epoch=-1):
-        super().__init__(optimization.WarmupLinearSchedule, warmup_steps, t_total=t_total, last_epoch=last_epoch)
+        super().__init__(
+            optimization.WarmupLinearSchedule,
+            warmup_steps,
+            t_total=t_total,
+            last_epoch=last_epoch,
+        )
 
 
 class WarmupCosineSchedule(_TotalStepWrapper):
@@ -90,9 +99,14 @@ class WarmupCosineSchedule(_TotalStepWrapper):
         If `cycles` (default=0.5) is different from default, learning rate follows cosine function after warmup.
     """
 
-    def __init__(self, warmup_steps, t_total=None, cycles=.5, last_epoch=-1):
-        super().__init__(optimization.WarmupCosineSchedule, warmup_steps, t_total=t_total, cycles=cycles,
-                         last_epoch=last_epoch)
+    def __init__(self, warmup_steps, t_total=None, cycles=0.5, last_epoch=-1):
+        super().__init__(
+            optimization.WarmupCosineSchedule,
+            warmup_steps,
+            t_total=t_total,
+            cycles=cycles,
+            last_epoch=last_epoch,
+        )
 
 
 class WarmupCosineWithHardRestartsSchedule(_TotalStepWrapper):
@@ -102,9 +116,11 @@ class WarmupCosineWithHardRestartsSchedule(_TotalStepWrapper):
         learning rate (with hard restarts).
     """
 
-    def __init__(self, warmup_steps, t_total=None, cycles=1., last_epoch=-1):
-        super().__init__(optimization.WarmupCosineWithHardRestartsSchedule,
-                         warmup_steps,
-                         t_total=t_total,
-                         cycles=cycles,
-                         last_epoch=last_epoch)
+    def __init__(self, warmup_steps, t_total=None, cycles=1.0, last_epoch=-1):
+        super().__init__(
+            optimization.WarmupCosineWithHardRestartsSchedule,
+            warmup_steps,
+            t_total=t_total,
+            cycles=cycles,
+            last_epoch=last_epoch,
+        )

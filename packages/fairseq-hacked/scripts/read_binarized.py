@@ -11,7 +11,8 @@ from fairseq.data import data_utils, Dictionary, indexed_dataset
 
 def get_parser():
     parser = argparse.ArgumentParser(
-        description='writes text from binarized file to stdout')
+        description="writes text from binarized file to stdout"
+    )
     # fmt: off
     parser.add_argument('--dataset-impl', help='dataset implementation',
                         choices=indexed_dataset.get_available_dataset_impl())
@@ -28,20 +29,17 @@ def main():
 
     dictionary = Dictionary.load(args.dict) if args.dict is not None else None
     dataset = data_utils.load_indexed_dataset(
-        args.input,
-        dictionary,
-        dataset_impl=args.dataset_impl,
-        default='lazy',
+        args.input, dictionary, dataset_impl=args.dataset_impl, default="lazy",
     )
 
     for tensor_line in dataset:
         if dictionary is None:
-            line = ' '.join([str(int(x)) for x in tensor_line])
+            line = " ".join([str(int(x)) for x in tensor_line])
         else:
             line = dictionary.string(tensor_line)
 
         print(line)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

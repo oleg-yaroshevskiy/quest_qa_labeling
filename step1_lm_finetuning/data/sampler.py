@@ -18,9 +18,11 @@ class UniformRandomSampler(Sampler):
         n = len(self.data_source)
         if len(self._state) < self.num_samples + 1:
             self._state += torch.randperm(n).tolist()
-        output, self._state = self._state[:self.num_samples], self._state[self.num_samples:]
+        output, self._state = (
+            self._state[: self.num_samples],
+            self._state[self.num_samples :],
+        )
         return iter(output)
-
 
     def __len__(self):
         return self.num_samples

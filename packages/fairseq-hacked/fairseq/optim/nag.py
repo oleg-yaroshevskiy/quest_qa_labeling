@@ -9,7 +9,7 @@ from torch.optim.optimizer import Optimizer, required
 from . import FairseqOptimizer, register_optimizer
 
 
-@register_optimizer('nag')
+@register_optimizer("nag")
 class FairseqNAG(FairseqOptimizer):
     def __init__(self, args, params):
         super().__init__(args)
@@ -34,9 +34,9 @@ class FairseqNAG(FairseqOptimizer):
         different learning rate.
         """
         return {
-            'lr': self.args.lr[0],
-            'momentum': self.args.momentum,
-            'weight_decay': self.args.weight_decay,
+            "lr": self.args.lr[0],
+            "momentum": self.args.momentum,
+            "weight_decay": self.args.weight_decay,
         }
 
 
@@ -61,13 +61,13 @@ class NAG(Optimizer):
             loss = closure()
 
         for group in self.param_groups:
-            weight_decay = group['weight_decay']
-            momentum = group['momentum']
-            lr = group['lr']
-            lr_old = group.get('lr_old', lr)
+            weight_decay = group["weight_decay"]
+            momentum = group["momentum"]
+            lr = group["lr"]
+            lr_old = group.get("lr_old", lr)
             lr_correct = lr / lr_old
 
-            for p in group['params']:
+            for p in group["params"]:
                 if p.grad is None:
                     continue
 
@@ -75,12 +75,14 @@ class NAG(Optimizer):
 
                 d_p = p.grad.data.float()
                 param_state = self.state[p]
-                if 'momentum_buffer' not in param_state:
-                    param_state['momentum_buffer'] = torch.zeros_like(d_p)
+                if "momentum_buffer" not in param_state:
+                    param_state["momentum_buffer"] = torch.zeros_like(d_p)
                 else:
-                    param_state['momentum_buffer'] = param_state['momentum_buffer'].type_as(d_p)
+                    param_state["momentum_buffer"] = param_state[
+                        "momentum_buffer"
+                    ].type_as(d_p)
 
-                buf = param_state['momentum_buffer']
+                buf = param_state["momentum_buffer"]
 
                 if weight_decay != 0:
                     p_data_fp32.mul_(1 - lr * weight_decay)
@@ -91,6 +93,6 @@ class NAG(Optimizer):
 
                 p.data.copy_(p_data_fp32)
 
-            group['lr_old'] = lr
+            group["lr_old"] = lr
 
         return loss

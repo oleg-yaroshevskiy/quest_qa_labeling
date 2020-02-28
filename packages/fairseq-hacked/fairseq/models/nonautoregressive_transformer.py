@@ -65,14 +65,26 @@ class NATransformerModel(TransformerModel):
         )
 
         # length prediction
-        parser.add_argument("--src-embedding-copy", action="store_true",
-                            help="copy encoder word embeddings as the initial input of the decoder")
-        parser.add_argument("--pred-length-offset", action="store_true",
-                            help="predicting the length difference between the target and source sentences")
-        parser.add_argument("--sg-length-pred", action="store_true",
-                            help="stop the gradients back-propagated from the length predictor")
-        parser.add_argument("--length-loss-factor", type=float,
-                            help="weights on the length prediction loss")
+        parser.add_argument(
+            "--src-embedding-copy",
+            action="store_true",
+            help="copy encoder word embeddings as the initial input of the decoder",
+        )
+        parser.add_argument(
+            "--pred-length-offset",
+            action="store_true",
+            help="predicting the length difference between the target and source sentences",
+        )
+        parser.add_argument(
+            "--sg-length-pred",
+            action="store_true",
+            help="stop the gradients back-propagated from the length predictor",
+        )
+        parser.add_argument(
+            "--length-loss-factor",
+            type=float,
+            help="weights on the length prediction loss",
+        )
 
     @classmethod
     def build_decoder(cls, args, tgt_dict, embed_tokens):
@@ -103,16 +115,19 @@ class NATransformerModel(TransformerModel):
 
         return {
             "word_ins": {
-                "out": word_ins_out, "tgt": word_ins_tgt,
-                "mask": word_ins_mask, "ls": self.args.label_smoothing,
-                "nll_loss": True
+                "out": word_ins_out,
+                "tgt": word_ins_tgt,
+                "mask": word_ins_mask,
+                "ls": self.args.label_smoothing,
+                "nll_loss": True,
             },
             "length": {
-                "out": length_out, "tgt": length_tgt,
-                "factor": self.decoder.length_loss_factor
-            }
+                "out": length_out,
+                "tgt": length_tgt,
+                "factor": self.decoder.length_loss_factor,
+            },
         }
-            
+
     def forward_encoder(self, encoder_inputs):
         return self.encoder(*encoder_inputs)
 
@@ -131,7 +146,7 @@ class NATransformerModel(TransformerModel):
             step=step,
         )
         output_tokens.masked_scatter_(output_masks, _tokens[output_masks])
-        output_scores.masked_scatter_(output_masks, _scores[output_masks])    
+        output_scores.masked_scatter_(output_masks, _scores[output_masks])
         if history is not None:
             history.append(output_tokens.clone())
 
@@ -139,7 +154,7 @@ class NATransformerModel(TransformerModel):
             output_tokens=output_tokens,
             output_scores=output_scores,
             attn=None,
-            history=history
+            history=history,
         )
 
     def initialize_output_tokens(self, encoder_out, src_tokens):
@@ -167,7 +182,7 @@ class NATransformerModel(TransformerModel):
             attn=None,
             step=0,
             max_step=0,
-            history=None
+            history=None,
         )
 
 

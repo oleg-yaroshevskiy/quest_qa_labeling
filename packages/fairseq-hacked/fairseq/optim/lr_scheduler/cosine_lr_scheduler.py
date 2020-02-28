@@ -8,7 +8,7 @@ import math
 from . import FairseqLRScheduler, register_lr_scheduler
 
 
-@register_lr_scheduler('cosine')
+@register_lr_scheduler("cosine")
 class CosineSchedule(FairseqLRScheduler):
     """Assign LR based on a cyclical schedule that follows the cosine function.
 
@@ -36,8 +36,8 @@ class CosineSchedule(FairseqLRScheduler):
         super().__init__(args, optimizer)
         if len(args.lr) > 1:
             raise ValueError(
-                'Cannot use a fixed learning rate schedule with cosine.'
-                ' Consider --lr-scheduler=fixed instead.'
+                "Cannot use a fixed learning rate schedule with cosine."
+                " Consider --lr-scheduler=fixed instead."
             )
 
         warmup_end_lr = args.max_lr
@@ -47,13 +47,15 @@ class CosineSchedule(FairseqLRScheduler):
         self.min_lr = args.lr[0]
         self.max_lr = args.max_lr
 
-        assert self.max_lr > self.min_lr, 'max_lr must be more than lr'
+        assert self.max_lr > self.min_lr, "max_lr must be more than lr"
 
         self.t_mult = args.t_mult
         self.period = args.lr_period_updates
 
         if self.period <= 0:
-            assert args.max_update >= 0, 'Either --max_update or --lr-period-updates must be set'
+            assert (
+                args.max_update >= 0
+            ), "Either --max_update or --lr-period-updates must be set"
             self.period = args.max_update - args.warmup_updates
 
         if args.warmup_updates > 0:
@@ -100,9 +102,16 @@ class CosineSchedule(FairseqLRScheduler):
         else:
             curr_updates = num_updates - self.args.warmup_updates
             if self.t_mult != 1:
-                i = math.floor(math.log(1 - curr_updates / self.period * (1 - self.t_mult), self.t_mult))
+                i = math.floor(
+                    math.log(
+                        1 - curr_updates / self.period * (1 - self.t_mult), self.t_mult
+                    )
+                )
                 t_i = self.t_mult ** i * self.period
-                t_curr = curr_updates - (1 - self.t_mult ** i) / (1 - self.t_mult) * self.period
+                t_curr = (
+                    curr_updates
+                    - (1 - self.t_mult ** i) / (1 - self.t_mult) * self.period
+                )
             else:
                 i = math.floor(curr_updates / self.period)
                 t_i = self.period
@@ -112,7 +121,9 @@ class CosineSchedule(FairseqLRScheduler):
             min_lr = self.min_lr * lr_shrink
             max_lr = self.max_lr * lr_shrink
 
-            self.lr = min_lr + 0.5 * (max_lr - min_lr) * (1 + math.cos(math.pi * t_curr / t_i))
+            self.lr = min_lr + 0.5 * (max_lr - min_lr) * (
+                1 + math.cos(math.pi * t_curr / t_i)
+            )
 
         self.optimizer.set_lr(self.lr)
         return self.lr

@@ -102,20 +102,10 @@ def _trim_input(
     return t, q, a
 
 
-def _convert_to_bert_inputs(
-    title, question, answer, tokenizer, max_sequence_length
-):
+def _convert_to_bert_inputs(title, question, answer, tokenizer, max_sequence_length):
     """Converts tokenized input to ids, masks and segments for BERT"""
 
-    stoken = (
-        ["[CLS]"]
-        + title
-        + ["[SEP]"]
-        + question
-        + ["[SEP]"]
-        + answer
-        + ["[SEP]"]
-    )
+    stoken = ["[CLS]"] + title + ["[SEP]"] + question + ["[SEP]"] + answer + ["[SEP]"]
 
     input_ids = _get_ids(stoken, tokenizer, max_sequence_length)
     input_masks = _get_masks(stoken, max_sequence_length)
@@ -127,15 +117,7 @@ def _convert_to_bert_inputs(
 def _get_stoken_output(title, question, answer, tokenizer, max_sequence_length):
     """Converts tokenized input to ids, masks and segments for BERT"""
 
-    stoken = (
-        ["[CLS]"]
-        + title
-        + ["[SEP]"]
-        + question
-        + ["[SEP]"]
-        + answer
-        + ["[SEP]"]
-    )
+    stoken = ["[CLS]"] + title + ["[SEP]"] + question + ["[SEP]"] + answer + ["[SEP]"]
     return stoken
 
 
@@ -151,10 +133,7 @@ def compute_input_arays(
 ):
     input_ids, input_masks, input_segments = [], [], []
     for _, instance in tqdm(
-        df[columns].iterrows(),
-        desc="Preparing dataset",
-        total=len(df),
-        ncols=80,
+        df[columns].iterrows(), desc="Preparing dataset", total=len(df), ncols=80,
     ):
         t, q, a = (
             instance.question_title,
@@ -239,12 +218,7 @@ class QuestDataset(torch.utils.data.Dataset):
 
 
 def cross_validation_split(
-    args,
-    train_df,
-    tokenizer,
-    ignore_train=False,
-    pseudo_df=None,
-    split_pseudo=False,
+    args, train_df, tokenizer, ignore_train=False, pseudo_df=None, split_pseudo=False,
 ):
     kf = GroupKFold(n_splits=args.folds)
     y_train = train_df[args.target_columns].values
@@ -263,21 +237,19 @@ def cross_validation_split(
             pseudo_ids = iter(pseudo_kfold.split(np.arange(n_pseudo)))
         else:
             pseudo_ids = iter(
-                [(np.arange(len(np.pseudo)), np.arange(len(n_pseudo)))]
-                * args.folds
+                [(np.arange(len(np.pseudo)), np.arange(len(n_pseudo)))] * args.folds
             )
 
-    for fold, (train_index, val_index) in enumerate(kf.split(
-        train_df.values, groups=train_df.question_title
-    )):
+    for fold, (train_index, val_index) in enumerate(
+        kf.split(train_df.values, groups=train_df.question_title)
+    ):
         if not ignore_train:
             train_subdf = train_df.iloc[train_index]
 
             if pseudo_df is not None:
                 pseudo_train, pseudo_valid = next(pseudo_ids)
 
-                pseudo_subdf = (
-                    pseudo_df if not leak_free_pseudo else pseudo_df[fold])
+                pseudo_subdf = pseudo_df if not leak_free_pseudo else pseudo_df[fold]
 
                 pseudo_subdf = pseudo_subdf.iloc[pseudo_valid]
                 train_subdf = pd.concat([train_subdf, pseudo_subdf], sort=True)
@@ -285,9 +257,7 @@ def cross_validation_split(
             train_set = QuestDataset.from_frame(args, train_subdf, tokenizer)
         else:
             train_set = None
-        valid_set = QuestDataset.from_frame(
-            args, train_df.iloc[val_index], tokenizer
-        )
+        valid_set = QuestDataset.from_frame(args, train_df.iloc[val_index], tokenizer)
 
         yield (
             train_set,

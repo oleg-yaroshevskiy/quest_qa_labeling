@@ -24,44 +24,47 @@ def infer_init_method(args):
         return
 
     # support torch.distributed.launch
-    if all(key in os.environ for key in [
-        'MASTER_ADDR', 'MASTER_PORT', 'WORLD_SIZE', 'RANK'
-    ]):
-        args.distributed_init_method = 'env://'
-        args.distributed_world_size = int(os.environ['WORLD_SIZE'])
-        args.distributed_rank = int(os.environ['RANK'])
+    if all(
+        key in os.environ
+        for key in ["MASTER_ADDR", "MASTER_PORT", "WORLD_SIZE", "RANK"]
+    ):
+        args.distributed_init_method = "env://"
+        args.distributed_world_size = int(os.environ["WORLD_SIZE"])
+        args.distributed_rank = int(os.environ["RANK"])
 
     # we can determine the init method automatically for Slurm
     elif args.distributed_port > 0:
-        node_list = os.environ.get('SLURM_STEP_NODELIST')
+        node_list = os.environ.get("SLURM_STEP_NODELIST")
         if node_list is None:
-            node_list = os.environ.get('SLURM_JOB_NODELIST')
+            node_list = os.environ.get("SLURM_JOB_NODELIST")
         if node_list is not None:
             try:
-                hostnames = subprocess.check_output(['scontrol', 'show', 'hostnames', node_list])
-                args.distributed_init_method = 'tcp://{host}:{port}'.format(
-                    host=hostnames.split()[0].decode('utf-8'),
+                hostnames = subprocess.check_output(
+                    ["scontrol", "show", "hostnames", node_list]
+                )
+                args.distributed_init_method = "tcp://{host}:{port}".format(
+                    host=hostnames.split()[0].decode("utf-8"),
                     port=args.distributed_port,
                 )
-                nnodes = int(os.environ.get('SLURM_NNODES'))
-                ntasks_per_node = os.environ.get('SLURM_NTASKS_PER_NODE')
+                nnodes = int(os.environ.get("SLURM_NNODES"))
+                ntasks_per_node = os.environ.get("SLURM_NTASKS_PER_NODE")
                 if ntasks_per_node is not None:
                     ntasks_per_node = int(ntasks_per_node)
                 else:
-                    ntasks = int(os.environ.get('SLURM_NTASKS'))
-                    nnodes = int(os.environ.get('SLURM_NNODES'))
+                    ntasks = int(os.environ.get("SLURM_NTASKS"))
+                    nnodes = int(os.environ.get("SLURM_NNODES"))
                     assert ntasks % nnodes == 0
                     ntasks_per_node = int(ntasks / nnodes)
                 if ntasks_per_node == 1:
                     assert args.distributed_world_size % nnodes == 0
                     gpus_per_node = args.distributed_world_size // nnodes
-                    node_id = int(os.environ.get('SLURM_NODEID'))
+                    node_id = int(os.environ.get("SLURM_NODEID"))
                     args.distributed_rank = node_id * gpus_per_node
                 else:
                     assert ntasks_per_node == args.distributed_world_size // nnodes
                     args.distributed_no_spawn = True
-                    args.distributed_rank = int(os.environ.get('SLURM_PROCID'))
-                    args.device_id = int(os.environ.get('SLURM_LOCALID'))
+                    args.distributed_rank = int(os.environ.get("SLURM_PROCID"))
+                    args.device_id = int(os.environ.get("SLURM_LOCALID"))
             except subprocess.CalledProcessError as e:  # scontrol failed
                 raise e
             except FileNotFoundError:  # Slurm is not installed
@@ -70,21 +73,29 @@ def infer_init_method(args):
 
 def distributed_init(args):
     if args.distributed_world_size == 1:
-        raise ValueError('Cannot initialize distributed with distributed_world_size=1')
+        raise ValueError("Cannot initialize distributed with distributed_world_size=1")
 
     if torch.distributed.is_initialized():
-        warnings.warn('Distributed is already initialized, cannot initialize twice!')
+        warnings.warn("Distributed is already initialized, cannot initialize twice!")
     else:
-        print('| distributed init (rank {}): {}'.format(
-            args.distributed_rank, args.distributed_init_method), flush=True)
+        print(
+            "| distributed init (rank {}): {}".format(
+                args.distributed_rank, args.distributed_init_method
+            ),
+            flush=True,
+        )
         dist.init_process_group(
             backend=args.distributed_backend,
             init_method=args.distributed_init_method,
             world_size=args.distributed_world_size,
             rank=args.distributed_rank,
         )
-        print('| initialized host {} as rank {}'.format(
-            socket.gethostname(), args.distributed_rank), flush=True)
+        print(
+            "| initialized host {} as rank {}".format(
+                socket.gethostname(), args.distributed_rank
+            ),
+            flush=True,
+        )
 
         # perform a dummy all-reduce to initialize the NCCL communicator
         if torch.cuda.is_available():
@@ -101,10 +112,11 @@ def distributed_init(args):
 def suppress_output(is_master):
     """Suppress printing on the current device. Force printing with `force=True`."""
     import builtins as __builtin__
+
     builtin_print = __builtin__.print
 
     def print(*args, **kwargs):
-        force = kwargs.pop('force', False)
+        force = kwargs.pop("force", False)
         if is_master or force:
             builtin_print(*args, **kwargs)
 
@@ -145,8 +157,10 @@ def all_gather_list(data, group=None, max_size=16384):
     world_size = get_world_size()
 
     buffer_size = max_size * world_size
-    if not hasattr(all_gather_list, '_buffer') or \
-            all_gather_list._buffer.numel() < buffer_size:
+    if (
+        not hasattr(all_gather_list, "_buffer")
+        or all_gather_list._buffer.numel() < buffer_size
+    ):
         all_gather_list._buffer = torch.cuda.ByteTensor(buffer_size)
         all_gather_list._cpu_buffer = torch.ByteTensor(max_size).pin_memory()
     buffer = all_gather_list._buffer
@@ -156,8 +170,8 @@ def all_gather_list(data, group=None, max_size=16384):
     enc = pickle.dumps(data)
     enc_size = len(enc)
     if enc_size + 2 > max_size:
-        raise ValueError('encoded data exceeds max_size: {}'.format(enc_size + 2))
-    assert max_size < 255*256
+        raise ValueError("encoded data exceeds max_size: {}".format(enc_size + 2))
+    assert max_size < 255 * 256
 
     cpu_buffer[0] = enc_size // 255  # this encoding works for max_size < 65k
     cpu_buffer[1] = enc_size % 255
@@ -178,10 +192,10 @@ def all_gather_list(data, group=None, max_size=16384):
         return result
     except pickle.UnpicklingError:
         raise Exception(
-            'Unable to unpickle data from other workers. all_gather_list requires all '
-            'workers to enter the function together, so this error usually indicates '
-            'that the workers have fallen out of sync somehow. Workers can fall out of '
-            'sync if one of them runs out of memory, or if there are other conditions '
-            'in your training script that can cause one worker to finish an epoch '
-            'while other workers are still iterating over their portions of the data.'
+            "Unable to unpickle data from other workers. all_gather_list requires all "
+            "workers to enter the function together, so this error usually indicates "
+            "that the workers have fallen out of sync somehow. Workers can fall out of "
+            "sync if one of them runs out of memory, or if there are other conditions "
+            "in your training script that can cause one worker to finish an epoch "
+            "while other workers are still iterating over their portions of the data."
         )

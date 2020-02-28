@@ -11,9 +11,8 @@ from fairseq import utils
 from . import FairseqCriterion, register_criterion
 
 
-@register_criterion('cross_entropy')
+@register_criterion("cross_entropy")
 class CrossEntropyCriterion(FairseqCriterion):
-
     def __init__(self, args, task):
         super().__init__(args, task)
 
@@ -25,15 +24,17 @@ class CrossEntropyCriterion(FairseqCriterion):
         2) the sample size, which is used as the denominator for the gradient
         3) logging outputs to display while training
         """
-        net_output = model(**sample['net_input'])
+        net_output = model(**sample["net_input"])
         loss, _ = self.compute_loss(model, net_output, sample, reduce=reduce)
-        sample_size = sample['target'].size(0) if self.args.sentence_avg else sample['ntokens']
+        sample_size = (
+            sample["target"].size(0) if self.args.sentence_avg else sample["ntokens"]
+        )
         logging_output = {
-            'loss': utils.item(loss.data) if reduce else loss.data,
-            'nll_loss': utils.item(loss.data) if reduce else loss.data,
-            'ntokens': sample['ntokens'],
-            'nsentences': sample['target'].size(0),
-            'sample_size': sample_size,
+            "loss": utils.item(loss.data) if reduce else loss.data,
+            "nll_loss": utils.item(loss.data) if reduce else loss.data,
+            "ntokens": sample["ntokens"],
+            "nsentences": sample["target"].size(0),
+            "sample_size": sample_size,
         }
         return loss, sample_size, logging_output
 
@@ -45,23 +46,23 @@ class CrossEntropyCriterion(FairseqCriterion):
             lprobs,
             target,
             ignore_index=self.padding_idx,
-            reduction='sum' if reduce else 'none',
+            reduction="sum" if reduce else "none",
         )
         return loss, loss
 
     @staticmethod
     def aggregate_logging_outputs(logging_outputs):
         """Aggregate logging outputs from data parallel training."""
-        loss_sum = sum(log.get('loss', 0) for log in logging_outputs)
-        ntokens = sum(log.get('ntokens', 0) for log in logging_outputs)
-        nsentences = sum(log.get('nsentences', 0) for log in logging_outputs)
-        sample_size = sum(log.get('sample_size', 0) for log in logging_outputs)
+        loss_sum = sum(log.get("loss", 0) for log in logging_outputs)
+        ntokens = sum(log.get("ntokens", 0) for log in logging_outputs)
+        nsentences = sum(log.get("nsentences", 0) for log in logging_outputs)
+        sample_size = sum(log.get("sample_size", 0) for log in logging_outputs)
         agg_output = {
-            'loss': loss_sum / sample_size / math.log(2) if sample_size > 0 else 0.,
-            'ntokens': ntokens,
-            'nsentences': nsentences,
-            'sample_size': sample_size,
+            "loss": loss_sum / sample_size / math.log(2) if sample_size > 0 else 0.0,
+            "ntokens": ntokens,
+            "nsentences": nsentences,
+            "sample_size": sample_size,
         }
         if sample_size != ntokens:
-            agg_output['nll_loss'] = loss_sum / ntokens / math.log(2)
+            agg_output["nll_loss"] = loss_sum / ntokens / math.log(2)
         return agg_output

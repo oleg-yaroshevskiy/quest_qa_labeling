@@ -9,7 +9,6 @@ import torch
 
 
 class FairseqOptimizer(object):
-
     def __init__(self, args):
         super().__init__()
         self.args = args
@@ -22,10 +21,10 @@ class FairseqOptimizer(object):
     @property
     def optimizer(self):
         """Return a torch.optim.optimizer.Optimizer instance."""
-        if not hasattr(self, '_optimizer'):
+        if not hasattr(self, "_optimizer"):
             raise NotImplementedError
         if not isinstance(self._optimizer, torch.optim.Optimizer):
-            raise ValueError('_optimizer must be an instance of torch.optim.Optimizer')
+            raise ValueError("_optimizer must be an instance of torch.optim.Optimizer")
         return self._optimizer
 
     @property
@@ -42,7 +41,7 @@ class FairseqOptimizer(object):
     def params(self):
         """Return an iterable of the parameters held by the optimizer."""
         for param_group in self.optimizer.param_groups:
-            for p in param_group['params']:
+            for p in param_group["params"]:
                 yield p
 
     def __getstate__(self):
@@ -50,12 +49,12 @@ class FairseqOptimizer(object):
 
     def get_lr(self):
         """Return the current learning rate."""
-        return self.optimizer.param_groups[0]['lr']
+        return self.optimizer.param_groups[0]["lr"]
 
     def set_lr(self, lr):
         """Set the learning rate."""
         for param_group in self.optimizer.param_groups:
-            param_group['lr'] = lr
+            param_group["lr"] = lr
 
     def state_dict(self):
         """Return the optimizer's state dict."""
@@ -91,7 +90,9 @@ class FairseqOptimizer(object):
         if max_norm > 0:
             return torch.nn.utils.clip_grad_norm_(self.params, max_norm)
         else:
-            return math.sqrt(sum(p.grad.data.norm()**2 for p in self.params if p.grad is not None))
+            return math.sqrt(
+                sum(p.grad.data.norm() ** 2 for p in self.params if p.grad is not None)
+            )
 
     def step(self, closure=None):
         """Performs a single optimization step."""
@@ -105,7 +106,7 @@ class FairseqOptimizer(object):
 
     @property
     def supports_memory_efficient_fp16(self):
-        if hasattr(self.optimizer, 'supports_memory_efficient_fp16'):
+        if hasattr(self.optimizer, "supports_memory_efficient_fp16"):
             return self.optimizer.supports_memory_efficient_fp16
         return False
 

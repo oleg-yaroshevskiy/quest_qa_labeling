@@ -18,11 +18,15 @@ import tests.utils as test_utils
 
 
 class TestBacktranslationDataset(unittest.TestCase):
-
     def setUp(self):
-        self.tgt_dict, self.w1, self.w2, self.src_tokens, self.src_lengths, self.model = (
-            test_utils.sequence_generator_setup()
-        )
+        (
+            self.tgt_dict,
+            self.w1,
+            self.w2,
+            self.src_tokens,
+            self.src_lengths,
+            self.model,
+        ) = test_utils.sequence_generator_setup()
 
         dummy_src_samples = self.src_tokens
 

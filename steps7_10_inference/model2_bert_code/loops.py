@@ -38,10 +38,7 @@ def train_loop(model, train_loader, optimizer, criterion, scheduler, args, itera
 
     torch.cuda.empty_cache()
     gc.collect()
-    return (
-        avg_loss,
-        iteration
-    )
+    return (avg_loss, iteration)
 
 
 def evaluate(args, model, val_loader, criterion, val_shape):
@@ -68,10 +65,10 @@ def evaluate(args, model, val_loader, criterion, val_shape):
             )
 
             avg_val_loss += criterion(logits, labels).item() / len(val_loader)
-            valid_preds[idx * args.batch_size: (idx + 1) * args.batch_size] = (
+            valid_preds[idx * args.batch_size : (idx + 1) * args.batch_size] = (
                 logits.detach().cpu().squeeze().numpy()
             )
-            original[idx * args.batch_size: (idx + 1) * args.batch_size] = (
+            original[idx * args.batch_size : (idx + 1) * args.batch_size] = (
                 labels.detach().cpu().squeeze().numpy()
             )
 
@@ -95,7 +92,7 @@ def infer(args, model, test_loader, test_shape):
                 attention_mask=x_batch[1].cuda(),
                 token_type_ids=x_batch[2].cuda(),
             )
-            test_preds[idx * args.batch_size: (idx + 1) * args.batch_size] = (
+            test_preds[idx * args.batch_size : (idx + 1) * args.batch_size] = (
                 predictions.detach().cpu().squeeze().numpy()
             )
 
