@@ -37,7 +37,7 @@ bilm==0.1.post5
 bitarray==0.8.3
 bkcharts==0.2
 blaze==0.11.3
-bleach==3.1.1
+bleach==3.1.4
 blinker==1.4
 blis==0.2.4
 bokeh==1.0.2
