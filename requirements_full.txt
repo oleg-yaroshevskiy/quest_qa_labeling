@@ -141,7 +141,7 @@ h5py==2.9.0
 heapdict==1.0.0
 holidays==0.9.11
 html5lib==0.9999999
-httplib2==0.12.0
+httplib2==0.18.0
 hyperopt==0.1.1
 idna==2.8
 imageio==2.4.1
