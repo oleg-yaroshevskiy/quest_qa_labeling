@@ -327,7 +327,7 @@ pytorch-transformers==1.2.0
 PyTorchHelperBot==0.0.4
 pytz==2018.9
 PyWavelets==1.0.1
-PyYAML==5.1
+PyYAML==5.4
 pyzmq==17.1.2
 QtAwesome==0.5.3
 qtconsole==4.4.2
