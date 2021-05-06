@@ -108,7 +108,7 @@ fbprophet==0.5
 filelock==3.0.10
 flaky==3.5.3
 Flask==1.0.2
-Flask-Cors==3.0.7
+Flask-Cors==3.0.9
 fqn-decorators==1.2.3
 ftfy==5.5.1
 funcy==1.11
