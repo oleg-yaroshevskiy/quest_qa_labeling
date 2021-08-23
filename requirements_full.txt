@@ -177,7 +177,7 @@ jupyter-core==4.4.0
 jupyter-highlight-selected-word==0.2.0
 jupyter-latex-envs==1.4.6
 jupyter-nbextensions-configurator==0.4.1
-jupyterlab==0.35.3
+jupyterlab==1.2.21
 jupyterlab-launcher==0.13.1
 jupyterlab-server==0.2.0
 kafka-python==1.4.6
